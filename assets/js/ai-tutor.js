@@ -1,1462 +1,84 @@
 /**
  * ALGEBRIFY - CHATGPT-STYLE AI LINEAR ALGEBRA TUTOR
- * Live Generative AI (Gemini 2.0/1.5 Flash, OpenAI GPT-4o-mini, Groq Llama 3.3, OpenRouter)
- * + Dynamic Step-by-Step Symbolic Math Solver & Pedagogical Reasoning Engine
- * + Full Multi-turn Conversational Memory & Persistent Session Management
+ * Live Generative AI (Gemini 2.0/1.5 Flash, OpenAI GPT-4o-mini, Groq Llama 3.3)
+ * Full Multi-turn Conversational Memory & Persistent Session Management
  */
 
-const SYSTEM_PROMPT = `
-You are the official Algebrify Linear Algebra AI Tutor. You are friendly, patient, encouraging, mathematically rigorous, and an exceptional teacher for Class 11-12 and undergraduate mathematics students.
-
-CORE TUTORING PRINCIPLES:
-1. STEP-BY-STEP PROBLEM SOLVING:
-   - Understand and acknowledge the user's specific problem.
-   - State clearly: (1) What is given, (2) The concept/method used, (3) Each calculation step with intermediate arithmetic, (4) The final answer under "**Final Answer:**".
-   - Explain WHY each operation (row operation, cofactor expansion, basis substitution) is performed.
-
-2. TEACHING & CONCEPTUAL EXPLANATIONS:
-   Structure conceptual questions (e.g., "What is a matrix?", "Explain Gaussian elimination", "What is the difference between span and basis?") into clear sections:
-   - **Intuition in Simple Words** (Beginner-friendly geometric or real-world insight)
-   - **Formal Definition** (Textbook mathematical definition)
-   - **Mathematical Formulation & KaTeX Formulas**
-   - **Step-by-Step Worked Example**
-   - **Key Takeaway / Summary**
-
-3. CONVERSATIONAL MEMORY & FOLLOW-UP ADAPTATION:
-   - When the user asks a follow-up (e.g., "Can you give me an example?", "Why is it zero?"), resolve "it" based on the previous turns.
-   - When the user expresses confusion (e.g., "I still don't understand", "Can you explain that in simpler words?"), re-explain using simpler intuitive analogies rather than repeating the same formal text.
-
-4. SCOPE & MATHEMATICAL NOTATION:
-   - Focus on Linear Algebra (Matrices, Systems of Equations, Fields, Vectors, Vector Spaces, Linear Transformations, Transformation Matrices, Inner Product Spaces, Determinants, Eigenvalues & Diagonalization).
-   - ALWAYS format equations and matrices using standard LaTeX delimiters: $...$ for inline math and $$...$$ for display math.
-   - Format matrices as \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}.
-`;
-
-// =============================================================================
-// DYNAMIC LINEAR ALGEBRA REASONING & PEDAGOGICAL ENGINE
-// (Provides dynamic, contextual, step-by-step responses offline or without API key)
-// =============================================================================
-
-class LinearAlgebraReasoningEngine {
-    constructor() {
-        this.topicRegistry = {
-            "matrices": {
-                title: "Algebra of Matrices",
-                keywords: ["matrix", "matrices", "transpose", "symmetric", "skew-symmetric", "orthogonal matrix", "identity matrix", "diagonal matrix", "trace", "matrix multiplication", "matrix addition", "order of matrix", "row matrix", "column matrix", "matrix operations", "algebra of matrices"],
-                definition: {
-                    what: "A **matrix** is a rectangular arrangement (or 2D grid) of numbers, symbols, or expressions arranged in horizontal **rows** and vertical **columns**.",
-                    order: "If a matrix has $m$ rows and $n$ columns, its **order (or dimension)** is written as $m \\times n$ (read as '$m$ by $n$').",
-                    notation: "A general matrix $A$ of order $m \\times n$ is represented as:\n$$ A = \\begin{bmatrix} a_{11} & a_{12} & \\dots & a_{1n} \\\\ a_{21} & a_{22} & \\dots & a_{2n} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ a_{m1} & a_{m2} & \\dots & a_{mn} \\end{bmatrix} = [a_{ij}]_{m \\times n} $$ where $a_{ij}$ is the entry in row $i$ and column $j$.",
-                    example: "For example, $A = \\begin{bmatrix} 2 & -1 & 5 \\\\ 0 & 4 & 3 \\end{bmatrix}$ is a matrix of order $2 \\times 3$ with $2$ rows and $3$ columns.",
-                    intuition: "Think of a matrix as a compact way to store and transform multiple interconnected pieces of data at once—such as the coefficients in a system of linear equations or a geometric operation that stretches, rotates, and scales coordinate space."
-                }
-            },
-            "linear-systems": {
-                title: "Systems of Linear Equations",
-                keywords: ["system of linear equations", "systems of equations", "linear system", "gaussian elimination", "gauss-jordan", "echelon form", "row echelon", "rref", "ref", "augmented matrix", "row operations", "homogeneous", "cramer", "consistency", "inconsistent", "free variable", "pivot", "back-substitution"],
-                definition: {
-                    what: "A **system of linear equations** is a collection of one or more linear equations involving the same set of variables.",
-                    form: "A system of $m$ linear equations in $n$ variables $x_1, x_2, \\dots, x_n$ is written in matrix form as:\n$$ A\\mathbf{x} = \\mathbf{b} $$ where $A_{m \\times n}$ is the coefficient matrix, $\\mathbf{x}_{n \\times 1}$ is the variable vector, and $\\mathbf{b}_{m \\times 1}$ is the constant vector.",
-                    example: "For example:\n$$\\begin{cases} 2x + y = 5 \\\\ x - y = 1 \\end{cases} \\implies \\begin{bmatrix} 2 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} x \\\\ y \\end{bmatrix} = \\begin{bmatrix} 5 \\\\ 1 \\end{bmatrix}$$",
-                    intuition: "Solving $A\\mathbf{x} = \\mathbf{b}$ means finding the intersection of hyperplanes, or finding the exact combination of the columns of $A$ that produces the target vector $\\mathbf{b}$."
-                }
-            },
-            "fields": {
-                title: "Field",
-                keywords: ["field", "fields", "galois field", "gf(2)", "characteristic", "abelian", "field axioms", "closure", "additive inverse", "multiplicative inverse", "f_p"],
-                definition: {
-                    what: "A **field** $\\mathbb{F} = (F, +, \\cdot)$ is an algebraic structure consisting of a set $F$ equipped with two operations: **addition ($+$)** and **multiplication ($\\cdot$)**, satisfying 11 fundamental axioms.",
-                    axioms: "1. **Closure:** $a+b \\in F$ and $a \\cdot b \\in F$\n2. **Associativity:** $(a+b)+c = a+(b+c)$ and $(a \\cdot b) \\cdot c = a \\cdot (b \\cdot c)$\n3. **Commutativity:** $a+b = b+a$ and $a \\cdot b = b \\cdot a$\n4. **Identities:** Additive identity $0$ and Multiplicative identity $1 \\neq 0$\n5. **Inverses:** Additive inverse $-a$ and Multiplicative inverse $a^{-1}$ (for $a \\neq 0$)\n6. **Distributivity:** $a \\cdot (b + c) = a \\cdot b + a \\cdot c$",
-                    example: "Standard fields include $\\mathbb{R}$ (Real numbers), $\\mathbb{C}$ (Complex numbers), $\\mathbb{Q}$ (Rational numbers), and the finite field $\\text{GF}(2) = \\{0, 1\\}$ where arithmetic is modulo $2$ ($1 + 1 = 0$).",
-                    intuition: "A field is the most well-behaved mathematical sandbox for arithmetic where you can add, subtract, multiply, and divide (by anything except zero) without ever leaving the set."
-                }
-            },
-            "vectors": {
-                title: "Vectors",
-                keywords: ["vector", "vectors", "dot product", "cross product", "scalar product", "vector product", "magnitude", "norm", "unit vector", "angle between vectors", "projection", "orthogonal projection"],
-                definition: {
-                    what: "A **vector** is a mathematical object possessing both **magnitude (length)** and **direction**. In $\\mathbb{R}^n$, an algebraic vector is an ordered $n$-tuple of real numbers $\\mathbf{v} = (v_1, v_2, \\dots, v_n)$.",
-                    dotProduct: "The **dot product (inner product)** of $\\mathbf{u} = (u_1, \\dots, u_n)$ and $\\mathbf{v} = (v_1, \\dots, v_n)$ is:\n$$ \\mathbf{u} \\cdot \\mathbf{v} = \\sum_{i=1}^n u_i v_i = \\|\\mathbf{u}\\| \\|\\mathbf{v}\\| \\cos\\theta $$",
-                    magnitude: "The **magnitude (Euclidean norm)** is $\\|\\mathbf{v}\\| = \\sqrt{v_1^2 + v_2^2 + \\dots + v_n^2} = \\sqrt{\\mathbf{v} \\cdot \\mathbf{v}}$.",
-                    example: "For $\\mathbf{u} = \\begin{bmatrix} 1 \\\\ 3 \\end{bmatrix}$ and $\\mathbf{v} = \\begin{bmatrix} 4 \\\\ -2 \\end{bmatrix}$:\n$$ \\mathbf{u} \\cdot \\mathbf{v} = (1)(4) + (3)(-2) = 4 - 6 = -2 $$",
-                    intuition: "Geometrically, a vector represents displacement or an arrow in space. Algebraically, it is an ordered list of numbers that can be added component-wise and scaled by numbers."
-                }
-            },
-            "vector-spaces": {
-                title: "Vector Spaces",
-                keywords: ["vector space", "vector spaces", "subspace", "subspaces", "span", "spanning", "linear combination", "linear independence", "linearly independent", "linearly dependent", "basis", "dimension"],
-                definition: {
-                    what: "A **vector space** $V$ over a field $\\mathbb{F}$ is a non-empty set of objects (called vectors) on which two operations are defined: **vector addition** and **scalar multiplication**, satisfying 8 axioms.",
-                    subspace: "A non-empty subset $W \\subseteq V$ is called a **subspace** if $W$ is itself a vector space under the same operations. It is verified using the **3-Step Subspace Test**:\n1. **Zero Vector:** $\\mathbf{0} \\in W$\n2. **Closure under Addition:** $\\mathbf{u}, \\mathbf{v} \\in W \\implies \\mathbf{u} + \\mathbf{v} \\in W$\n3. **Closure under Scalar Multiplication:** $c \\in \\mathbb{F}, \\mathbf{u} \\in W \\implies c\\mathbf{u} \\in W$",
-                    example: "In $\\mathbb{R}^3$, the set $W = \\{(x, y, z) \\in \\mathbb{R}^3 \\mid z = 0\\}$ (the $xy$-plane) is a 2D subspace containing $(0,0,0)$.",
-                    intuition: "Think of a vector space as an infinite coordinate universe that contains the origin and never leaks outside itself when you add or scale vectors."
-                }
-            },
-            "linear-transformations": {
-                title: "Linear Transformations",
-                keywords: ["linear transformation", "linear transformations", "linear map", "linear mapping", "kernel", "null space", "image", "range", "rank-nullity", "rank-nullity theorem", "dimension theorem", "injective", "surjective", "isomorphism"],
-                definition: {
-                    what: "A function $T: V \\to W$ between two vector spaces over a field $\\mathbb{F}$ is a **linear transformation** if it preserves addition and scalar multiplication for all $\\mathbf{u}, \\mathbf{v} \\in V$ and $c \\in \\mathbb{F}$:\n1. $T(\\mathbf{u} + \\mathbf{v}) = T(\\mathbf{u}) + T(\\mathbf{v})$\n2. $T(c\\mathbf{u}) = cT(\\mathbf{u})$",
-                    kernelImage: "**Kernel (Null Space):** $\\ker(T) = \\{\\mathbf{v} \\in V \\mid T(\\mathbf{v}) = \\mathbf{0}_W\\}$\n**Image (Range):** $\\text{Im}(T) = \\{T(\\mathbf{v}) \\in W \\mid \\mathbf{v} \\in V\\}$",
-                    rankNullity: "**Rank-Nullity Theorem:**\n$$ \\dim(V) = \\text{nullity}(T) + \\text{rank}(T) = \\dim(\\ker(T)) + \\dim(\\text{Im}(T)) $$",
-                    example: "For $T(x, y) = (2x, x+y)$, $T$ is linear with $\\ker(T) = \\{\\mathbf{0}\\}$ (nullity $= 0$) and $\\text{rank}(T) = 2$.",
-                    intuition: "A linear transformation moves space around without bending grid lines or moving the origin $\\mathbf{0} \\mapsto \\mathbf{0}$. Parallel lines stay parallel and evenly spaced."
-                }
-            },
-            "transformation-matrices": {
-                title: "Linear Transformations and Matrices",
-                keywords: ["transformation matrix", "transformation matrices", "matrix representation", "change of basis", "similarity", "similar matrices", "transition matrix", "standard matrix", "basis change", "coordinate vector"],
-                definition: {
-                    what: "Every linear transformation $T: \\mathbb{R}^n \\to \\mathbb{R}^m$ can be represented uniquely by an $m \\times n$ matrix $A$ such that $T(\\mathbf{x}) = A\\mathbf{x}$.",
-                    standardMatrix: "The **standard matrix** $[T]$ is constructed by evaluating $T$ on the standard basis vectors: $[T] = [T(\\mathbf{e}_1) \\mid T(\\mathbf{e}_2) \\mid \\dots \\mid T(\\mathbf{e}_n)]$.",
-                    similarity: "Two square matrices $A$ and $B$ are **similar** ($A \\sim B$) if there exists an invertible transition matrix $P$ such that $B = P^{-1}AP$. Similar matrices represent the same linear operator under different bases.",
-                    example: "A counter-clockwise rotation by angle $\\theta$ in $\\mathbb{R}^2$ has standard matrix $R_\\theta = \\begin{bmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{bmatrix}$.",
-                    intuition: "Matrices are coordinate representations of geometric transformations. Changing basis is simply describing the exact same physical movement from a different observer's point of view."
-                }
-            },
-            "inner-products": {
-                title: "Inner Product Spaces & Orthogonality",
-                keywords: ["inner product", "inner products", "inner product space", "orthogonality", "orthogonal", "orthonormal", "cauchy-schwarz", "gram-schmidt", "orthogonal projection", "orthogonal complement", "orthonormal basis"],
-                definition: {
-                    what: "An **inner product space** is a vector space $V$ equipped with an inner product $\\langle \\mathbf{u}, \\mathbf{v} \\rangle$ satisfying conjugate symmetry, linearity in the first argument, and positive-definiteness ($\\langle \\mathbf{v}, \\mathbf{v} \\rangle \\ge 0$ with equality iff $\\mathbf{v} = \\mathbf{0}$).",
-                    gramSchmidt: "The **Gram-Schmidt Process** converts an arbitrary basis $\\{\\mathbf{v}_1, \\dots, \\mathbf{v}_k\\}$ into an orthogonal basis $\\{\\mathbf{u}_1, \\dots, \\mathbf{u}_k\\}$:\n$$ \\mathbf{u}_1 = \\mathbf{v}_1 $$\n$$ \\mathbf{u}_k = \\mathbf{v}_k - \\sum_{j=1}^{k-1} \\frac{\\langle \\mathbf{v}_k, \\mathbf{u}_j \\rangle}{\\langle \\mathbf{u}_j, \\mathbf{u}_j \\rangle} \\mathbf{u}_j $$",
-                    example: "Two vectors $\\mathbf{u} = \\begin{bmatrix} 1 \\\\ 2 \\end{bmatrix}$ and $\\mathbf{v} = \\begin{bmatrix} -2 \\\\ 1 \\end{bmatrix}$ are orthogonal because $\\langle \\mathbf{u}, \\mathbf{v} \\rangle = (1)(-2) + (2)(1) = 0$.",
-                    intuition: "Inner products give geometric concepts like angles, lengths, and perpendicularity (orthogonality) to abstract vector spaces."
-                }
-            },
-            "determinants": {
-                title: "Determinants",
-                keywords: ["determinant", "determinants", "det", "cofactor", "minor", "laplace expansion", "cramer's rule", "singular matrix", "invertible", "invertibility", "properties of determinants", "adjugate"],
-                definition: {
-                    what: "The **determinant** is a scalar-valued function $\\det: M_{n \\times n}(\\mathbb{F}) \\to \\mathbb{F}$ associated with every square matrix that characterizes its geometric scaling factor and invertibility.",
-                    formula2x2: "For a $2 \\times 2$ matrix $A = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$:\n$$ \\det(A) = |A| = ad - bc $$",
-                    properties: "1. **Invertibility Criterion:** $A$ is invertible if and only if $\\det(A) \\neq 0$.\n2. **Multiplicative:** $\\det(AB) = \\det(A)\\det(B)$.\n3. **Transpose:** $\\det(A^T) = \\det(A)$.\n4. **Scalar Multiplication:** $\\det(k A_{n \\times n}) = k^n \\det(A)$.",
-                    example: "For $A = \\begin{bmatrix} 3 & 1 \\\\ 2 & 4 \\end{bmatrix}$, $\\det(A) = (3)(4) - (1)(2) = 12 - 2 = 10$.",
-                    intuition: "The determinant measures how much a matrix stretches or squashes areas (in 2D) or volumes (in 3D). If $\\det(A) = 0$, space has been flattened to a line or point, making the operation non-invertible."
-                }
-            },
-            "eigenvalues": {
-                title: "Diagonalization, Eigenvalues and Eigenvectors",
-                keywords: ["eigenvalue", "eigenvalues", "eigenvector", "eigenvectors", "diagonalization", "diagonalizable", "characteristic polynomial", "characteristic equation", "eigenspace", "cayley-hamilton", "eigen-solver"],
-                definition: {
-                    what: "Let $A$ be an $n \\times n$ square matrix. A non-zero vector $\\mathbf{v} \\neq \\mathbf{0}$ is called an **eigenvector** of $A$ if there exists a scalar $\\lambda$ (called the **eigenvalue**) such that:\n$$ A\\mathbf{v} = \\lambda \\mathbf{v} $$",
-                    characteristicEquation: "To find eigenvalues, solve the **characteristic equation**:\n$$ \\det(A - \\lambda I) = 0 $$",
-                    eigenspace: "For each eigenvalue $\\lambda_i$, the corresponding **eigenspace** is $E_{\\lambda_i} = \\ker(A - \\lambda_i I)$, found by solving $(A - \\lambda_i I)\\mathbf{v} = \\mathbf{0}$.",
-                    example: "For diagonal matrix $D = \\begin{bmatrix} 2 & 0 \\\\ 0 & 3 \\end{bmatrix}$, the eigenvalues are directly on the diagonal: $\\lambda_1 = 2, \\lambda_2 = 3$.",
-                    intuition: "When a matrix acts on space, most vectors change their direction. Eigenvectors are the special invariant directions that do not rotate at all—they only get stretched, shrunk, or flipped by a factor of $\\lambda$."
-                }
-            }
-        };
-    }
-
-    /**
-     * Main dispatcher to understand and answer any user query dynamically.
-     */
-    processQuery(query, session) {
-        const cleanQuery = query.trim();
-        const lowerQ = cleanQuery.toLowerCase();
-
-        // 1. Resolve multi-turn context (Topic, Entities, Follow-up state, previous matrices)
-        const context = this.extractContext(session, lowerQ);
-
-        // 2. Check for explicit matrix math problems (e.g. [[2,0],[0,3]] or inverse, determinant, eigenvalues)
-        const matrixData = this.extractMatrix(cleanQuery) || (this.isMatrixFollowUp(lowerQ) ? context.lastMatrix : null);
-        if (matrixData) {
-            return this.solveMatrixProblem(matrixData, lowerQ, cleanQuery, context);
-        }
-
-        // 3. Check for Linear Equations System
-        const systemData = this.extractLinearSystem(cleanQuery);
-        if (systemData) {
-            return this.solveLinearSystem(systemData);
-        }
-
-        // 4. Classify Question Intent & Structure
-        const questionType = this.classifyIntent(lowerQ, context);
-
-        switch (questionType) {
-            case "SIMPLIFICATION":
-                return this.generateSimplerExplanation(context);
-
-            case "EXAMPLE_REQUEST":
-                return this.generateWorkedExample(context);
-
-            case "WHY_REASONING":
-                return this.generateWhyExplanation(lowerQ, context);
-
-            case "COMPARISON":
-                return this.generateComparison(lowerQ, context);
-
-            case "HOW_TO_SOLVE":
-                return this.generateHowToGuide(lowerQ, context);
-
-            case "DEFINITION":
-                return this.generateDefinitionExplanation(lowerQ, context);
-
-            case "EXPLANATION":
-                return this.generateConceptLesson(lowerQ, context);
-
-            case "PYTHON_CODE":
-                return this.generatePythonCode(lowerQ, context);
-
-            case "QUIZ":
-                return this.generatePracticeQuiz(lowerQ, context);
-
-            case "FOLLOW_UP":
-            default:
-                return this.generateContextualResponse(cleanQuery, lowerQ, context);
-        }
-    }
-
-    isMatrixFollowUp(lowerQ) {
-        return (
-            lowerQ.includes("this matrix") ||
-            lowerQ.includes("it") ||
-            lowerQ.includes("its determinant") ||
-            lowerQ.includes("its eigenvalues") ||
-            lowerQ.includes("its inverse") ||
-            lowerQ.includes("why is it zero") ||
-            lowerQ.includes("why is the determinant zero") ||
-            lowerQ.includes("why is the determinant of this matrix zero")
-        );
-    }
-
-    // =========================================================================
-    // CONTEXT & INTENT CLASSIFICATION
-    // =========================================================================
-
-    extractContext(session, lowerQ) {
-        let activeTopicKey = null;
-        let lastUserMsg = "";
-        let lastTutorMsg = "";
-        let lastMatrix = null;
-
-        if (session && session.messages && session.messages.length > 0) {
-            for (let i = session.messages.length - 1; i >= 0; i--) {
-                const msg = session.messages[i];
-                if (msg.role === "user" && !lastUserMsg) lastUserMsg = msg.text;
-                if (msg.role === "model" && !lastTutorMsg) lastTutorMsg = msg.text;
-                if (!lastMatrix) {
-                    lastMatrix = this.extractMatrix(msg.text);
-                }
-            }
-        }
-
-        // 1. Detect topic directly in current query
-        for (const [key, topic] of Object.entries(this.topicRegistry)) {
-            for (const kw of topic.keywords) {
-                if (lowerQ.includes(kw)) {
-                    activeTopicKey = key;
-                    break;
-                }
-            }
-            if (activeTopicKey) break;
-        }
-
-        // 2. If no topic in current query, inherit from previous context
-        if (!activeTopicKey && (lastUserMsg || lastTutorMsg)) {
-            const combinedHistory = (lastUserMsg + " " + lastTutorMsg).toLowerCase();
-            for (const [key, topic] of Object.entries(this.topicRegistry)) {
-                for (const kw of topic.keywords) {
-                    if (combinedHistory.includes(kw)) {
-                        activeTopicKey = key;
-                        break;
-                    }
-                }
-                if (activeTopicKey) break;
-            }
-        }
-
-        // Default fallback topic
-        if (!activeTopicKey) {
-            activeTopicKey = "matrices";
-        }
-
-        return {
-            topicKey: activeTopicKey,
-            topic: this.topicRegistry[activeTopicKey],
-            lastUserMsg: lastUserMsg,
-            lastTutorMsg: lastTutorMsg,
-            lastMatrix: lastMatrix
-        };
-    }
-
-    classifyIntent(lowerQ, context) {
-        // Confusion / Simplification intent
-        if (
-            lowerQ.includes("don't understand") ||
-            lowerQ.includes("dont understand") ||
-            lowerQ.includes("simpler") ||
-            lowerQ.includes("simple words") ||
-            lowerQ.includes("in simple") ||
-            lowerQ.includes("simpler terms") ||
-            lowerQ.includes("easy way") ||
-            lowerQ.includes("layman") ||
-            lowerQ.includes("eli5") ||
-            lowerQ.includes("confused") ||
-            lowerQ.includes("explain again") ||
-            lowerQ.includes("still don't get") ||
-            lowerQ.includes("what does this mean")
-        ) {
-            return "SIMPLIFICATION";
-        }
-
-        // Comparison intent
-        if (
-            lowerQ.includes("difference between") ||
-            lowerQ.includes("compare") ||
-            lowerQ.includes(" vs ") ||
-            lowerQ.includes("versus") ||
-            lowerQ.includes("distinguish") ||
-            lowerQ.includes("differ from")
-        ) {
-            return "COMPARISON";
-        }
-
-        // Example request intent
-        if (
-            lowerQ.includes("give me an example") ||
-            lowerQ.includes("give me a simple example") ||
-            lowerQ.includes("show me an example") ||
-            lowerQ.includes("worked example") ||
-            lowerQ.includes("instance of") ||
-            lowerQ === "example" ||
-            lowerQ === "give me an example." ||
-            lowerQ.startsWith("example of") ||
-            (lowerQ.includes("example") && !lowerQ.includes("solve"))
-        ) {
-            return "EXAMPLE_REQUEST";
-        }
-
-        // "Why" / Reasoning intent
-        if (
-            lowerQ.startsWith("why ") ||
-            lowerQ.includes("why is ") ||
-            lowerQ.includes("why does ") ||
-            lowerQ.includes("why are ") ||
-            lowerQ.includes("reason for") ||
-            lowerQ.includes("what is the reason")
-        ) {
-            return "WHY_REASONING";
-        }
-
-        // "How to" procedure intent
-        if (
-            lowerQ.includes("how do i ") ||
-            lowerQ.includes("how to ") ||
-            lowerQ.includes("how can i ") ||
-            lowerQ.includes("steps to ") ||
-            lowerQ.includes("method to ") ||
-            lowerQ.includes("algorithm for ")
-        ) {
-            return "HOW_TO_SOLVE";
-        }
-
-        // Definition intent
-        if (
-            lowerQ.startsWith("what is ") ||
-            lowerQ.startsWith("what are ") ||
-            lowerQ.startsWith("define ") ||
-            lowerQ.includes("definition of") ||
-            lowerQ.includes("meaning of")
-        ) {
-            return "DEFINITION";
-        }
-
-        // Python Code intent
-        if (
-            lowerQ.includes("python") ||
-            lowerQ.includes("numpy") ||
-            lowerQ.includes("scipy") ||
-            lowerQ.includes("code") ||
-            lowerQ.includes("program")
-        ) {
-            return "PYTHON_CODE";
-        }
-
-        // Quiz intent
-        if (
-            lowerQ.includes("quiz") ||
-            lowerQ.includes("practice") ||
-            lowerQ.includes("test me") ||
-            lowerQ.includes("give me a problem") ||
-            lowerQ.includes("question on")
-        ) {
-            return "QUIZ";
-        }
-
-        // General explanation
-        if (
-            lowerQ.startsWith("explain ") ||
-            lowerQ.includes("tell me about") ||
-            lowerQ.includes("teach me") ||
-            lowerQ.includes("overview of")
-        ) {
-            return "EXPLANATION";
-        }
-
-        return "FOLLOW_UP";
-    }
-
-    // =========================================================================
-    // SYMBOLIC MATH & PROBLEM SOLVING ENGINE
-    // =========================================================================
-
-    extractMatrix(text) {
-        if (!text) return null;
-        const clean = text.replace(/\\begin\{bmatrix\}|\\end\{bmatrix\}|\$+/g, "");
-
-        // Match 2x2: [[a, b], [c, d]] or [[a,b],[c,d]]
-        const m2Regex = /\[\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*,\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*\]/;
-        const match2 = clean.match(m2Regex);
-        if (match2) {
-            return {
-                rows: 2,
-                cols: 2,
-                data: [
-                    [parseFloat(match2[1]), parseFloat(match2[2])],
-                    [parseFloat(match2[3]), parseFloat(match2[4])]
-                ]
-            };
-        }
-
-        // Match 3x3: [[a,b,c],[d,e,f],[g,h,i]]
-        const m3Regex = /\[\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*,\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*,\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*\]/;
-        const match3 = clean.match(m3Regex);
-        if (match3) {
-            return {
-                rows: 3,
-                cols: 3,
-                data: [
-                    [parseFloat(match3[1]), parseFloat(match3[2]), parseFloat(match3[3])],
-                    [parseFloat(match3[4]), parseFloat(match3[5]), parseFloat(match3[6])],
-                    [parseFloat(match3[7]), parseFloat(match3[8]), parseFloat(match3[9])]
-                ]
-            };
-        }
-
-        // Match semicolon format: [a b; c d] or [a, b; c, d]
-        const semiRegex = /\[\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)\s*;\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)\s*\]/;
-        const matchSemi = clean.match(semiRegex);
-        if (matchSemi) {
-            return {
-                rows: 2,
-                cols: 2,
-                data: [
-                    [parseFloat(matchSemi[1]), parseFloat(matchSemi[2])],
-                    [parseFloat(matchSemi[3]), parseFloat(matchSemi[4])]
-                ]
-            };
-        }
-
-        return null;
-    }
-
-    extractLinearSystem(text) {
-        if (!text) return null;
-        // Match 2x2 system e.g. "2x + y = 5, x - y = 1" or "2x+y=5 and x-y=1"
-        const eqRegex = /(-?\d*)\s*x\s*([+-]\s*\d*)\s*y\s*=\s*(-?\d+)[,\s]+(?:and\s+)?(-?\d*)\s*x\s*([+-]\s*\d*)\s*y\s*=\s*(-?\d+)/i;
-        const match = text.match(eqRegex);
-        if (match) {
-            const parseCoeff = (str) => {
-                const s = str.replace(/\s+/g, "");
-                if (s === "" || s === "+") return 1;
-                if (s === "-") return -1;
-                return parseFloat(s);
-            };
-
-            return {
-                a11: parseCoeff(match[1]),
-                a12: parseCoeff(match[2]),
-                b1: parseFloat(match[3]),
-                a21: parseCoeff(match[4]),
-                a22: parseCoeff(match[5]),
-                b2: parseFloat(match[6])
-            };
-        }
-        return null;
-    }
-
-    solveMatrixProblem(matrix, lowerQ, cleanQuery, context) {
-        const { rows, cols, data } = matrix;
-
-        // 1. Eigenvalues / Eigenvectors / Characteristic equation
-        if (lowerQ.includes("eigen") || lowerQ.includes("characteristic") || lowerQ.includes("diagonaliz")) {
-            if (rows === 2 && cols === 2) {
-                return this.solve2x2Eigenvalues(data[0][0], data[0][1], data[1][0], data[1][1]);
-            }
-        }
-
-        // 2. Inverse / Invertibility
-        if (lowerQ.includes("inverse") || lowerQ.includes("invert") || lowerQ.includes("inv")) {
-            if (rows === 2 && cols === 2) {
-                return this.solve2x2Inverse(data[0][0], data[0][1], data[1][0], data[1][1]);
-            }
-        }
-
-        // 3. Determinant / Singularity
-        if (lowerQ.includes("det") || lowerQ.includes("determinant") || lowerQ.includes("singular") || lowerQ.includes("zero")) {
-            if (rows === 2 && cols === 2) {
-                return this.solve2x2Determinant(data[0][0], data[0][1], data[1][0], data[1][1], lowerQ.includes("why"));
-            } else if (rows === 3 && cols === 3) {
-                return this.solve3x3Determinant(data);
-            }
-        }
-
-        // 4. Default: Full Matrix Analysis (Determinant, Inverse, Eigenvalues, Trace, Rank)
-        if (rows === 2 && cols === 2) {
-            return this.solve2x2Comprehensive(data[0][0], data[0][1], data[1][0], data[1][1]);
-        }
-
-        return this.solve3x3Determinant(data);
-    }
-
-    solve2x2Eigenvalues(a, b, c, d) {
-        const trace = a + d;
-        const det = a * d - b * c;
-        const disc = trace * trace - 4 * det;
-
-        let solutionSteps = `### 🎯 Step-by-Step Eigenvalues & Eigenvectors
-
-**Given Matrix:**
-$$ A = \\begin{bmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{bmatrix} $$
-
----
-
-#### Step 1: Formulate the Characteristic Equation
-Eigenvalues $\\lambda$ satisfy the linear transformation condition $A\\mathbf{v} = \\lambda\\mathbf{v}$, which rearranges to:
-$$ (A - \\lambda I)\\mathbf{v} = \\mathbf{0} $$
-
-For non-trivial eigenvector solutions $(\\mathbf{v} \\neq \\mathbf{0})$, the characteristic matrix $(A - \\lambda I)$ must be singular (non-invertible), requiring:
-$$ \\det(A - \\lambda I) = 0 $$
-
-$$ \\det \\begin{bmatrix} ${a} - \\lambda & ${b} \\\\ ${c} & ${d} - \\lambda \\end{bmatrix} = (${a} - \\lambda)(${d} - \\lambda) - (${b})(${c}) = 0 $$
-
-Expanding the characteristic polynomial:
-$$ \\lambda^2 - (${trace})\\lambda + (${det}) = 0 $$
-
----
-
-#### Step 2: Solve for Eigenvalues ($\\lambda$)
-Using the quadratic formula $\\lambda = \\frac{-(-\\text{tr}(A)) \\pm \\sqrt{\\text{tr}(A)^2 - 4\\det(A)}}{2}$:
-`;
-
-        if (disc >= 0) {
-            const sqrtDisc = Math.sqrt(disc);
-            const lambda1 = (trace + sqrtDisc) / 2;
-            const lambda2 = (trace - sqrtDisc) / 2;
-            const l1Str = Number.isInteger(lambda1) ? lambda1 : lambda1.toFixed(2);
-            const l2Str = Number.isInteger(lambda2) ? lambda2 : lambda2.toFixed(2);
-
-            solutionSteps += `
-$$ \\lambda = \\frac{${trace} \\pm \\sqrt{${disc}}}{2} \\implies \\lambda_1 = ${l1Str}, \\quad \\lambda_2 = ${l2Str} $$
-
----
-
-#### Step 3: Find Corresponding Eigenvectors
-- **For $\\lambda_1 = ${l1Str}$:** Solve $(A - (${l1Str})I)\\mathbf{v} = \\mathbf{0}$:
-  $$ \\begin{bmatrix} ${(a - lambda1).toFixed(2)} & ${b} \\\\ ${c} & ${(d - lambda1).toFixed(2)} \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} $$
-`;
-            let v1 = b !== 0 ? `\\begin{bmatrix} ${-b} \\\\ ${(a - lambda1).toFixed(2)} \\end{bmatrix}` : (a - lambda1 === 0 ? `\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}` : `\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}`);
-            let v2 = b !== 0 ? `\\begin{bmatrix} ${-b} \\\\ ${(a - lambda2).toFixed(2)} \\end{bmatrix}` : (a - lambda2 === 0 ? `\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}` : `\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}`);
-
-            solutionSteps += `  Row reduction yields the eigenvector: $\\mathbf{v}_1 = ${v1}$.
-
-- **For $\\lambda_2 = ${l2Str}$:** Solve $(A - (${l2Str})I)\\mathbf{v} = \\mathbf{0}$:
-  $$ \\begin{bmatrix} ${(a - lambda2).toFixed(2)} & ${b} \\\\ ${c} & ${(d - lambda2).toFixed(2)} \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} $$
-  Row reduction yields the eigenvector: $\\mathbf{v}_2 = ${v2}$.
-
----
-
-#### Step 4: Verification
-- **Trace Property Check:** $\\lambda_1 + \\lambda_2 = ${l1Str} + ${l2Str} = ${trace} = \\text{tr}(A)$ ✓
-- **Determinant Property Check:** $\\lambda_1 \\cdot \\lambda_2 = (${l1Str})(${l2Str}) = ${det} = \\det(A)$ ✓
-
-**Final Answer:**
-- **Eigenvalues:** $\\lambda_1 = ${l1Str}, \\quad \\lambda_2 = ${l2Str}$
-- **Eigenvectors:** $\\mathbf{v}_1 = ${v1}, \\quad \\mathbf{v}_2 = ${v2}$
-`;
-        } else {
-            const realPart = (trace / 2).toFixed(2);
-            const imagPart = (Math.sqrt(-disc) / 2).toFixed(2);
-            solutionSteps += `
-Since the discriminant is negative ($\\Delta = ${disc} < 0$), the matrix has complex conjugate eigenvalues:
-$$ \\lambda = ${realPart} \\pm ${imagPart}i $$
-
-**Final Answer:**
-The matrix represents a rotation and scaling transformation with complex eigenvalues $\\lambda = ${realPart} \\pm ${imagPart}i$.
-`;
-        }
-
-        return solutionSteps;
-    }
-
-    solve2x2Inverse(a, b, c, d) {
-        const det = a * d - b * c;
-        const detStr = Number.isInteger(det) ? det : det.toFixed(2);
-
-        let response = `### 🔄 Step-by-Step Matrix Inverse Calculation
-
-**Given Matrix:**
-$$ A = \\begin{bmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{bmatrix} $$
-
----
-
-#### Step 1: Calculate the Determinant
-$$ \\det(A) = ad - bc = (${a})(${d}) - (${b})(${c}) = ${a * d} - (${b * c}) = ${detStr} $$
-`;
-
-        if (Math.abs(det) < 1e-9) {
-            response += `
----
-
-#### Step 2: Invertibility Test
-Since **$\\det(A) = 0$**, the matrix is **singular (non-invertible)**. 
-Geometrically, this transformation squashes 2D space into a 1D line or 0D point, so the operation cannot be reversed.
-
-**Final Answer:**
-$$\\mathbf{A^{-1}\\ \\text{does NOT exist (Matrix is Singular)}}.$$
-`;
-            return response;
-        }
-
-        const invA = (d / det).toFixed(2);
-        const invB = (-b / det).toFixed(2);
-        const invC = (-c / det).toFixed(2);
-        const invD = (a / det).toFixed(2);
-
-        response += `
-Since $\\det(A) = ${detStr} \\neq 0$, the inverse exists.
-
----
-
-#### Step 2: Form the Adjugate Matrix
-For a $2 \\times 2$ matrix, swap the main diagonal elements and negate the off-diagonal elements:
-$$ \\text{adj}(A) = \\begin{bmatrix} d & -b \\\\ -c & a \\end{bmatrix} = \\begin{bmatrix} ${d} & ${-b} \\\\ ${-c} & ${a} \\end{bmatrix} $$
-
----
-
-#### Step 3: Multiply by $\\frac{1}{\\det(A)}$
-$$ A^{-1} = \\frac{1}{\\det(A)} \\text{adj}(A) = \\frac{1}{${detStr}} \\begin{bmatrix} ${d} & ${-b} \\\\ ${-c} & ${a} \\end{bmatrix} $$
-
----
-
-#### Step 4: Verification
-$$ A A^{-1} = \\begin{bmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{bmatrix} \\begin{bmatrix} ${invA} & ${invB} \\\\ ${invC} & ${invD} \\end{bmatrix} = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = I $$
-
-**Final Answer:**
-$$ A^{-1} = \\begin{bmatrix} ${invA} & ${invB} \\\\ ${invC} & ${invD} \\end{bmatrix} $$
-`;
-        return response;
-    }
-
-    solve2x2Determinant(a, b, c, d, isWhyQuestion = false) {
-        const det = a * d - b * c;
-        const detStr = Number.isInteger(det) ? det : det.toFixed(2);
-
-        let response = `### 🔍 Step-by-Step Determinant Calculation
-
-**Given Matrix:**
-$$ A = \\begin{bmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{bmatrix} $$
-
----
-
-#### Step 1: Apply the $2 \\times 2$ Determinant Formula
-For any $2 \\times 2$ matrix $\\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$, the determinant is the product of the main diagonal minus the product of the off-diagonal:
-$$ \\det(A) = |A| = ad - bc $$
-
----
-
-#### Step 2: Perform the Arithmetic
-$$ \\det(A) = (${a})(${d}) - (${b})(${c}) = ${a * d} - (${b * c}) = ${detStr} $$
-
-**Final Answer:**
-$$ \\mathbf{\\det(A) = ${detStr}} $$
-`;
-
-        if (Math.abs(det) < 1e-9 || isWhyQuestion) {
-            response += `
----
-
-#### 💡 Why is the Determinant ${det === 0 ? "Zero" : detStr}?
-${det === 0 ? `
-1. **Linear Dependence:** The rows (or columns) of $A$ are scalar multiples of each other ($[${a}, ${b}]$ and $[${c}, ${d}]$ are linearly dependent).
-2. **Geometric Squashing:** The transformation $A$ collapses 2D areas down to a 1D line or point (area scaling factor = $0$).
-3. **Singularity:** Because $\\det(A) = 0$, $A$ has no inverse ($A^{-1}$ does not exist) and the system $A\\mathbf{x}=\\mathbf{0}$ has non-trivial solutions.
-` : `
-1. **Geometric Area Scaling:** Any 2D shape transformed by $A$ has its area multiplied by $|${detStr}| = ${Math.abs(detStr)}$.
-2. **Orientation:** Since $\\det(A) ${det > 0 ? "> 0" : "< 0"}$, the geometric orientation of vectors is ${det > 0 ? "preserved" : "reversed (mirror-flipped)"}.
-3. **Invertibility:** Since $\\det(A) \\neq 0$, $A$ is non-singular and has a unique inverse $A^{-1}$.
-`}
-`;
-        }
-
-        return response;
-    }
-
-    solve3x3Determinant(matrix) {
-        const [
-            [a, b, c],
-            [d, e, f],
-            [g, h, i]
-        ] = matrix;
-
-        const sub1 = e * i - f * h;
-        const sub2 = d * i - f * g;
-        const sub3 = d * h - e * g;
-
-        const det = a * sub1 - b * sub2 + c * sub3;
-
-        return `### 🔍 Step-by-Step $3 \\times 3$ Determinant Calculation
-
-**Given Matrix:**
-$$ A = \\begin{bmatrix} ${a} & ${b} & ${c} \\\\ ${d} & ${e} & ${f} \\\\ ${g} & ${h} & ${i} \\end{bmatrix} $$
-
----
-
-#### Step 1: Laplace Cofactor Expansion (Along Row 1)
-$$ \\det(A) = a_{11} C_{11} + a_{12} C_{12} + a_{13} C_{13} = a \\det \\begin{bmatrix} e & f \\\\ h & i \\end{bmatrix} - b \\det \\begin{bmatrix} d & f \\\\ g & i \\end{bmatrix} + c \\det \\begin{bmatrix} d & e \\\\ g & h \\end{bmatrix} $$
-
----
-
-#### Step 2: Compute $2 \\times 2$ Minors
-1. $M_{11} = (${e})(${i}) - (${f})(${h}) = ${e * i} - ${f * h} = ${sub1}$
-2. $M_{12} = (${d})(${i}) - (${f})(${g}) = ${d * i} - ${f * g} = ${sub2}$
-3. $M_{13} = (${d})(${h}) - (${e})(${g}) = ${d * h} - ${e * g} = ${sub3}$
-
----
-
-#### Step 3: Combine with Row 1 Coefficients
-$$ \\det(A) = (${a})(${sub1}) - (${b})(${sub2}) + (${c})(${sub3}) $$
-$$ \\det(A) = ${a * sub1} - (${b * sub2}) + (${c * sub3}) = ${det} $$
-
-**Final Answer:**
-$$ \\mathbf{\\det(A) = ${det}} \\quad (${det === 0 ? "Singular / Non-Invertible" : "Invertible, Non-Singular"}) $$
-`;
-    }
-
-    solve2x2Comprehensive(a, b, c, d) {
-        const det = a * d - b * c;
-        const trace = a + d;
-        const disc = trace * trace - 4 * det;
-
-        return `### 📐 Full Matrix Analysis for $A = \\begin{bmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{bmatrix}$
-
-#### 1. Determinant & Invertibility
-$$ \\det(A) = (${a})(${d}) - (${b})(${c}) = ${det} $$
-- **Status:** ${det !== 0 ? `Invertible (Non-singular) since $\\det(A) \\neq 0$` : `Singular (Non-invertible) since $\\det(A) = 0$`}
-
-#### 2. Matrix Trace & Rank
-- **Trace:** $\\text{tr}(A) = a + d = ${a} + ${d} = ${trace}$
-- **Rank:** $\\text{rank}(A) = ${det !== 0 ? "2 \\text{ (Full Rank)}" : (a === 0 && b === 0 && c === 0 && d === 0 ? "0" : "1")}$
-
-#### 3. Characteristic Equation & Eigenvalues
-$$ \\lambda^2 - \\text{tr}(A)\\lambda + \\det(A) = \\lambda^2 - (${trace})\\lambda + (${det}) = 0 $$
-${disc >= 0 ? `
-$$ \\lambda_1 = ${((trace + Math.sqrt(disc)) / 2).toFixed(2)}, \\quad \\lambda_2 = ${((trace - Math.sqrt(disc)) / 2).toFixed(2)} $$
-` : `
-$$ \\lambda = ${(trace / 2).toFixed(2)} \\pm ${(Math.sqrt(-disc) / 2).toFixed(2)}i \\quad \\text{(Complex Eigenvalues)} $$
-`}
-
-${det !== 0 ? `
-#### 4. Matrix Inverse
-$$ A^{-1} = \\frac{1}{${det}} \\begin{bmatrix} ${d} & ${-b} \\\\ ${-c} & ${a} \\end{bmatrix} = \\begin{bmatrix} ${(d / det).toFixed(2)} & ${(-b / det).toFixed(2)} \\\\ ${(-c / det).toFixed(2)} & ${(a / det).toFixed(2)} \\end{bmatrix} $$
-` : ""}
-
-*Ask me to calculate the eigenvectors or explain the geometric transformation of this matrix!*
-`;
-    }
-
-    solveLinearSystem(system) {
-        const { a11, a12, b1, a21, a22, b2 } = system;
-        const detA = a11 * a22 - a12 * a21;
-
-        let response = `### 🔢 Step-by-Step Linear System Solver (Gaussian Elimination)
-
-**Given System of Equations:**
-$$\\begin{cases} ${a11}x + (${a12})y = ${b1} \\\\ ${a21}x + (${a22})y = ${b2} \\end{cases}$$
-
----
-
-#### Step 1: Set up the Augmented Matrix $[A \\mid \\mathbf{b}]$
-$$ \\left[ \\begin{array}{cc|c} ${a11} & ${a12} & ${b1} \\\\ ${a21} & ${a22} & ${b2} \\end{array} \\right] $$
-
----
-
-#### Step 2: Row Reduction to Row Echelon Form (REF)
-`;
-
-        if (Math.abs(a11) < 1e-9 && Math.abs(a21) < 1e-9) {
-            return response + `Both $x$ coefficients are zero. System is degenerate.`;
-        }
-
-        if (Math.abs(detA) < 1e-9) {
-            const ratio = a11 !== 0 ? a21 / a11 : a22 / a12;
-            const expectedB2 = b1 * ratio;
-            const isConsistent = Math.abs(b2 - expectedB2) < 1e-9;
-
-            if (isConsistent) {
-                response += `
-Applying row operation $R_2 \\leftarrow R_2 - (${ratio.toFixed(2)})R_1$:
-$$ \\left[ \\begin{array}{cc|c} ${a11} & ${a12} & ${b1} \\\\ 0 & 0 & 0 \\end{array} \\right] $$
-
-Since the second row is $0 = 0$, the system is **consistent with infinitely many solutions (1 free variable)**.
-
-**Final Answer:**
-Let $y = t$ (free parameter). Then $x = \\frac{${b1} - (${a12})t}{${a11}}$.
-`;
-            } else {
-                response += `
-Applying row operation $R_2 \\leftarrow R_2 - (${ratio.toFixed(2)})R_1$:
-$$ \\left[ \\begin{array}{cc|c} ${a11} & ${a12} & ${b1} \\\\ 0 & 0 & ${(b2 - expectedB2).toFixed(2)} \\end{array} \\right] $$
-
-Since the second row gives $0 = ${(b2 - expectedB2).toFixed(2)}$ (which is mathematically false), the system has **NO SOLUTION (Inconsistent)**.
-
-**Final Answer:**
-$$\\mathbf{\\text{Inconsistent System (No Solution)}}.$$
-`;
-            }
-            return response;
-        }
-
-        const k = a21 / a11;
-        const newA22 = a22 - k * a12;
-        const newB2 = b2 - k * b1;
-        const y = newB2 / newA22;
-        const x = (b1 - a12 * y) / a11;
-
-        const xStr = Number.isInteger(x) ? x : x.toFixed(2);
-        const yStr = Number.isInteger(y) ? y : y.toFixed(2);
-
-        response += `
-- **Row Operation:** $R_2 \\leftarrow R_2 - \\left(\\frac{${a21}}{${a11}}\\right) R_1$:
-$$ \\left[ \\begin{array}{cc|c} ${a11} & ${a12} & ${b1} \\\\ 0 & ${newA22.toFixed(2)} & ${newB2.toFixed(2)} \\end{array} \\right] $$
-
----
-
-#### Step 3: Back-Substitution
-1. From Row 2: $(${newA22.toFixed(2)})y = ${newB2.toFixed(2)} \\implies y = ${yStr}$
-2. Substitute $y = ${yStr}$ into Row 1:
-   $$ (${a11})x + (${a12})(${yStr}) = ${b1} \\implies (${a11})x = ${b1} - (${(a12 * y).toFixed(2)}) \\implies x = ${xStr} $$
-
----
-
-#### Step 4: Verification
-- Equation 1: $(${a11})(${xStr}) + (${a12})(${yStr}) = ${b1}$ ✓
-- Equation 2: $(${a21})(${xStr}) + (${a22})(${yStr}) = ${b2}$ ✓
-
-**Final Answer:**
-$$ \\mathbf{x = ${xStr}}, \\quad \\mathbf{y = ${yStr}} \\quad \\left( \\mathbf{x} = \\begin{bmatrix} ${xStr} \\\\ ${yStr} \\end{bmatrix} \\right) $$
-`;
-        return response;
-    }
-
-    // =========================================================================
-    // CONCEPTUAL, COMPARATIVE & PEDAGOGICAL GENERATORS
-    // =========================================================================
-
-    generateDefinitionExplanation(lowerQ, context) {
-        const { topicKey, topic } = context;
-        const def = topic.definition;
-
-        if (lowerQ.includes("matrix") || lowerQ.includes("matrices")) {
-            return `### 📚 What is a Matrix?
-
-#### 1. Intuition in Simple Words
-A **matrix** is a rectangular grid or table of numbers arranged in rows (horizontal) and columns (vertical). 
-Think of it as a clean way to organize multiple equations, geometric transformations (like stretching, rotating, or reflecting objects), or data tables into a single mathematical object.
-
----
-
-#### 2. Formal Mathematical Definition
-A matrix $A$ of **order (or dimension) $m \\times n$** (read "$m$ by $n$") consists of $m$ rows and $n$ columns:
-$$ A = \\begin{bmatrix} a_{11} & a_{12} & \\dots & a_{1n} \\\\ a_{21} & a_{22} & \\dots & a_{2n} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ a_{m1} & a_{m2} & \\dots & a_{mn} \\end{bmatrix} = [a_{ij}]_{m \\times n} $$
-
-- $a_{ij}$ denotes the element located at the intersection of **row $i$** and **column $j$**.
-- If $m = n$, the matrix is called a **square matrix**.
-
----
-
-#### 3. Concrete Example
-Let $A = \\begin{bmatrix} 3 & -2 & 5 \\\\ 0 & 7 & 1 \\end{bmatrix}$.
-- **Order:** $2 \\times 3$ ($2$ rows, $3$ columns).
-- **Entries:** $a_{11} = 3$, $a_{12} = -2$, $a_{22} = 7$, etc.
-
----
-
-#### 4. Common Types of Matrices
-1. **Row Matrix:** Matrix with only 1 row, e.g., $\\begin{bmatrix} 1 & 4 & -2 \\end{bmatrix}_{1 \\times 3}$.
-2. **Column Matrix:** Matrix with only 1 column, e.g., $\\begin{bmatrix} 5 \\\\ 2 \\end{bmatrix}_{2 \\times 1}$.
-3. **Square Matrix:** Number of rows = number of columns ($m = n$).
-4. **Identity Matrix ($I$):** Square matrix with $1$s on the main diagonal and $0$s elsewhere:
-   $$ I_2 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}, \\quad I_3 = \\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix} $$
-5. **Zero / Null Matrix ($O$):** All entries are $0$.
-
-*Would you like to explore matrix addition, multiplication, or matrix inverses?*`;
-        }
-
-        if (lowerQ.includes("vector space") || lowerQ.includes("subspace")) {
-            return `### 📦 What is a Vector Space?
-
-#### 1. Intuition in Simple Words
-A **vector space** is a mathematical "playground" (universe) containing vectors where two fundamental operations are allowed:
-1. **Adding** any two vectors together gives another vector in the playground.
-2. **Scaling** (multiplying) any vector by a scalar (number) keeps it in the playground.
-
----
-
-#### 2. Formal Mathematical Definition
-A **Vector Space** $V$ over a field $\\mathbb{F}$ is a non-empty set equipped with **vector addition ($+$)** and **scalar multiplication ($\\cdot$)** satisfying the 8 axioms:
-1. **Commutativity of Addition:** $\\mathbf{u} + \\mathbf{v} = \\mathbf{v} + \\mathbf{u}$
-2. **Associativity of Addition:** $(\\mathbf{u} + \\mathbf{v}) + \\mathbf{w} = \\mathbf{u} + (\\mathbf{v} + \\mathbf{w})$
-3. **Zero Vector:** There exists $\\mathbf{0} \\in V$ such that $\\mathbf{v} + \\mathbf{0} = \\mathbf{v}$
-4. **Additive Inverse:** For every $\\mathbf{v} \\in V$, there is $-\\mathbf{v} \\in V$ such that $\\mathbf{v} + (-\\mathbf{v}) = \\mathbf{0}$
-5. **Distributivity over Vector Addition:** $c(\\mathbf{u} + \\mathbf{v}) = c\\mathbf{u} + c\\mathbf{v}$
-6. **Distributivity over Scalar Addition:** $(c + d)\\mathbf{v} = c\\mathbf{v} + d\\mathbf{v}$
-7. **Associativity of Scalar Multiplication:** $(cd)\\mathbf{v} = c(d\\mathbf{v})$
-8. **Scalar Identity:** $1 \\cdot \\mathbf{v} = \\mathbf{v}$
-
----
-
-#### 3. Standard Examples
-- $\\mathbb{R}^2$: The 2D Cartesian plane (all pairs of real coordinates $(x, y)$).
-- $\\mathbb{R}^n$: $n$-dimensional Euclidean space.
-- $\\mathcal{P}_n(\\mathbb{R})$: The space of all polynomials of degree $\\le n$.
-- $M_{m \\times n}(\\mathbb{R})$: The space of all $m \\times n$ real matrices.
-
-*Would you like me to show the 3-step subspace test or check if a specific set is a subspace?*`;
-        }
-
-        if (lowerQ.includes("determinant")) {
-            return `### 🔍 What is a Determinant?
-
-#### 1. Intuition in Simple Words
-The **determinant** is a single number computed from a square matrix that tells you how much the matrix scales areas (in 2D) or volumes (in 3D).
-- If $\\det(A) = 2$, any shape transformed by matrix $A$ doubles in area.
-- If $\\det(A) = 0$, the matrix squashes space flat into a line or point, meaning the transformation cannot be undone (no inverse exists).
-
----
-
-#### 2. Formal Mathematical Definition
-For a square matrix $A = [a_{ij}]_{n \\times n}$, the determinant $\\det(A) = |A|$ is defined via Laplace expansion along any row $i$:
-$$ \\det(A) = \\sum_{j=1}^n (-1)^{i+j} a_{ij} M_{ij} $$
-where $M_{ij}$ is the minor determinant of the $(n-1) \\times (n-1)$ submatrix obtained by deleting row $i$ and column $j$.
-
----
-
-#### 3. Concrete $2 \\times 2$ Formula & Example
-For $A = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$:
-$$ \\det(A) = ad - bc $$
-
-**Example:** For $A = \\begin{bmatrix} 5 & 2 \\\\ 1 & 3 \\end{bmatrix}$:
-$$ \\det(A) = (5)(3) - (2)(1) = 15 - 2 = 13 $$
-
-*Ask me to calculate the determinant of any matrix or explain its properties!*`;
-        }
-
-        return `### 📚 ${topic.title} - Definition & Key Concepts
-
-#### 1. Intuition
-${def.intuition || def.what}
-
----
-
-#### 2. Formal Definition
-${def.what}
-
-${def.form ? `\n$$\n${def.form}\n$$` : ""}
-${def.notation || ""}
-${def.axioms ? `\n**Axioms & Requirements:**\n${def.axioms}` : ""}
-
----
-
-#### 3. Worked Example
-${def.example || def.examples || "Let $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$."}
-
-*Ask me to explain any specific concept, solve a problem step-by-step, or test your knowledge!*`;
-    }
-
-    generateWhyExplanation(lowerQ, context) {
-        if (
-            (lowerQ.includes("determinant") || lowerQ.includes("it")) &&
-            (lowerQ.includes("zero") || lowerQ.includes("0") || lowerQ.includes("singular"))
-        ) {
-            return `### 💡 Why is the Determinant Zero? (Geometric & Algebraic Meaning)
-
-When $\\det(A) = 0$, it signifies a fundamental breakdown in the matrix transformation. Here is why from 4 distinct perspectives:
-
----
-
-#### 1. Geometric Perspective: Space is Flattened (Area / Volume = 0)
-The determinant measures the **scaling factor of area (in 2D) or volume (in 3D)** under the transformation $A$:
-- In 2D: The transformation squashes the entire 2D plane onto a **1D straight line** or a **single 0D point**. The area of the resulting flat shape is $0$.
-- In 3D: A 3D solid box is squashed onto a flat 2D plane or line (volume = $0$).
-
----
-
-#### 2. Algebraic Perspective: Linearly Dependent Rows / Columns
-$\\det(A) = 0$ means the rows (or columns) of $A$ are **linearly dependent**:
-- One row can be written as a linear combination of the other rows.
-- **Example:** For $A = \\begin{bmatrix} 1 & 2 \\\\ 2 & 4 \\end{bmatrix}$, Row 2 is $2 \\times \\text{Row 1}$.
-  $$ \\det(A) = (1)(4) - (2)(2) = 4 - 4 = 0 $$
-
----
-
-#### 3. Invertibility Perspective: No Inverse Exists ($A^{-1}$ does not exist)
-The formula for the matrix inverse is:
-$$ A^{-1} = \\frac{1}{\\det(A)} \\text{adj}(A) $$
-If $\\det(A) = 0$, this requires **division by zero**, which is undefined. Therefore, a matrix with $\\det(A) = 0$ is **singular (non-invertible)**.
-
----
-
-#### 4. Linear Equations & Kernel Perspective
-- The homogeneous system $A\\mathbf{x} = \\mathbf{0}$ has **infinitely many non-trivial solutions** (non-zero vectors $\\mathbf{x} \\neq \\mathbf{0}$ that get collapsed to zero).
-- The matrix has **at least one eigenvalue equal to zero ($\\lambda = 0$)** because $\\det(A) = \\lambda_1 \\lambda_2 \\dots \\lambda_n = 0$.
-
-**Summary:** $\\det(A) = 0 \\iff$ Matrix is Singular $\\iff$ Columns are Dependent $\\iff$ Space is Flattened $\\iff$ $\\lambda = 0$ is an eigenvalue.`;
-        }
-
-        if (lowerQ.includes("matrix multiplication") || lowerQ.includes("dimensions")) {
-            return `### 💡 Why Must Inner Dimensions Match for Matrix Multiplication?
-
-To multiply matrix $A_{m \\times k}$ by matrix $B_{p \\times n}$, we **must have $k = p$** (inner dimensions equal).
-
-#### The Mathematical Reason:
-Each entry $(AB)_{ij}$ is computed as the **dot product** of **Row $i$ of $A$** and **Column $j$ of $B$**:
-$$ (AB)_{ij} = \\sum_{r=1}^k a_{ir} b_{rj} = a_{i1}b_{1j} + a_{i2}b_{2j} + \\dots + a_{ik}b_{kj} $$
-
-If Row $i$ has $k$ elements and Column $j$ has $p$ elements, you cannot pair up the numbers to multiply them unless $k = p$!`;
-        }
-
-        return `### 💡 Conceptual Reasoning: ${context.topic.title}
-
-In Linear Algebra, properties are deeply interconnected across algebra and geometry:
-
-1. **Algebraic Consistency:** Operations are governed by the linearity conditions $T(c\\mathbf{u} + \\mathbf{v}) = cT(\\mathbf{u}) + T(\\mathbf{v})$.
-2. **Geometric Invariance:** Transformations manipulate coordinate frames while preserving the origin ($\mathbf{0} \\mapsto \\mathbf{0}$) and grid parallelism.
-3. **Dimensional Balance (Rank-Nullity):** Information cannot be destroyed without leaving a trace in the null space: $\\dim(V) = \\text{rank}(A) + \\text{nullity}(A)$.
-
-*Would you like me to demonstrate this reasoning on a specific numerical matrix or equation?*`;
-    }
-
-    generateComparison(lowerQ, context) {
-        // 1. Vector Space vs Subspace
-        if (
-            (lowerQ.includes("vector space") && lowerQ.includes("subspace")) ||
-            (lowerQ.includes("space") && lowerQ.includes("subspace"))
-        ) {
-            return `### ⚖️ Vector Space vs. Subspace: Clear Comparison
-
-| Feature | **Vector Space ($V$)** | **Subspace ($W$)** |
-| :--- | :--- | :--- |
-| **Definition** | The full, ambient mathematical "universe" of vectors. | A non-empty subset $W \\subseteq V$ that is itself a vector space. |
-| **Axioms Required** | Must satisfy all **8 vector space axioms** from scratch. | Only needs to satisfy the **3-Step Subspace Test** (the other axioms inherit automatically from $V$). |
-| **Origin / Zero** | Must contain the zero vector $\\mathbf{0}$. | Must contain the ambient zero vector $\\mathbf{0} \\in W$. |
-| **Closure** | Closed under addition and scalar multiplication. | Must be closed: $\\mathbf{u}+\\mathbf{v} \\in W$ and $c\\mathbf{u} \\in W$. |
-| **Geometric Example (in $\\mathbb{R}^3$)** | The entire 3D space $\\mathbb{R}^3$. | Any plane or line **passing through the origin $(0,0,0)$**. |
-| **Counter-Example** | An arbitrary collection of coordinates without closure. | A line or plane that does **not** pass through the origin (e.g. $x + y + z = 1$). |
-
----
-
-#### The 3-Step Subspace Test:
-To prove a subset $W \\subseteq V$ is a subspace, verify:
-1. $\\mathbf{0} \\in W$ (Contains zero vector).
-2. $\\mathbf{u}, \\mathbf{v} \\in W \\implies \\mathbf{u} + \\mathbf{v} \\in W$ (Closure under addition).
-3. $c \\in \\mathbb{F}, \\mathbf{u} \\in W \\implies c\\mathbf{u} \\in W$ (Closure under scalar multiplication).`;
-        }
-
-        // 2. Span vs Basis
-        if (
-            (lowerQ.includes("span") && lowerQ.includes("basis")) ||
-            lowerQ.includes("difference between span and basis")
-        ) {
-            return `### ⚖️ Span vs. Basis: Clear Comparison
-
-| Concept | **Span of a Set ($\\text{span}(S)$)** | **Basis of a Vector Space ($\mathcal{B}$)** |
-| :--- | :--- | :--- |
-| **What is it?** | The **entire space of all possible vectors** reachable by linear combinations of $S$. | The **minimal, most efficient set of vectors** needed to build the space. |
-| **Redundancy** | Can contain redundant (dependent) vectors. | **Zero redundancy:** Must be **linearly independent**. |
-| **Formula** | $\\text{span}\\{\\mathbf{v}_1, \\dots, \\mathbf{v}_k\\} = \\{c_1\\mathbf{v}_1 + \\dots + c_k\\mathbf{v}_k\\}$. | $\mathcal{B} = \\{\\mathbf{b}_1, \\dots, \\mathbf{b}_n\\}$ such that $\\text{span}(\mathcal{B}) = V$ AND $\\mathcal{B}$ is independent. |
-| **Uniqueness of Coordinates** | A vector can be represented in multiple ways if $S$ is dependent. | Every vector $\\mathbf{v} \\in V$ has a **unique representation** in terms of basis vectors. |
-| **Analogous Concept** | All colors you can mix from a paint set (even if you have 3 identical blue tubes). | The essential primary colors without duplicate tubes. |
-
----
-
-#### Concrete Example in $\\mathbb{R}^2$:
-- Set $S = \\left\\{ \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}, \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}, \\begin{bmatrix} 2 \\\\ 3 \\end{bmatrix} \\right\\}$:
-  - **Span:** $\\text{span}(S) = \\mathbb{R}^2$ (it reaches all 2D space).
-  - **Is it a Basis?** **NO**, because $\\begin{bmatrix} 2 \\\\ 3 \\end{bmatrix} = 2\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} + 3\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}$ (it is linearly dependent).
-- Removing the redundant third vector gives the standard basis $\mathcal{B} = \\left\\{ \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}, \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\right\\}$.`;
-        }
-
-        // 3. Linear Independence vs Dependence
-        if (lowerQ.includes("independent") && lowerQ.includes("dependent")) {
-            return `### ⚖️ Linearly Independent vs. Linearly Dependent Sets
-
-| Feature | **Linearly Independent Set** | **Linearly Dependent Set** |
-| :--- | :--- | :--- |
-| **Equation $c_1\\mathbf{v}_1 + \\dots + c_k\\mathbf{v}_k = \\mathbf{0}$** | Only the trivial solution: $c_1 = c_2 = \\dots = c_k = 0$. | There exists a non-trivial solution where not all $c_i = 0$. |
-| **Redundancy** | No vector in the set can be written as a combination of the others. | At least one vector is a combination of the others. |
-| **Determinant Test (Square)** | $\\det([\\mathbf{v}_1 \\dots \\mathbf{v}_n]) \\neq 0$. | $\\det([\\mathbf{v}_1 \\dots \\mathbf{v}_n]) = 0$. |
-| **Geometric Meaning** | Vectors point in genuinely new directions, adding a new dimension. | At least one vector lies within the flat span of the others. |`;
-        }
-
-        // 4. REF vs RREF
-        if (lowerQ.includes("ref") || lowerQ.includes("rref") || lowerQ.includes("echelon")) {
-            return `### ⚖️ Row Echelon Form (REF) vs. Reduced Row Echelon Form (RREF)
-
-| Feature | **Row Echelon Form (REF)** | **Reduced Row Echelon Form (RREF)** |
-| :--- | :--- | :--- |
-| **Leading Entries (Pivots)** | Can be any non-zero number (e.g., $2, -5$). | Must be strictly scaled to **$1$**. |
-| **Entries Above Pivots** | Can be non-zero arbitrary values. | Must be strictly **zeros ($0$)**. |
-| **Entries Below Pivots** | Must be all **zeros ($0$)**. | Must be all **zeros ($0$)**. |
-| **Uniqueness** | Not unique (multiple valid REFs exist). | **Strictly unique** for every matrix. |
-| **Algorithm Used** | Gaussian Elimination (Forward elimination). | Gauss-Jordan Elimination (Forward + Backward elimination). |`;
-        }
-
-        return `### ⚖️ Concept Comparison in ${context.topic.title}
-
-When comparing linear algebraic structures:
-- **Linear Independence vs Dependence:** Independent sets have no wasted vectors ($c_1\\mathbf{v}_1 + \\dots + c_k\\mathbf{v}_k = \\mathbf{0} \\implies c_i = 0$); dependent sets contain vectors that lie within the span of others.
-- **Kernel vs Image:** The **kernel** $\\ker(T)$ is the set of inputs mapped to zero; the **image** $\\text{Im}(T)$ is the set of all reachable outputs.
-- **Row Echelon Form (REF) vs Reduced Row Echelon Form (RREF):** REF has zeros below pivots; RREF has zeros both above and below pivots, with all pivot entries scaled to $1$.`;
-    }
-
-    generateHowToGuide(lowerQ, context) {
-        if (lowerQ.includes("eigenvalue") || lowerQ.includes("eigen")) {
-            return `### 🎯 How to Find Eigenvalues and Eigenvectors (2-Step Method)
-
-#### Step 1: Find the Eigenvalues ($\\lambda$)
-1. Write the **characteristic equation**: $\\det(A - \\lambda I) = 0$.
-2. For a $2 \\times 2$ matrix $A = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$, expand:
-   $$ \\lambda^2 - \\text{tr}(A)\\lambda + \\det(A) = 0 $$
-3. Solve the quadratic equation for its roots $\\lambda_1, \\lambda_2$.
-
----
-
-#### Step 2: Find the Eigenvectors ($\\mathbf{v}$) for Each $\\lambda$
-1. For each eigenvalue $\\lambda_i$, substitute into the homogeneous system:
-   $$ (A - \\lambda_i I)\\mathbf{v} = \\mathbf{0} $$
-2. Set up the matrix $\\begin{bmatrix} a - \\lambda_i & b \\\\ c & d - \\lambda_i \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$.
-3. Perform row reduction to find the free variable and write the basis vector $\\mathbf{v}_i$.
-
----
-
-#### Quick Worked Example
-For $A = \\begin{bmatrix} 2 & 0 \\\\ 0 & 3 \\end{bmatrix}$:
-1. $\\det \\begin{bmatrix} 2 - \\lambda & 0 \\\\ 0 & 3 - \\lambda \\end{bmatrix} = (2-\\lambda)(3-\\lambda) = 0 \\implies \\lambda_1 = 2, \\quad \\lambda_2 = 3$.
-2. For $\\lambda_1 = 2$: $\\begin{bmatrix} 0 & 0 \\\\ 0 & 1 \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} \\implies x_2 = 0, x_1 \\text{ free} \\implies \\mathbf{v}_1 = \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}$.
-3. For $\\lambda_2 = 3$: $\\begin{bmatrix} -1 & 0 \\\\ 0 & 0 \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} \\implies x_1 = 0, x_2 \\text{ free} \\implies \\mathbf{v}_2 = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}$.
-
-*Give me any matrix (e.g. \`[[4, 1], [2, 3]]\`) and I will solve its eigenvalues step-by-step!*`;
-        }
-
-        if (lowerQ.includes("gaussian") || lowerQ.includes("elimination")) {
-            return `### 🔢 How to Perform Gaussian Elimination Step-by-Step
-
-Gaussian Elimination reduces an augmented matrix $[A \\mid \\mathbf{b}]$ to **Row Echelon Form (REF)** using 3 allowed elementary row operations:
-
----
-
-#### 3 Allowed Row Operations:
-1. **Row Swap ($R_i \\leftrightarrow R_j$):** Swap two rows.
-2. **Row Scaling ($R_i \\leftarrow k R_i, k \\neq 0$):** Multiply a row by a non-zero constant.
-3. **Row Replacement ($R_i \\leftarrow R_i + k R_j$):** Add a multiple of one row to another row.
-
----
-
-#### The Systematic 3-Step Procedure:
-1. **Create Augmented Matrix:** Place coefficients on the left and constants on the right: $[A \\mid \\mathbf{b}]$.
-2. **Forward Elimination (Top to Bottom):**
-   - Use the pivot $a_{11}$ in Row 1 to eliminate the entries below it in Column 1 ($R_2 \\leftarrow R_2 - \\frac{a_{21}}{a_{11}}R_1$).
-   - Move to Row 2, Column 2 and eliminate entries below it.
-3. **Back-Substitution (Bottom to Top):**
-   - Solve for the bottom variable directly, then substitute upwards to find the remaining variables.
-
-*Would you like me to solve a linear system for you? Paste equations like \`2x + y = 5, x - y = 1\`!*`;
-        }
-
-        if (lowerQ.includes("gram") || lowerQ.includes("schmidt")) {
-            return `### 🧭 How to Perform the Gram-Schmidt Orthogonalization Process
-
-The Gram-Schmidt process converts any linearly independent basis $\\{\\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_k\\}$ into an **orthogonal basis** $\\{\\mathbf{u}_1, \\mathbf{u}_2, \\dots, \\mathbf{u}_k\\}$:
-
-#### Step-by-Step Formulas:
-1. **First Vector:** $\\mathbf{u}_1 = \\mathbf{v}_1$.
-2. **Second Vector:** Subtract the projection of $\\mathbf{v}_2$ onto $\\mathbf{u}_1$:
-   $$ \\mathbf{u}_2 = \\mathbf{v}_2 - \\frac{\\mathbf{v}_2 \\cdot \\mathbf{u}_1}{\\mathbf{u}_1 \\cdot \\mathbf{u}_1} \\mathbf{u}_1 $$
-3. **Third Vector:** Subtract projections onto both $\\mathbf{u}_1$ and $\\mathbf{u}_2$:
-   $$ \\mathbf{u}_3 = \\mathbf{v}_3 - \\frac{\\mathbf{v}_3 \\cdot \\mathbf{u}_1}{\\mathbf{u}_1 \\cdot \\mathbf{u}_1} \\mathbf{u}_1 - \\frac{\\mathbf{v}_3 \\cdot \\mathbf{u}_2}{\\mathbf{u}_2 \\cdot \\mathbf{u}_2} \\mathbf{u}_2 $$
-4. **Normalize (for Orthonormal Basis):** $\\mathbf{e}_i = \\frac{\\mathbf{u}_i}{\\|\\mathbf{u}_i\\|}$.`;
-        }
-
-        return `### 📐 Method Walkthrough: ${context.topic.title}
-
-1. **Identify Given Information:** Write down the matrix or vector coordinates.
-2. **Select the Applicable Theorem / Formula:** State the mathematical relation.
-3. **Execute Row Operations or Direct Computation:** Keep careful track of signs and fractions.
-4. **Verify Result:** Check by substitution or determinant/trace tests.`;
-    }
-
-    generateSimplerExplanation(context) {
-        const { topicKey } = context;
-
-        switch (topicKey) {
-            case "determinants":
-                return `### 💡 Determinant Explained in Super Simple Words
-
-Imagine you have a square rubber sheet on a table with an area of **$1$ square unit**.
-
-When you apply a matrix $A$ to this sheet:
-- The matrix stretches, tilts, or squashes the rubber sheet into a slanted parallelogram.
-- **The Determinant is simply the new area of that rubber sheet!**
-
-#### What different values mean:
-- If $\\det(A) = 2$: The sheet was stretched so its area is now **$2$ times bigger**.
-- If $\\det(A) = 1$: The area didn't change (like rotating the sheet).
-- If $\\det(A) = 0$: The sheet was crushed completely flat into a single straight line (which has **zero area**). That's why you can't reverse it—you can't un-crush a line back into a 2D sheet!
-
-Does this mental picture make sense?`;
-
-            case "eigenvalues":
-                return `### 💡 Eigenvalues & Eigenvectors in Super Simple Words
-
-Imagine you are stretching a piece of stretchy fabric in various directions.
-
-Most arrows drawn on the fabric will **change their angle and rotate** as you stretch.
-
-However, there are a few special, magical arrows that **do not change their direction at all**—they only get longer or shorter along their original line.
-
-- **Eigenvector:** The special arrow that points in that unwavering direction.
-- **Eigenvalue ($\\lambda$):** The number telling you how much that arrow got stretched (e.g. $\\lambda = 3$ means it became $3$ times longer; $\\lambda = -1$ means it flipped backwards).
-
-Does this help clarify what $A\\mathbf{v} = \\lambda\\mathbf{v}$ means?`;
-
-            case "vector-spaces":
-                return `### 💡 Vector Spaces & Span Explained in Super Simple Words
-
-Think of vector spaces like cooking with ingredients:
-- Suppose your only ingredients are **flour** and **sugar**.
-- A **Linear Combination** is any recipe you can make by mixing different amounts: $(2 \\times \\text{flour}) + (3 \\times \\text{sugar})$.
-- The **Span** is the giant menu of *every possible recipe* you could ever make using those two ingredients.
-- A **Basis** is your minimal shopping list: having 1 bag of flour and 1 bag of sugar gives you everything you need without buying redundant duplicate bags.
-- The **Vector Space** is the entire kitchen filled with all possible dishes!
-
-How does this sound to you?`;
-
-            case "matrices":
-                return `### 💡 Matrices Explained in Super Simple Words
-
-Think of a matrix like a spreadsheet or a digital photo filter:
-- Each row and column holds a specific dial or number.
-- When you pass a 2D drawing through the matrix "filter", it can rotate it, stretch it sideways, flip it upside down, or scale it larger.
-- A matrix is just a compact remote control for moving numbers and shapes around!`;
-
-            case "linear-transformations":
-                return `### 💡 Linear Transformations in Super Simple Words
-
-Imagine a grid of straight, evenly spaced lines drawn on graph paper.
-
-A **Linear Transformation** is any transformation of the paper that follows two strict rules:
-1. The center point $(0,0)$ stays locked at $(0,0)$.
-2. All straight grid lines remain straight and evenly spaced (no bending, curving, or tearing).
-
-You can stretch, rotate, flip, or shear the paper—as long as the grid stays straight and parallel!`;
-
-            case "inner-products":
-                return `### 💡 Inner Products & Orthogonality in Super Simple Words
-
-An **inner product** is a mathematical "similarity detector" between two arrows:
-- If two arrows point in the exact same direction, their inner product is high and positive.
-- If two arrows point in opposite directions, their inner product is negative.
-- If two arrows meet at a perfect $90^\\circ$ right angle (perpendicular / orthogonal), they have zero overlap, so their **inner product is exactly $0$**!`;
-
-            case "fields":
-                return `### 💡 Fields Explained in Super Simple Words
-
-A **field** is simply a playground where the 4 basic rules of arithmetic $(+, -, \\times, \\div)$ work smoothly and never break:
-- You can add or multiply any two numbers and stay in the playground.
-- Every number has an opposite $(-x)$ and an inverse $(1/x$, except $0$).
-- Real numbers $\\mathbb{R}$ are a field. Clock arithmetic (like $\\text{GF}(2)$ where $1+1=0$) is also a valid field!`;
-
-            case "linear-systems":
-            default:
-                return `### 💡 Linear Systems Explained in Super Simple Words
-
-Think of solving a system of equations like finding where two straight roads cross on a map:
-1. **One Crossing Point (Unique Solution):** The two roads cross at exactly one intersection point $(x, y)$.
-2. **Parallel Roads (No Solution):** The two roads run in the same direction and never touch each other.
-3. **Same Road (Infinite Solutions):** Both equations describe the exact same road sitting directly on top of each other.
-
-Gaussian elimination is just a systematic way of untangling the equations so you can read the intersection point directly!`;
-        }
-    }
-
-    generateWorkedExample(context) {
-        const { topicKey } = context;
-
-        switch (topicKey) {
-            case "determinants":
-                return `### 📝 Worked Example: Computing a $2 \\times 2$ Determinant
-
-Let $A = \\begin{bmatrix} 3 & 4 \\\\ 1 & 2 \\end{bmatrix}$.
-
-#### Step-by-Step Calculation:
-1. **Formula:** $\\det(A) = ad - bc$
-2. **Identify Elements:** $a = 3, b = 4, c = 1, d = 2$
-3. **Compute Product:**
-   $$ \\det(A) = (3)(2) - (4)(1) = 6 - 4 = 2 $$
-
-**Final Answer:** $\\det(A) = 2$ (Since $2 \\neq 0$, matrix $A$ is invertible).`;
-
-            case "eigenvalues":
-                return `### 📝 Worked Example: Finding Eigenvalues of $\\begin{bmatrix} 4 & 1 \\\\ 2 & 3 \\end{bmatrix}$
-
-#### Step 1: Characteristic Equation
-$$ \\det(A - \\lambda I) = \\det \\begin{bmatrix} 4 - \\lambda & 1 \\\\ 2 & 3 - \\lambda \\end{bmatrix} = (4 - \\lambda)(3 - \\lambda) - (1)(2) = 0 $$
-$$ \\lambda^2 - 7\\lambda + 12 - 2 = \\lambda^2 - 7\\lambda + 10 = 0 $$
-
-#### Step 2: Factor the Quadratic
-$$ (\\lambda - 5)(\\lambda - 2) = 0 \\implies \\lambda_1 = 5, \\quad \\lambda_2 = 2 $$
-
-**Final Answer:** Eigenvalues are $\\lambda_1 = 5$ and $\\lambda_2 = 2$.`;
-
-            case "matrices":
-                return `### 📝 Worked Example: $2 \\times 2$ Matrix Multiplication
-
-Let $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$ and $B = \\begin{bmatrix} 5 & 6 \\\\ 0 & 7 \\end{bmatrix}$.
-
-#### Step-by-Step Multiplication $C = AB$:
-1. $c_{11} = (1)(5) + (2)(0) = 5 + 0 = 5$
-2. $c_{12} = (1)(6) + (2)(7) = 6 + 14 = 20$
-3. $c_{21} = (3)(5) + (4)(0) = 15 + 0 = 15$
-4. $c_{22} = (3)(6) + (4)(7) = 18 + 28 = 46$
-
-**Final Answer:**
-$$ AB = \\begin{bmatrix} 5 & 20 \\\\ 15 & 46 \\end{bmatrix} $$`;
-
-            case "vectors":
-                return `### 📝 Worked Example: Dot Product and Angle Between Vectors
-
-Let $\\mathbf{u} = \\begin{bmatrix} 1 \\\\ 2 \\end{bmatrix}$ and $\\mathbf{v} = \\begin{bmatrix} 3 \\\\ 4 \\end{bmatrix}$.
-
-#### Step-by-Step:
-1. **Dot Product:** $\\mathbf{u} \\cdot \\mathbf{v} = (1)(3) + (2)(4) = 3 + 8 = 11$.
-2. **Magnitudes:**
-   - $\\|\\mathbf{u}\\| = \\sqrt{1^2 + 2^2} = \\sqrt{5} \\approx 2.24$
-   - $\\|\\mathbf{v}\\| = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$
-3. **Angle ($\\theta$):**
-   $$ \\cos\\theta = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|} = \\frac{11}{5\\sqrt{5}} = \\frac{11}{11.18} \\approx 0.9839 \\implies \\theta \\approx 10.3^\\circ $$
-
-**Final Answer:** $\\mathbf{u} \\cdot \\mathbf{v} = 11$, with angle $\\theta \\approx 10.3^\\circ$.`;
-
-            case "vector-spaces":
-            default:
-                return `### 📝 Worked Example: 3-Step Subspace Test
-
-**Problem:** Determine if $W = \\{(x, y) \\in \\mathbb{R}^2 \\mid y = 2x\\}$ is a subspace of $\\mathbb{R}^2$.
-
-#### Step 1: Check Zero Vector
-Does $(0, 0) \\in W$?
-$y = 2(0) = 0$ ✓ Yes, the zero vector is in $W$.
-
-#### Step 2: Check Closure under Addition
-Let $\\mathbf{u} = (x_1, 2x_1)$ and $\\mathbf{v} = (x_2, 2x_2)$ be vectors in $W$.
-$$ \\mathbf{u} + \\mathbf{v} = (x_1 + x_2, 2x_1 + 2x_2) = (x_1 + x_2, 2(x_1 + x_2)) $$
-The second component is exactly twice the first component, so $\\mathbf{u} + \\mathbf{v} \\in W$ ✓.
-
-#### Step 3: Check Closure under Scalar Multiplication
-For any scalar $c \\in \\mathbb{R}$:
-$$ c\\mathbf{u} = c(x_1, 2x_1) = (cx_1, 2(cx_1)) \\in W \\text{ ✓} $$
-
-**Final Answer:** $W$ is a valid subspace of $\\mathbb{R}^2$.`;
-        }
-    }
-
-    generateConceptLesson(lowerQ, context) {
-        return this.generateDefinitionExplanation(lowerQ, context);
-    }
-
-    generatePythonCode(lowerQ, context) {
-        return `### 🐍 Python NumPy Code for Linear Algebra
-
-Here is clean, production-ready Python code using **NumPy**:
-
-\`\`\`python
-import numpy as np
-
-# 1. Define Matrices
-A = np.array([[4, 1],
-              [2, 3]], dtype=float)
-
-B = np.array([[1, 2],
-              [3, 4]], dtype=float)
-
-b = np.array([5, 4], dtype=float)
-
-# 2. Matrix Multiplication
-product = A @ B  # or np.matmul(A, B)
-print("A @ B:\\n", product)
-
-# 3. Determinant & Matrix Inverse
-det_A = np.linalg.det(A)
-inv_A = np.linalg.inv(A)
-print(f"\\nDeterminant: {det_A:.2f}")
-print("Inverse A^-1:\\n", inv_A)
-
-# 4. Solve Linear System A * x = b
-x = np.linalg.solve(A, b)
-print("\\nSolution to Ax = b:", x)
-
-# 5. Eigenvalues and Eigenvectors
-eigenvalues, eigenvectors = np.linalg.eig(A)
-print("\\nEigenvalues:", eigenvalues)
-print("Eigenvectors (column-wise):\\n", eigenvectors)
-\`\`\`
-
-#### Key Function Breakdown:
-- \`np.linalg.det(A)\`: Computes $\\det(A)$.
-- \`np.linalg.inv(A)\`: Computes inverse $A^{-1}$.
-- \`np.linalg.solve(A, b)\`: Solves $A\\mathbf{x} = \\mathbf{b}$ via LU decomposition.
-- \`np.linalg.eig(A)\`: Computes eigenvalues $\\lambda$ and eigenvectors $\\mathbf{v}$.`;
-    }
-
-    generatePracticeQuiz(lowerQ, context) {
-        const { topicKey } = context;
-
-        switch (topicKey) {
-            case "determinants":
-                return `### ❓ Practice Quiz Question: Determinants
-
-> **Question:** Let matrix $A = \\begin{bmatrix} 2 & k \\\\ 4 & 6 \\end{bmatrix}$. 
-> For what value of $k$ is the matrix $A$ **singular (non-invertible)**?
-
-Take a minute to calculate your answer and type it below!
-
-*(Hint: Recall that a matrix is singular when its determinant is zero: $\\det(A) = 0$.)*`;
-
-            case "eigenvalues":
-                return `### ❓ Practice Quiz Question: Eigenvalues
-
-> **Question:** What are the eigenvalues of the diagonal matrix $D = \\begin{bmatrix} 5 & 0 \\\\ 0 & -2 \\end{bmatrix}$?
-
-Type your answer below! 
-
-*(Hint: For a diagonal or triangular matrix, what do the diagonal entries represent?)*`;
-
-            default:
-                return `### ❓ Practice Quiz Question: Matrix Operations
-
-> **Question:** If matrix $A$ has order $3 \\times 2$ and matrix $B$ has order $2 \\times 4$, what will be the order (dimension) of the product matrix $AB$?
-
-Reply with your answer and I will check it for you!`;
-        }
-    }
-
-    generateContextualResponse(cleanQuery, lowerQ, context) {
-        return this.generateDefinitionExplanation(lowerQ, context);
-    }
-}
+const SYSTEM_PROMPT = `You are "Algebrify AI Tutor", an educational AI tutor specializing in Linear Algebra.
+Your primary purpose is to help undergraduate/beginner students understand Linear Algebra clearly and correctly.
+
+CORE RULE:
+Always answer according to the user's ACTUAL question and the current conversation context.
+Never return the same generic/predefined answer for different questions.
+
+SCOPE:
+Primarily answer questions related to:
+• Algebra of Matrices (Order, Types, Equality, Operations, Transpose, Properties)
+• Systems of Linear Equations (Gaussian & Gauss-Jordan Elimination, Echelon forms, Consistency)
+• Fields (Field Axioms, Real ℝ, Complex ℂ, Galois Field GF(2))
+• Vectors (Geometric & Algebraic vectors, Dot & Cross Products, Norm, Projections)
+• Vector Spaces (Axioms, Subspaces, Span, Linear Independence, Basis & Dimension)
+• Linear Transformations (Kernel, Image, Rank, Nullity, Rank-Nullity Theorem)
+• Linear Transformations and Matrices (Matrix representation, Change of Basis, Similarity)
+• Inner Product Spaces and Orthogonality (Inner products, Cauchy-Schwarz, Gram-Schmidt process)
+• Determinants (Properties, 2x2 & 3x3 formulas, Cofactor expansion, Invertibility, Cramer's rule)
+• Eigenvalues and Eigenvectors (Characteristic polynomial, Eigenspaces)
+• Diagonalization (A = PDP⁻¹, Algebraic vs Geometric multiplicity)
+• Closely related Linear Algebra concepts
+
+If the user asks something outside Linear Algebra, politely explain that Algebrify AI Tutor is designed specifically for Linear Algebra and redirect them toward the relevant topic when appropriate.
+
+TEACHING STYLE:
+• Beginner-friendly and encouraging
+• Clear, formal, and mathematically accurate
+• Simple wording; explain terminology before using it
+• Avoid unnecessarily advanced or convoluted language
+• Do not sound robotic or mechanical
+• Teach concepts rather than simply giving raw answers
+• Use examples when they improve understanding
+• Use standard LaTeX formatting: $...$ for inline math and $$...$$ for display math. Format matrices as \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}.
+
+QUESTION HANDLING:
+1. Definition Question:
+   → Give the precise mathematical definition.
+   → Explain it in simple, intuitive language.
+   → Give a small illustrative example.
+
+2. "Explain..." Question:
+   → Explain the concept step-by-step.
+   → Provide geometric/algebraic intuition and a clear example.
+
+3. "Why..." Question:
+   → Explain the reasoning/proof/geometric intuition behind the concept rather than just stating the result.
+
+4. Comparison Question:
+   → Clearly explain the difference between the concepts.
+   → Use a comparison table or concrete example.
+
+5. Numerical / Mathematical Problem:
+   → Identify what is given.
+   → Identify the relevant concept / method being used.
+   → Solve step-by-step showing important calculations and intermediate arithmetic.
+   → State the final answer clearly under "**Final Answer:**".
+   → Do not provide only the final answer without steps.
+
+6. Example Request:
+   → Generate a fresh, relevant example based on the concept currently being discussed.
+
+7. Confusion / Simplification ("I don't understand", "I still don't understand", "Explain again", "Make it simpler"):
+   → Understand what was previously being discussed in the conversation.
+   → Re-explain the SAME concept using simpler words, analogies, or alternative perspectives.
+   → Do not start an unrelated explanation or repeat the identical text.
+
+CONVERSATIONAL MEMORY:
+Maintain context throughout the current chat session. Resolve pronouns like "it", "this matrix", "that theorem" based on earlier turns in the conversation.
+
+ADAPTIVE RESPONSES:
+The response length should match the question:
+• Simple question → concise answer.
+• Conceptual question → clear explanation + example.
+• Mathematical problem → detailed step-by-step solution.
+• Follow-up → concise contextual answer unless more explanation is requested.`;
 
 // =============================================================================
 // MAIN CHAT APPLICATION CONTROLLER
@@ -1481,26 +103,12 @@ class AlgebrifyAITutor {
         this.activeChatTitle = document.getElementById("active-chat-title");
         this.clearChatBtn = document.getElementById("clear-chat-btn");
 
-        // API Key modal elements (if present)
-        this.apiKeyBtn = document.getElementById("tutor-api-key-btn");
-        this.apiKeyModal = document.getElementById("api-key-modal");
-        this.closeModalBtn = document.getElementById("close-modal-btn");
-        this.saveApiKeyBtn = document.getElementById("save-api-key-btn");
-        this.testApiKeyBtn = document.getElementById("test-api-key-btn");
-        this.apiKeyInput = document.getElementById("api-key-input");
-        this.apiProviderSelect = document.getElementById("api-provider-select");
-        this.apiTestFeedback = document.getElementById("api-test-feedback");
-        this.toggleKeyVisibilityBtn = document.getElementById("toggle-key-visibility-btn");
-
         // State Management
         this.apiKey = localStorage.getItem("algebrify_ai_key") || sessionStorage.getItem("algebrify_gemini_key") || "";
         this.apiProvider = localStorage.getItem("algebrify_ai_provider") || "auto";
         this.sessions = this.loadSessions();
         this.currentSessionId = localStorage.getItem("algebrify_active_session_id") || "";
         this.isGenerating = false;
-
-        // Dynamic Mathematical & Pedagogical Reasoning Engine
-        this.reasoningEngine = new LinearAlgebraReasoningEngine();
 
         this.init();
     }
@@ -1625,147 +233,16 @@ class AlgebrifyAITutor {
                 }
             });
         }
-
-        // API Key Modal Open
-        if (this.apiKeyBtn) {
-            this.apiKeyBtn.addEventListener("click", () => {
-                if (this.apiKeyInput) this.apiKeyInput.value = this.apiKey;
-                if (this.apiProviderSelect) this.apiProviderSelect.value = this.apiProvider;
-                if (this.apiTestFeedback) this.apiTestFeedback.style.display = "none";
-                if (this.apiKeyModal) this.apiKeyModal.classList.add("active");
-            });
-        }
-
-        if (this.closeModalBtn) {
-            this.closeModalBtn.addEventListener("click", () => {
-                if (this.apiKeyModal) this.apiKeyModal.classList.remove("active");
-            });
-        }
-
-        // Toggle Key Visibility
-        if (this.toggleKeyVisibilityBtn && this.apiKeyInput) {
-            this.toggleKeyVisibilityBtn.addEventListener("click", () => {
-                const isPassword = this.apiKeyInput.type === "password";
-                this.apiKeyInput.type = isPassword ? "text" : "password";
-                this.toggleKeyVisibilityBtn.innerHTML = isPassword 
-                    ? `<i data-lucide="eye-off"></i>` 
-                    : `<i data-lucide="eye"></i>`;
-                if (window.lucide) lucide.createIcons();
-            });
-        }
-
-        // Save Key
-        if (this.saveApiKeyBtn) {
-            this.saveApiKeyBtn.addEventListener("click", () => {
-                const val = this.apiKeyInput.value.trim();
-                const provider = this.apiProviderSelect ? this.apiProviderSelect.value : "auto";
-                this.apiKey = val;
-                this.apiProvider = provider;
-
-                if (val) {
-                    localStorage.setItem("algebrify_ai_key", val);
-                    localStorage.setItem("algebrify_ai_provider", provider);
-                    sessionStorage.setItem("algebrify_gemini_key", val);
-                } else {
-                    localStorage.removeItem("algebrify_ai_key");
-                    localStorage.removeItem("algebrify_ai_provider");
-                    sessionStorage.removeItem("algebrify_gemini_key");
-                }
-
-                this.updateStatusBadge();
-                if (this.apiKeyModal) this.apiKeyModal.classList.remove("active");
-            });
-        }
-
-        // Test API Key
-        if (this.testApiKeyBtn) {
-            this.testApiKeyBtn.addEventListener("click", async () => {
-                const val = this.apiKeyInput.value.trim();
-                const provider = this.apiProviderSelect ? this.apiProviderSelect.value : "auto";
-                if (!val) {
-                    this.showTestFeedback("Please paste an API key first.", false);
-                    return;
-                }
-
-                this.testApiKeyBtn.disabled = true;
-                this.testApiKeyBtn.innerHTML = `<i data-lucide="loader"></i> Testing...`;
-                if (window.lucide) lucide.createIcons();
-
-                try {
-                    const result = await this.testAPIConnection(val, provider);
-                    this.showTestFeedback(`✓ Success! Connected to ${result.name}.`, true);
-                } catch (err) {
-                    this.showTestFeedback(`✗ Connection failed: ${err.message}`, false);
-                } finally {
-                    this.testApiKeyBtn.disabled = false;
-                    this.testApiKeyBtn.innerHTML = `<i data-lucide="zap"></i> Test Connection`;
-                    if (window.lucide) lucide.createIcons();
-                }
-            });
-        }
-    }
-
-    showTestFeedback(msg, isSuccess) {
-        if (!this.apiTestFeedback) return;
-        this.apiTestFeedback.style.display = "block";
-        this.apiTestFeedback.style.background = isSuccess ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)";
-        this.apiTestFeedback.style.color = isSuccess ? "#10b981" : "#ef4444";
-        this.apiTestFeedback.style.border = `1px solid ${isSuccess ? "#10b981" : "#ef4444"}`;
-        this.apiTestFeedback.textContent = msg;
     }
 
     detectProvider(key, selectedProvider = "auto") {
         if (selectedProvider && selectedProvider !== "auto") return selectedProvider;
-        const k = key.trim();
+        const k = (key || "").trim();
         if (k.startsWith("AIzaSy")) return "gemini";
         if (k.startsWith("gsk_")) return "groq";
         if (k.startsWith("sk-or-")) return "openrouter";
         if (k.startsWith("sk-")) return "openai";
         return "gemini";
-    }
-
-    async testAPIConnection(key, providerSetting) {
-        const provider = this.detectProvider(key, providerSetting);
-
-        if (provider === "gemini") {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-            const res = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [{ role: "user", parts: [{ text: "ping" }] }],
-                    generationConfig: { maxOutputTokens: 5 }
-                })
-            });
-            if (!res.ok) throw new Error(`Status ${res.status}: ${res.statusText}`);
-            return { name: "Google Gemini Flash" };
-        } else if (provider === "groq") {
-            const url = "https://api.groq.com/openai/v1/chat/completions";
-            const res = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` },
-                body: JSON.stringify({
-                    model: "llama-3.3-70b-versatile",
-                    messages: [{ role: "user", content: "ping" }],
-                    max_tokens: 5
-                })
-            });
-            if (!res.ok) throw new Error(`Status ${res.status}: ${res.statusText}`);
-            return { name: "Groq Llama 3.3" };
-        } else {
-            const url = "https://api.openai.com/v1/chat/completions";
-            const res = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` },
-                body: JSON.stringify({
-                    model: "gpt-4o-mini",
-                    messages: [{ role: "user", content: "ping" }],
-                    max_tokens: 5
-                })
-            });
-            if (!res.ok) throw new Error(`Status ${res.status}: ${res.statusText}`);
-            return { name: "OpenAI ChatGPT" };
-        }
     }
 
     // =========================================================================
@@ -2143,7 +620,7 @@ class AlgebrifyAITutor {
     }
 
     // =========================================================================
-    // MESSAGE SENDING & GENERATION PIPELINE
+    // DYNAMIC AI GENERATION PIPELINE
     // =========================================================================
 
     async handleSendMessage() {
@@ -2182,19 +659,7 @@ class AlgebrifyAITutor {
         this.setGeneratingState(true);
 
         try {
-            let responseText = "";
-            if (this.apiKey) {
-                try {
-                    responseText = await this.queryLiveAI(session);
-                } catch (liveAiErr) {
-                    console.warn("Live AI failed, falling back to dynamic math engine:", liveAiErr);
-                    responseText = this.reasoningEngine.processQuery(text, session);
-                }
-            } else {
-                // Generative dynamic solver + pedagogical reasoning engine
-                await new Promise(r => setTimeout(r, 400));
-                responseText = this.reasoningEngine.processQuery(text, session);
-            }
+            const responseText = await this.generateAIResponse(session);
 
             // Append AI response
             session.messages.push({
@@ -2237,20 +702,7 @@ class AlgebrifyAITutor {
         this.setGeneratingState(true);
 
         try {
-            let responseText = "";
-            const lastUserMsg = session.messages[session.messages.length - 1];
-            const textToQuery = lastUserMsg ? lastUserMsg.text : "Linear Algebra";
-
-            if (this.apiKey) {
-                try {
-                    responseText = await this.queryLiveAI(session);
-                } catch (e) {
-                    responseText = this.reasoningEngine.processQuery(textToQuery, session);
-                }
-            } else {
-                await new Promise(r => setTimeout(r, 400));
-                responseText = this.reasoningEngine.processQuery(textToQuery, session);
-            }
+            const responseText = await this.generateAIResponse(session);
 
             session.messages.push({
                 role: "model",
@@ -2317,19 +769,45 @@ class AlgebrifyAITutor {
     }
 
     // =========================================================================
-    // MULTI-PROVIDER LIVE AI (GEMINI, OPENAI, GROQ, OPENROUTER)
+    // DYNAMIC AI MODEL API REQUEST
     // =========================================================================
 
-    async queryLiveAI(session) {
-        const provider = this.detectProvider(this.apiKey, this.apiProvider);
+    async generateAIResponse(session) {
+        // 1. Try secure server backend endpoint (/api/chat) first
+        try {
+            const backendRes = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: session.messages,
+                    apiKey: this.apiKey,
+                    provider: this.apiProvider
+                })
+            });
 
-        if (provider === "gemini") {
-            return this.queryGeminiAPI(session);
-        } else if (provider === "groq") {
-            return this.queryGroqAPI(session);
-        } else {
-            return this.queryOpenAIAPI(session);
+            if (backendRes.ok) {
+                const data = await backendRes.json();
+                if (data && data.response) {
+                    return data.response;
+                }
+            }
+        } catch (backendErr) {
+            // Backend endpoint not reachable (static file server); proceed to client API if key present
         }
+
+        // 2. Direct client-side AI API request if user configured key in browser session
+        if (this.apiKey) {
+            const provider = this.detectProvider(this.apiKey, this.apiProvider);
+            if (provider === "gemini") {
+                return this.queryGeminiAPI(session);
+            } else if (provider === "groq") {
+                return this.queryGroqAPI(session);
+            } else {
+                return this.queryOpenAIAPI(session);
+            }
+        }
+
+        throw new Error("AI service unavailable");
     }
 
     async queryGeminiAPI(session) {
