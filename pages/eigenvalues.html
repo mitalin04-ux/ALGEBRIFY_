@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10: Diagonalization, Eigenvalues & Eigenvectors | Algebrify</title>
+    <meta name="description" content="Master characteristic polynomials, eigenvalues, eigenvectors, Cayley-Hamilton theorem, minimal polynomials, diagonalization, and Jordan canonical form.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 10: Diagonalization & Eigenvalues</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 10</span>
+                    <h1>Diagonalization, Eigenvalues & Eigenvectors</h1>
+                    <p>
+                        Eigenvalues and eigenvectors reveal the intrinsic invariant axes of linear operators where matrices act as pure scalar stretching. In this module, you will solve characteristic polynomials, apply the Cayley-Hamilton Theorem, analyze minimal polynomials, diagonalize matrices ($A = PDP^{-1}$), and explore Jordan Canonical Form.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#calculator" class="btn-secondary"><i data-lucide="calculator"></i> Eigen-Solver</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> State the fundamental eigenvalue equation $A\mathbf{v} = \lambda \mathbf{v}$ ($\mathbf{v} \neq \mathbf{0}$).</li>
+                        <li><i data-lucide="check"></i> Formulate and solve the Characteristic Equation $\det(A - \lambda I) = 0$.</li>
+                        <li><i data-lucide="check"></i> Determine eigenspaces and compare algebraic vs geometric multiplicities.</li>
+                        <li><i data-lucide="check"></i> Apply the Cayley-Hamilton Theorem ($p(A) = O$) to evaluate matrix powers and inverses.</li>
+                        <li><i data-lucide="check"></i> Define minimal polynomials, derogatory matrices, matrix diagonalization ($A = PDP^{-1}$), and Jordan Canonical Form.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10.1: FUNDAMENTAL DEFINITIONS & COMPUTATIONS -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 10.1</span>
+                <h2>Eigenvalues, Eigenvectors and the Characteristic Equation</h2>
+                
+                <p class="theory-intro">
+                    Let $A$ be an $n \times n$ square matrix. A scalar $\lambda$ is called an <strong>eigenvalue</strong> of $A$ if there exists a non-zero vector $\mathbf{v} \neq \mathbf{0}$ such that:
+                </p>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>Fundamental Eigenvalue Equation:</strong>
+                        <div class="math-display">
+                            \[ A\mathbf{v} = \lambda \mathbf{v} \iff (A - \lambda I)\mathbf{v} = \mathbf{0} \]
+                        </div>
+                        <p>
+                            For a non-zero eigenvector $\mathbf{v} \neq \mathbf{0}$ to exist, the matrix $(A - \lambda I)$ must be singular, meaning its determinant must be zero:
+                        </p>
+                        <div class="math-display">
+                            \[ p(\lambda) = \det(A - \lambda I) = 0 \quad (\text{The Characteristic Equation}) \]
+                        </div>
+                    </div>
+
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">Worked Example</span>
+                            <h4>Finding Eigenvalues and Eigenvectors of a $2 \times 2$ Matrix</h4>
+                        </div>
+                        <p>Find the eigenvalues and corresponding eigenvectors of $A = \begin{bmatrix} 4 & 1 \\ 2 & 3 \end{bmatrix}$.</p>
+                        <p><strong>Step 1: Set up the Characteristic Equation:</strong></p>
+                        <div class="math-display">
+                            \[
+                            \det(A - \lambda I) = \begin{vmatrix} 4 - \lambda & 1 \\ 2 & 3 - \lambda \end{vmatrix} = (4 - \lambda)(3 - \lambda) - (1)(2) = \lambda^2 - 7\lambda + 10 = 0
+                            \]
+                        </div>
+                        <p><strong>Step 2: Factor and Solve for $\lambda$:</strong></p>
+                        <div class="math-display">
+                            \[ (\lambda - 5)(\lambda - 2) = 0 \implies \lambda_1 = 5, \quad \lambda_2 = 2 \]
+                        </div>
+                        <p><strong>Step 3: Eigenvector for $\lambda_1 = 5$:</strong></p>
+                        <div class="math-display">
+                            \[
+                            (A - 5I)\mathbf{v} = \begin{bmatrix} -1 & 1 \\ 2 & -2 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \implies -v_1 + v_2 = 0 \implies \mathbf{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}
+                            \]
+                        </div>
+                        <p><strong>Step 4: Eigenvector for $\lambda_2 = 2$:</strong></p>
+                        <div class="math-display">
+                            \[
+                            (A - 2I)\mathbf{v} = \begin{bmatrix} 2 & 1 \\ 2 & 1 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \implies 2v_1 + v_2 = 0 \implies \mathbf{v}_2 = \begin{bmatrix} 1 \\ -2 \end{bmatrix}
+                            \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10.2: CAYLEY-HAMILTON & MINIMAL POLYNOMIAL -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 10.2</span>
+                <h2>The Cayley-Hamilton Theorem & Minimal Polynomial</h2>
+
+                <div class="theory-card">
+                    <div class="definition-box" style="border-left-color: var(--clr-accent);">
+                        <strong>The Cayley-Hamilton Theorem:</strong>
+                        <p>
+                            Every square matrix satisfies its own characteristic polynomial. That is, if $p(\lambda) = \det(A - \lambda I) = (-1)^n \lambda^n + c_{n-1}\lambda^{n-1} + \dots + c_0$, then:
+                        </p>
+                        <div class="math-display">
+                            \[ p(A) = (-1)^n A^n + c_{n-1} A^{n-1} + \dots + c_0 I = O \]
+                        </div>
+                    </div>
+
+                    <div class="step-box mt-20">
+                        <div class="step-header">
+                            <span class="step-badge">Application</span>
+                            <h4>Computing $A^{-1}$ using Cayley-Hamilton</h4>
+                        </div>
+                        <p>For $A = \begin{bmatrix} 4 & 1 \\ 2 & 3 \end{bmatrix}$, the characteristic equation was $\lambda^2 - 7\lambda + 10 = 0$.</p>
+                        <p>By Cayley-Hamilton:</p>
+                        <div class="math-display">
+                            \[ A^2 - 7A + 10I = O \implies 10I = 7A - A^2 \]
+                        </div>
+                        <p>Multiplying both sides by $A^{-1}$:</p>
+                        <div class="math-display">
+                            \[ 10 A^{-1} = 7I - A \implies A^{-1} = \frac{1}{10}(7I - A) = \frac{1}{10}\left( \begin{bmatrix} 7 & 0 \\ 0 & 7 \end{bmatrix} - \begin{bmatrix} 4 & 1 \\ 2 & 3 \end{bmatrix} \right) = \begin{bmatrix} 0.3 & -0.1 \\ -0.2 & 0.4 \end{bmatrix} \]
+                        </div>
+                    </div>
+
+                    <div class="types-grid mt-30">
+                        <!-- Minimal Polynomial -->
+                        <div class="type-card">
+                            <h3>Minimal Polynomial ($m(\lambda)$)</h3>
+                            <p>The unique monic polynomial of <strong>least degree</strong> such that $m(A) = O$. It always divides the characteristic polynomial $p(\lambda)$.</p>
+                        </div>
+
+                        <!-- Derogatory Matrix -->
+                        <div class="type-card">
+                            <h3>Derogatory Matrix</h3>
+                            <p>A matrix is called <strong>derogatory</strong> if the degree of its minimal polynomial is strictly less than its order ($\deg(m) < n$). Otherwise, it is <strong>non-derogatory</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10.3: DIAGONALIZATION & JORDAN CANONICAL FORM -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 10.3</span>
+                <h2>Matrix Diagonalization ($A = PDP^{-1}$) & Jordan Canonical Form</h2>
+
+                <div class="types-grid">
+                    <!-- Diagonalization Theorem -->
+                    <div class="type-card">
+                        <h3>Diagonalization Theorem</h3>
+                        <p>An $n \times n$ matrix $A$ is <strong>diagonalizable</strong> if and only if it has $n$ linearly independent eigenvectors:</p>
+                        <div class="math-display">\[ A = P D P^{-1} \]</div>
+                        <p>Where $P = [\mathbf{v}_1 \dots \mathbf{v}_n]$ and $D = \text{diag}(\lambda_1, \dots, \lambda_n)$.</p>
+                    </div>
+
+                    <!-- Fast Powers -->
+                    <div class="type-card">
+                        <h3>Rapid Matrix Powers</h3>
+                        <p>Diagonalization computes high powers effortlessly:</p>
+                        <div class="math-display">\[ A^k = P D^k P^{-1} = P \begin{bmatrix} \lambda_1^k & 0 \\ 0 & \lambda_2^k \end{bmatrix} P^{-1} \]</div>
+                    </div>
+
+                    <!-- Jordan Canonical Form -->
+                    <div class="type-card">
+                        <h3>Jordan Canonical Form</h3>
+                        <p>When a matrix lacks $n$ independent eigenvectors (defective), it can be converted to a block-diagonal matrix of <strong>Jordan blocks</strong>:</p>
+                        <div class="math-display">\[ J_k(\lambda) = \begin{bmatrix} \lambda & 1 & 0 \\ 0 & \lambda & 1 \\ 0 & 0 & \lambda \end{bmatrix} \]</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>$\sum \lambda_i = \text{tr}(A)$ (sum of eigenvalues = trace).</li>
+                            <li>$\prod \lambda_i = \det(A)$ (product of eigenvalues = determinant).</li>
+                            <li>Cayley-Hamilton: $p(A) = O$.</li>
+                            <li>$A$ is diagonalizable $\iff$ Geometric Multiplicity = Algebraic Multiplicity for all eigenvalues.</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>An eigenvector can NEVER be the zero vector ($\mathbf{v} \neq \mathbf{0}$ by definition). An eigenvalue, however, CAN be zero ($\lambda = 0$).</li>
+                            <li>Do not assume all matrices are diagonalizable; if a matrix has repeated eigenvalues with insufficient independent eigenvectors, Jordan form is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE EIGEN SOLVER -->
+        <section id="calculator" class="matrix-calculator">
+            <div class="calculator-container" id="eigen-calc-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Tool</span>
+                    <h2>Eigenvalues & Eigenvectors Solver</h2>
+                    <p>Enter a $2 \times 2$ or $3 \times 3$ matrix to compute characteristic polynomials, eigenvalues, eigenvectors, and diagonalization factorization.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calc-controls">
+                        <div class="control-group">
+                            <label>Dimension:</label>
+                            <select id="eigen-dim-select">
+                                <option value="2" selected>2×2 Square Matrix</option>
+                                <option value="3">3×3 Square Matrix</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>Matrix A</h4>
+                            <div class="matrix-grid-input" id="eigen-matrix-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="eigen-solve-btn"><i data-lucide="sparkles"></i> Compute Eigenvalues & Eigenvectors</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Eigensystem Breakdown</h4>
+                        <div class="calc-result-content" id="eigen-calc-result">
+                            <p class="text-center text-light">Click the compute button above to view eigenvalues and eigenvectors.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 10 Practice Quiz</h2>
+                    <p>Test your understanding of characteristic polynomials, Cayley-Hamilton theorem, minimal polynomials, and diagonalization.</p>
+                </div>
+
+                <div class="quiz-card" id="eigen-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Completed All 10 Modules?</h3>
+                        <p>Congratulations on completing the entire Linear Algebra curriculum! Check your dashboard on the homepage for 100% completion.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-10">
+                        <i data-lucide="check"></i> Mark Module 10 as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="determinants.html" class="module-nav-btn prev-btn">← Previous Module: Determinants</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="../index.html" class="module-nav-btn dashboard-btn">Return to Curriculum Dashboard 🏆</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module10Questions = [
+            {
+                        "question": "What is the <strong>characteristic equation</strong> used to find the eigenvalues $\\lambda$ of matrix $A$?",
+                        "answers": [
+                                    "$\\det(A - \\lambda I) = 0$",
+                                    "$(A - \\lambda I) \\mathbf{v} = \\mathbf{0}$",
+                                    "$\\text{trace}(A) = \\lambda$",
+                                    "$\\det(A) = \\lambda^n$"
+                        ],
+                        "correct": 0,
+                        "explanation": "Eigenvalues are roots of the characteristic polynomial equation: $\\det(A - \\lambda I) = 0$."
+            },
+            {
+                        "question": "If $\\lambda$ is an eigenvalue of $A$, what is an <strong>eigenvector</strong> $\\mathbf{v}$?",
+                        "answers": [
+                                    "Any vector satisfying $A\\mathbf{v} = \\mathbf{0}$",
+                                    "A non-zero vector satisfying $A\\mathbf{v} = \\lambda\\mathbf{v}$",
+                                    "A vector of length $\\lambda$",
+                                    "The diagonal elements of $A$"
+                        ],
+                        "correct": 1,
+                        "explanation": "An eigenvector is a non-zero vector $\\mathbf{v} \\neq \\mathbf{0}$ that is scaled by $\\lambda$ when transformed by $A$: $A\\mathbf{v} = \\lambda\\mathbf{v}$."
+            },
+            {
+                        "question": "An $n \\times n$ matrix $A$ is <strong>diagonalizable</strong> ($A = PDP^{-1}$) if and only if:",
+                        "answers": [
+                                    "$\\det(A) \\neq 0$",
+                                    "$A$ has $n$ linearly independent eigenvectors",
+                                    "$A$ is symmetric",
+                                    "All eigenvalues are equal"
+                        ],
+                        "correct": 1,
+                        "explanation": "$A$ is diagonalizable if and only if there exists an eigenbasis for $\\mathbb{R}^n$ (i.e. $n$ linearly independent eigenvectors)."
+            },
+            {
+                        "question": "What does the <strong>Cayley-Hamilton Theorem</strong> state?",
+                        "answers": [
+                                    "Every square matrix satisfies its own characteristic equation: $p(A) = O$",
+                                    "The determinant equals the product of diagonal elements",
+                                    "Every matrix has distinct eigenvalues",
+                                    "Eigenvalues of symmetric matrices are complex"
+                        ],
+                        "correct": 0,
+                        "explanation": "Cayley-Hamilton states that substituting matrix $A$ into its characteristic polynomial $p(\\lambda) = \\det(\\lambda I - A)$ yields the zero matrix $p(A) = O$."
+            },
+            {
+                        "question": "The sum of all eigenvalues of matrix $A$ equals:",
+                        "answers": [
+                                    "$\\det(A)$",
+                                    "$\\text{trace}(A)$ (the sum of main diagonal entries)",
+                                    "$1$",
+                                    "$\\text{rank}(A)$"
+                        ],
+                        "correct": 1,
+                        "explanation": "The sum of eigenvalues equals $\\text{trace}(A)$, and the product of eigenvalues equals $\\det(A)$."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("eigen-quiz-card", module10Questions, "module-10");
+        });
+    </script>
+</body>
+
+</html>

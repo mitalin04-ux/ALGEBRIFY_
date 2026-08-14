@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 9: Determinants | Algebrify</title>
+    <meta name="description" content="Master determinants of square matrices, Laplace cofactor expansion, determinant algebraic properties, Cramer's Rule, and matrix invertibility with textbook clarity.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 09: Determinants</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 09</span>
+                    <h1>Determinants</h1>
+                    <p>
+                        The determinant is a special scalar value associated with every square matrix. In this module, you will learn how to compute determinants using Laplace cofactor expansion, study their fundamental algebraic properties, solve linear systems via Cramer's Rule, and master the invertibility criteria.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#calculator" class="btn-secondary"><i data-lucide="calculator"></i> Determinant Calculator</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> Define the determinant of $1 \times 1, 2 \times 2, 3 \times 3,$ and general $n \times n$ square matrices.</li>
+                        <li><i data-lucide="check"></i> Compute minors $M_{ij}$, cofactors $C_{ij}$, and execute Laplace cofactor expansions along any row or column.</li>
+                        <li><i data-lucide="check"></i> Apply algebraic determinant properties ($\det(AB) = \det(A)\det(B)$, transpose, row operations, triangular matrices).</li>
+                        <li><i data-lucide="check"></i> State the Invertibility Criterion ($\det(A) \neq 0$) and compute inverses using the adjugate formula.</li>
+                        <li><i data-lucide="check"></i> Solve linear systems analytically using Cramer's Rule.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9.1: DEFINITION & MINORS/COFACTORS -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 9.1</span>
+                <h2>Definition of Determinants, Minors and Cofactors</h2>
+                
+                <p class="theory-intro">
+                    The <strong>determinant</strong> is a scalar quantity defined exclusively for square matrices ($n \times n$). It is denoted by $\det(A)$ or $|A|$.
+                </p>
+
+                <div class="theory-card">
+                    <div class="operations-grid">
+                        <div class="operation-card">
+                            <h3>1. $2 \times 2$ Determinant</h3>
+                            <div class="math-display">
+                                \[ \det\begin{bmatrix} a & b \\ c & d \end{bmatrix} = \begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc \]
+                            </div>
+                            <p>Multiply principal diagonal entries and subtract the anti-diagonal product.</p>
+                        </div>
+
+                        <div class="operation-card">
+                            <h3>2. Triangular Matrix Determinant</h3>
+                            <div class="math-display">
+                                \[ \begin{vmatrix} a & b & c \\ 0 & d & e \\ 0 & 0 & f \end{vmatrix} = a \cdot d \cdot f \]
+                            </div>
+                            <p>For upper, lower triangular, or diagonal matrices, determinant equals the product of diagonal entries.</p>
+                        </div>
+                    </div>
+
+                    <!-- Minors and Cofactors -->
+                    <div class="definition-box mt-20">
+                        <strong>Minors and Cofactors:</strong>
+                        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <li><strong>Minor ($M_{ij}$):</strong> The determinant of the $(n-1) \times (n-1)$ submatrix obtained by deleting the $i$-th row and $j$-th column of $A$.</li>
+                            <li><strong>Cofactor ($C_{ij}$):</strong> The signed minor: $C_{ij} = (-1)^{i+j} M_{ij}$.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Laplace Expansion -->
+                    <div class="concept-box mt-20">
+                        <h4><i data-lucide="layers"></i> Laplace Cofactor Expansion ($n \times n$)</h4>
+                        <p>The determinant can be evaluated by expanding along <strong>any row $i$</strong> or <strong>any column $j$</strong>:</p>
+                        <div class="math-display">
+                            \[ \det(A) = \sum_{j=1}^n a_{ij} C_{ij} = \sum_{j=1}^n (-1)^{i+j} a_{ij} M_{ij} \quad (\text{Expansion along row } i) \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9.2: WORKED EXAMPLE & PROPERTIES -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 9.2</span>
+                <h2>Properties of Determinants</h2>
+
+                <div class="theory-card">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">Worked Example</span>
+                            <h4>Evaluating a $3 \times 3$ Determinant via Cofactor Expansion</h4>
+                        </div>
+                        <p>Evaluate the determinant of $A = \begin{bmatrix} 1 & 2 & 6 \\ 3 & 4 & 8 \\ 6 & 0 & 2 \end{bmatrix}$ expanding along Row 3:</p>
+                        <p><strong>Step-by-Step Calculation:</strong></p>
+                        <div class="math-display">
+                            \[
+                            \begin{aligned}
+                            \det(A) &= a_{31}C_{31} + a_{32}C_{32} + a_{33}C_{33} \\
+                            &= 6 \cdot (-1)^{3+1} \begin{vmatrix} 2 & 6 \\ 4 & 8 \end{vmatrix} + 0 + 2 \cdot (-1)^{3+3} \begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix} \\
+                            &= 6 \cdot (16 - 24) + 0 + 2 \cdot (4 - 6) \\
+                            &= 6(-8) + 2(-2) = -48 - 4 = \mathbf{-52}
+                            \end{aligned}
+                            \]
+                        </div>
+                    </div>
+
+                    <p><strong>Fundamental Algebraic Properties of Determinants:</strong></p>
+                    <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; font-size: 1.05rem;">
+                        <li><strong>1. Transpose:</strong> $\det(A^T) = \det(A)$.</li>
+                        <li><strong>2. Multiplicative Law:</strong> $\det(AB) = \det(A) \cdot \det(B)$.</li>
+                        <li><strong>3. Row Swapping:</strong> Interchanging two rows multiplies the determinant by $-1$.</li>
+                        <li><strong>4. Scalar Scaling:</strong> Multiplying a single row by $k$ scales the determinant by $k$. For an $n \times n$ matrix, $\det(kA) = k^n \det(A)$.</li>
+                        <li><strong>5. Row Addition:</strong> Adding a scalar multiple of one row to another ($R_i \leftarrow R_i + k R_j$) <strong>leaves the determinant unchanged</strong>!</li>
+                        <li><strong>6. Proportional Rows:</strong> If any two rows or columns are identical or proportional, $\det(A) = 0$.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9.3: INVERSES & CRAMER'S RULE -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 9.3</span>
+                <h2>Invertibility, Adjugate Matrix & Cramer's Rule</h2>
+
+                <div class="types-grid">
+                    <!-- Invertibility -->
+                    <div class="type-card">
+                        <h3>1. Invertibility Criterion</h3>
+                        <p>A square matrix $A$ is <strong>invertible (non-singular)</strong> if and only if $\det(A) \neq 0$. If $\det(A) = 0$, $A$ is singular and has no inverse.</p>
+                        <div class="math-display">\[ \det(A^{-1}) = \frac{1}{\det(A)} \]</div>
+                    </div>
+
+                    <!-- Adjugate Formula -->
+                    <div class="type-card">
+                        <h3>2. Matrix Inverse Formula</h3>
+                        <div class="math-display">\[ A^{-1} = \frac{1}{\det(A)} \text{adj}(A) \]</div>
+                        <p>Where $\text{adj}(A) = C^T$ is the <strong>adjugate matrix</strong> (the transpose of the cofactor matrix $C = [C_{ij}]$).</p>
+                    </div>
+
+                    <!-- Cramer's Rule -->
+                    <div class="type-card">
+                        <h3>3. Cramer's Rule</h3>
+                        <p>For an $n \times n$ system $A\mathbf{x} = \mathbf{b}$ with $\det(A) \neq 0$:</p>
+                        <div class="math-display">\[ x_i = \frac{\det(A_i)}{\det(A)} \]</div>
+                        <p>Where $A_i$ is formed by replacing the $i$-th column of $A$ with constant vector $\mathbf{b}$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>$\det(A)$ is defined only for square matrices ($n \times n$).</li>
+                            <li>$A$ is invertible $\iff \det(A) \neq 0$.</li>
+                            <li>$\det(AB) = \det(A)\det(B)$.</li>
+                            <li>$\det(kA) = k^n \det(A)$ for an $n \times n$ matrix.</li>
+                            <li>Row additions ($R_i + kR_j$) do not change the determinant.</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>$\det(A + B) \neq \det(A) + \det(B)$ in general! Determinants are not additive over matrices.</li>
+                            <li>Do not forget the alternating sign pattern $(-1)^{i+j}$ in Laplace cofactor expansions.</li>
+                            <li>Remember that the adjugate is the <strong>transpose</strong> of the cofactor matrix ($\text{adj}(A) = C^T$), not just $C$.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE CALCULATOR SECTION -->
+        <section id="calculator" class="matrix-calculator">
+            <div class="calculator-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Tool</span>
+                    <h2>Determinant & Matrix Inverse Tool</h2>
+                    <p>Enter any square matrix from $2 \times 2$ up to $4 \times 4$ to compute the exact determinant and matrix inverse.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calc-controls">
+                        <div class="control-group">
+                            <label>Matrix Dimension:</label>
+                            <select id="det-dim-select">
+                                <option value="2">2×2 Square Matrix</option>
+                                <option value="3" selected>3×3 Square Matrix</option>
+                                <option value="4">4×4 Square Matrix</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>Matrix A</h4>
+                            <div class="matrix-grid-input" id="det-matrix-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="det-compute-btn"><i data-lucide="hash"></i> Compute Determinant det(A)</button>
+                        <button class="calc-btn" id="inv-compute-btn"><i data-lucide="divide"></i> Compute Inverse (A⁻¹)</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Determinant & Inverse Output</h4>
+                        <div class="calc-result-content" id="det-calc-result">
+                            <p class="text-center text-light">Click a computation button above to view results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 9 Practice Quiz</h2>
+                    <p>Test your knowledge of determinant computations, properties, and matrix invertibility.</p>
+                </div>
+
+                <div class="quiz-card" id="det-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 9?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module 10: Diagonalization, Eigenvalues & Eigenvectors.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-9">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="inner-products.html" class="module-nav-btn prev-btn">← Previous Module: Inner Products</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="eigenvalues.html" class="module-nav-btn next-btn">Next Module: Eigenvalues →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module9Questions = [
+            {
+                        "question": "What is the determinant of a $2 \\times 2$ matrix $A = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$?",
+                        "answers": [
+                                    "$ad + bc$",
+                                    "$ad - bc$",
+                                    "$ab - cd$",
+                                    "$a + d - (b + c)$"
+                        ],
+                        "correct": 1,
+                        "explanation": "The determinant of a $2 \\times 2$ matrix is the product of the main diagonal minus the anti-diagonal: $\\det(A) = ad - bc$."
+            },
+            {
+                        "question": "A square matrix $A$ is <strong>invertible</strong> if and only if:",
+                        "answers": [
+                                    "$\\det(A) = 0$",
+                                    "$\\det(A) \\neq 0$",
+                                    "$\\text{trace}(A) > 0$",
+                                    "$A$ is symmetric"
+                        ],
+                        "correct": 1,
+                        "explanation": "$A^{-1}$ exists if and only if $\\det(A) \\neq 0$. If $\\det(A) = 0$, the matrix is singular."
+            },
+            {
+                        "question": "What is $\\det(AB)$ for two $n \\times n$ matrices $A$ and $B$?",
+                        "answers": [
+                                    "$\\det(A) + \\det(B)$",
+                                    "$\\det(A) \\det(B)$",
+                                    "$\\det(A) / \\det(B)$",
+                                    "$(\\det(A))^n$"
+                        ],
+                        "correct": 1,
+                        "explanation": "The determinant of a matrix product is the product of the determinants: $\\det(AB) = \\det(A)\\det(B)$."
+            },
+            {
+                        "question": "If all elements in one row (or column) of matrix $A$ are zero, what is $\\det(A)$?",
+                        "answers": [
+                                    "$1$",
+                                    "$0$",
+                                    "$-1$",
+                                    "Undefined"
+                        ],
+                        "correct": 1,
+                        "explanation": "Expanding along the zero row yields a determinant of $0$."
+            },
+            {
+                        "question": "How does $\\det(kA)$ relate to $\\det(A)$ for an $n \\times n$ matrix and scalar $k$?",
+                        "answers": [
+                                    "$k \\det(A)$",
+                                    "$k^n \\det(A)$",
+                                    "$n^k \\det(A)$",
+                                    "$\\det(A) / k$"
+                        ],
+                        "correct": 1,
+                        "explanation": "Factoring $k$ out of each of the $n$ rows gives $\\det(kA) = k^n \\det(A)$."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("det-quiz-card", module9Questions, "module-9");
+        });
+    </script>
+</body>
+
+</html>

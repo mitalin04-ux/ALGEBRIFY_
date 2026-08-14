@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7: Linear Transformations and Matrices | Algebrify</title>
+    <meta name="description" content="Master matrix representations of linear transformations, standard matrices, change of basis, and matrix similarity with textbook rigor and interactive tools.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 07: Transformations and Matrices</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 07</span>
+                    <h1>Linear Transformations and Matrices</h1>
+                    <p>
+                        There is a profound, one-to-one correspondence between linear transformations and matrices. In this module, you will learn how to construct matrix representations with respect to arbitrary bases, compute standard matrices, perform change of basis, and understand matrix similarity ($B = P^{-1} A P$).
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#calculator" class="btn-secondary"><i data-lucide="table-properties"></i> Change of Basis Tool</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> Construct the matrix representation $[T]_{B}^{B'}$ of a linear transformation with respect to bases $B$ and $B'$.</li>
+                        <li><i data-lucide="check"></i> Derive the Standard Matrix $[T]$ by evaluating the images of canonical basis vectors $\mathbf{e}_i$.</li>
+                        <li><i data-lucide="check"></i> Construct change of basis transition matrices $P$ and transform coordinate vectors.</li>
+                        <li><i data-lucide="check"></i> Define matrix similarity ($B = P^{-1}AP$) and identify similarity invariants (trace, determinant, rank).</li>
+                        <li><i data-lucide="check"></i> Explain the fundamental algebraic isomorphism between $\mathcal{L}(V, W)$ and $M_{m \times n}(F)$.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7.1: MATRIX REPRESENTATION -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 7.1</span>
+                <h2>Matrix Representation of a Linear Transformation</h2>
+                
+                <p class="theory-intro">
+                    Let $T: V \to W$ be a linear transformation. Suppose $B = \{\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_n\}$ is an ordered basis for domain $V$, and $B' = \{\mathbf{w}_1, \mathbf{w}_2, \dots, \mathbf{w}_m\}$ is an ordered basis for codomain $W$.
+                </p>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>Matrix of $T$ Relative to Bases $B$ and $B'$:</strong>
+                        <p>
+                            To represent $T$ as an $m \times n$ matrix $[T]_{B}^{B'}$, we apply $T$ to each basis vector of $V$ and write the output as a column vector of coordinates with respect to $B'$:
+                        </p>
+                        <div class="math-display">
+                            \[
+                            [T]_{B}^{B'} = \begin{bmatrix}
+                            [T(\mathbf{v}_1)]_{B'} & [T(\mathbf{v}_2)]_{B'} & \dots & [T(\mathbf{v}_n)]_{B'}
+                            \end{bmatrix}
+                            \]
+                        </div>
+                        <p>
+                            <strong>The Fundamental Transformation Identity:</strong> For any vector $\mathbf{x} \in V$, the coordinates of the image vector $T(\mathbf{x})$ are given by simple matrix multiplication:
+                        </p>
+                        <div class="math-display">
+                            \[ [T(\mathbf{x})]_{B'} = [T]_{B}^{B'} \cdot [\mathbf{x}]_B \]
+                        </div>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4><i data-lucide="sparkles"></i> The Standard Matrix in $\mathbb{R}^n \to \mathbb{R}^m$</h4>
+                        <p>
+                            When using standard canonical bases $\mathcal{E}_n = \{\mathbf{e}_1, \dots, \mathbf{e}_n\}$ and $\mathcal{E}_m = \{\mathbf{e}_1, \dots, \mathbf{e}_m\}$, the matrix is called the <strong>Standard Matrix</strong> of $T$, denoted simply by $[T]$:
+                        </p>
+                        <div class="math-display">
+                            \[ [T] = \begin{bmatrix} T(\mathbf{e}_1) & T(\mathbf{e}_2) & \dots & T(\mathbf{e}_n) \end{bmatrix} \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7.2: GEOMETRIC STANDARD MATRICES -->
+        <section class="matrix-types">
+            <div class="matrix-types-container">
+                <span class="section-tag">Section 7.2</span>
+                <h2>Standard Geometric Transformation Matrices in $\mathbb{R}^2$</h2>
+
+                <div class="types-grid">
+                    <!-- Rotation -->
+                    <div class="type-card">
+                        <h3>1. Counterclockwise Rotation</h3>
+                        <div class="math-display">
+                            \[ R_\theta = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix} \]
+                        </div>
+                        <p>Rotates every vector counterclockwise by angle $\theta$. Preserves length ($\det = 1$).</p>
+                    </div>
+
+                    <!-- Scaling -->
+                    <div class="type-card">
+                        <h3>2. Non-Uniform Scaling</h3>
+                        <div class="math-display">
+                            \[ S = \begin{bmatrix} k_x & 0 \\ 0 & k_y \end{bmatrix} \]
+                        </div>
+                        <p>Stretches or shrinks coordinates by factors $k_x$ and $k_y$.</p>
+                    </div>
+
+                    <!-- Reflection X -->
+                    <div class="type-card">
+                        <h3>3. Reflection across X-Axis</h3>
+                        <div class="math-display">
+                            \[ M_x = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix} \]
+                        </div>
+                        <p>Flips the sign of the $y$-coordinate while keeping the $x$-coordinate.</p>
+                    </div>
+
+                    <!-- Reflection Y=X -->
+                    <div class="type-card">
+                        <h3>4. Reflection across $y = x$</h3>
+                        <div class="math-display">
+                            \[ M_{y=x} = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \]
+                        </div>
+                        <p>Swaps the $x$ and $y$ coordinates: $\begin{bmatrix} x \\ y \end{bmatrix} \mapsto \begin{bmatrix} y \\ x \end{bmatrix}$.</p>
+                    </div>
+
+                    <!-- Horizontal Shear -->
+                    <div class="type-card">
+                        <h3>5. Horizontal Shear</h3>
+                        <div class="math-display">
+                            \[ H_k = \begin{bmatrix} 1 & k \\ 0 & 1 \end{bmatrix} \]
+                        </div>
+                        <p>Slants the horizontal coordinate: $x' = x + ky, y' = y$. Preserves area ($\det = 1$).</p>
+                    </div>
+
+                    <!-- Orthogonal Projection -->
+                    <div class="type-card">
+                        <h3>6. Projection onto X-Axis</h3>
+                        <div class="math-display">
+                            \[ P_x = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \]
+                        </div>
+                        <p>Drops perpendicular onto the $x$-axis, setting $y=0$ ($P_x^2 = P_x$).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7.3: CHANGE OF BASIS & SIMILARITY -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 7.3</span>
+                <h2>Change of Basis and Matrix Similarity</h2>
+
+                <div class="theory-card">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">Theory</span>
+                            <h4>The Change of Basis Transition Matrix ($P$)</h4>
+                        </div>
+                        <p>
+                            Let $B = \{\mathbf{v}_1, \dots, \mathbf{v}_n\}$ and $B' = \{\mathbf{u}_1, \dots, \mathbf{u}_n\}$ be two bases for vector space $V$. The <strong>transition matrix from $B$ to $B'$</strong> is:
+                        </p>
+                        <div class="math-display">
+                            \[ P_{B \to B'} = \begin{bmatrix} [\mathbf{v}_1]_{B'} & [\mathbf{v}_2]_{B'} & \dots & [\mathbf{v}_n]_{B'} \end{bmatrix} \]
+                        </div>
+                        <p>
+                            To transform coordinate vectors between bases:
+                        </p>
+                        <div class="math-display">
+                            \[ [\mathbf{x}]_{B'} = P_{B \to B'} \cdot [\mathbf{x}]_B \]
+                        </div>
+                    </div>
+
+                    <div class="definition-box mt-30" style="border-left-color: var(--clr-accent);">
+                        <strong>Definition of Similar Matrices ($A \sim B$):</strong>
+                        <p>
+                            Two square matrices $A$ and $B$ of order $n \times n$ are called <strong>similar</strong> if there exists an invertible matrix $P$ such that:
+                        </p>
+                        <div class="math-display">
+                            \[ B = P^{-1} A P \]
+                        </div>
+                        <p>
+                            <strong>Geometric Meaning:</strong> Similar matrices represent the <em>exact same linear operator $T: V \to V$</em> described using two different coordinate bases.
+                        </p>
+                    </div>
+
+                    <div class="concept-box mt-20">
+                        <h4><i data-lucide="shield-check"></i> Invariants Under Matrix Similarity</h4>
+                        <p>If $A$ and $B$ are similar ($B = P^{-1} A P$), they share identical algebraic properties:</p>
+                        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li><strong>Same Determinant:</strong> $\det(B) = \det(P^{-1}AP) = \det(P^{-1})\det(A)\det(P) = \det(A)$.</li>
+                            <li><strong>Same Trace:</strong> $\text{tr}(B) = \text{tr}(A)$.</li>
+                            <li><strong>Same Rank and Nullity:</strong> $\text{Rank}(B) = \text{Rank}(A)$.</li>
+                            <li><strong>Same Characteristic Polynomial & Eigenvalues:</strong> $\det(B - \lambda I) = \det(A - \lambda I)$.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>The $j$-th column of standard matrix $[T]$ is the image of standard unit vector $T(\mathbf{e}_j)$.</li>
+                            <li>Change of basis matrix $P$ converts coordinate vectors: $[\mathbf{x}]_{B'} = P [\mathbf{x}]_B$.</li>
+                            <li>Similar matrices satisfy $B = P^{-1} A P$ and represent the same linear map.</li>
+                            <li>Similar matrices always have the exact same determinant, trace, and eigenvalues.</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>Do not mix up the order of the change of basis matrix. If $[\mathbf{x}]_{B'} = P[\mathbf{x}]_B$, then $[\mathbf{x}]_B = P^{-1}[\mathbf{x}]_{B'}$.</li>
+                            <li>Remember that having the same determinant and trace is necessary for similarity, but <em>not sufficient</em> by itself.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE CHANGE OF BASIS TOOL -->
+        <section id="calculator" class="matrix-calculator">
+            <div class="calculator-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Tool</span>
+                    <h2>Change of Basis Coordinate Converter</h2>
+                    <p>Enter a vector $\mathbf{x} \in \mathbb{R}^2$ and a new basis $B' = \{\mathbf{u}_1, \mathbf{u}_2\}$ to compute the new coordinate vector $[\mathbf{x}]_{B'}$.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>New Basis $\mathbf{u}_1, \mathbf{u}_2$ ($P$)</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 60px); gap: 6px; justify-content: center;">
+                                <input type="number" id="cob_p11" value="1" style="width: 60px; height: 45px; text-align: center;">
+                                <input type="number" id="cob_p12" value="1" style="width: 60px; height: 45px; text-align: center;">
+                                <input type="number" id="cob_p21" value="1" style="width: 60px; height: 45px; text-align: center;">
+                                <input type="number" id="cob_p22" value="-1" style="width: 60px; height: 45px; text-align: center;">
+                            </div>
+                        </div>
+
+                        <div class="matrix-op-sign">→</div>
+
+                        <div class="matrix-input-box">
+                            <h4>Standard Vector $\mathbf{x}$</h4>
+                            <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center;">
+                                <input type="number" id="cob_x1" value="4" style="width: 60px; height: 45px; text-align: center;">
+                                <input type="number" id="cob_x2" value="2" style="width: 60px; height: 45px; text-align: center;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="cob-calc-btn"><i data-lucide="play"></i> Compute Coordinates [x]B'</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> New Coordinates $[\mathbf{x}]_{B'}$</h4>
+                        <div class="calc-result-content" id="cob-result-box">
+                            <p class="text-center text-light">Click "Compute Coordinates" to evaluate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 7 Practice Quiz</h2>
+                    <p>Test your understanding of matrix representations, standard matrices, change of basis, and matrix similarity.</p>
+                </div>
+
+                <div class="quiz-card" id="trans-mat-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 7?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module 8: Inner Product Spaces & Orthogonality.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-7">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="transformations.html" class="module-nav-btn prev-btn">← Previous Module: Transformations</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="inner-products.html" class="module-nav-btn next-btn">Next Module: Inner Products →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module7Questions = [
+            {
+                        "question": "How is the matrix $[T]_B$ representing a linear transformation $T: V \\to V$ constructed with respect to a basis $B = \\{\\mathbf{v}_1, \\dots, \\mathbf{v}_n\\}$?",
+                        "answers": [
+                                    "The columns of $[T]_B$ are the coordinate vectors $[T(\\mathbf{v}_j)]_B$.",
+                                    "The rows of $[T]_B$ are the vectors $\\mathbf{v}_j$.",
+                                    "By taking the determinant of each basis vector.",
+                                    "By finding the eigenvalues of $T$."
+                        ],
+                        "correct": 0,
+                        "explanation": "Column $j$ of the matrix representation is the coordinate vector of $T(\\mathbf{v}_j)$ with respect to the basis $B$."
+            },
+            {
+                        "question": "If matrix $B$ represents the same linear transformation as matrix $A$ under a change of basis matrix $P$, how are $A$ and $B$ related?",
+                        "answers": [
+                                    "$B = P A$",
+                                    "$B = P^{-1} A P$ (Similarity Transformation)",
+                                    "$B = A + P$",
+                                    "$B = P A P$"
+                        ],
+                        "correct": 1,
+                        "explanation": "Similar matrices represent the same linear operator under different bases via $B = P^{-1} A P$."
+            },
+            {
+                        "question": "Which of the following properties is <strong>invariant</strong> between similar matrices $A$ and $B = P^{-1} A P$?",
+                        "answers": [
+                                    "Determinant, Trace, and Eigenvalues",
+                                    "Individual matrix entries",
+                                    "Eigenvectors",
+                                    "Row echelon form"
+                        ],
+                        "correct": 0,
+                        "explanation": "Similar matrices share the exact same characteristic polynomial, eigenvalues, determinant, and trace."
+            },
+            {
+                        "question": "If $[v]_B$ is the coordinate vector of $v$ in basis $B$, how is $[T(v)]_B$ calculated?",
+                        "answers": [
+                                    "$[T(v)]_B = [T]_B [v]_B$",
+                                    "$[T(v)]_B = [v]_B [T]_B$",
+                                    "$[T(v)]_B = [T]_B + [v]_B$",
+                                    "$[T(v)]_B = \\det([T]_B) [v]_B$"
+                        ],
+                        "correct": 0,
+                        "explanation": "Matrix representation allows transformation evaluation by standard matrix-vector multiplication: $[T(v)]_B = [T]_B [v]_B$."
+            },
+            {
+                        "question": "What is the change-of-basis matrix $P_{B \\to C}$ from basis $B$ to basis $C$?",
+                        "answers": [
+                                    "The matrix whose columns are $[\\mathbf{b}_j]_C$",
+                                    "The transpose of $B$",
+                                    "The identity matrix",
+                                    "The inverse of $C$"
+                        ],
+                        "correct": 0,
+                        "explanation": "The transition matrix $P_{B \\to C}$ has columns equal to the coordinates of the old basis vectors with respect to the new basis."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("trans-mat-quiz-card", module7Questions, "module-7");
+        });
+    </script>
+</body>
+
+</html>

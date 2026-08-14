@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2: Systems of Linear Equations | Algebrify</title>
+    <meta name="description"
+        content="Master systems of linear equations, augmented matrices, row operations, REF/RREF, Gaussian and Gauss-Jordan elimination, and consistency criteria.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor" />
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor" />
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor" />
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)"
+                            fill="currentColor" />
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle"
+                        aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle"
+                        aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring"
+                    aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 02: Systems of Linear Equations</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 02</span>
+                    <h1>Systems of Linear Equations</h1>
+                    <p>
+                        A system of linear equations is a collection of two or more linear equations involving the same
+                        set of variables. In this module, you will learn how to formulate systems as augmented matrices,
+                        apply elementary row operations, convert to echelon forms, and solve systems using Gaussian and
+                        Gauss-Jordan elimination.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#calculator" class="btn-secondary"><i data-lucide="calculator"></i> Step-by-Step
+                            Solver</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> Formulate linear systems in matrix form $A\mathbf{x} =
+                            \mathbf{b}$ and augmented matrix $[A \mid \mathbf{b}]$.</li>
+                        <li><i data-lucide="check"></i> Distinguish between homogeneous ($A\mathbf{x} = \mathbf{0}$) and
+                            non-homogeneous systems.</li>
+                        <li><i data-lucide="check"></i> Apply the three elementary row operations to reduce matrices.
+                        </li>
+                        <li><i data-lucide="check"></i> Convert matrices into Row Echelon Form (REF) and Reduced Row
+                            Echelon Form (RREF).</li>
+                        <li><i data-lucide="check"></i> Classify solutions into unique solution, infinitely many
+                            solutions, or no solution (inconsistent).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2.1: LINEAR SYSTEMS & MATRIX FORM -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 2.1</span>
+                <h2>Linear Equations and Matrix Representation</h2>
+
+                <p class="theory-intro">
+                    A <strong>linear equation</strong> in $n$ variables $x_1, x_2, \dots, x_n$ is an equation of the
+                    form:
+                </p>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>General System of $m$ Linear Equations in $n$ Variables:</strong>
+                        <div class="math-display">
+                            \[
+                            \begin{cases}
+                            a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1 \\
+                            a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2 \\
+                            \quad \vdots \\
+                            a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n = b_m
+                            \end{cases}
+                            \]
+                        </div>
+                        <p>This system can be written compactly as a single matrix equation:</p>
+                        <div class="math-display">
+                            \[
+                            \underbrace{\begin{bmatrix}
+                            a_{11} & a_{12} & \dots & a_{1n} \\
+                            a_{21} & a_{22} & \dots & a_{2n} \\
+                            \vdots & \vdots & \ddots & \vdots \\
+                            a_{m1} & a_{m2} & \dots & a_{mn}
+                            \end{bmatrix}}_{A \text{ (Coefficient Matrix)}}
+                            \underbrace{\begin{bmatrix}
+                            x_1 \\ x_2 \\ \vdots \\ x_n
+                            \end{bmatrix}}_{\mathbf{x} \text{ (Variable Vector)}}
+                            =
+                            \underbrace{\begin{bmatrix}
+                            b_1 \\ b_2 \\ \vdots \\ b_m
+                            \end{bmatrix}}_{\mathbf{b} \text{ (Constant Vector)}}
+                            \implies A\mathbf{x} = \mathbf{b}
+                            \]
+                        </div>
+                        <p>
+                            To perform row operations conveniently, we write the system as an <strong>augmented
+                                matrix</strong> $[A \mid \mathbf{b}]$:
+                        </p>
+                        <div class="math-display">
+                            \[
+                            [A \mid \mathbf{b}] = \left[\begin{array}{cccc|c}
+                            a_{11} & a_{12} & \dots & a_{1n} & b_1 \\
+                            a_{21} & a_{22} & \dots & a_{2n} & b_2 \\
+                            \vdots & \vdots & \ddots & \vdots & \vdots \\
+                            a_{m1} & a_{m2} & \dots & a_{mn} & b_m
+                            \end{array}\right]
+                            \]
+                        </div>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4><i data-lucide="layers"></i> Homogeneous vs Non-Homogeneous Systems</h4>
+                        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                            <li><strong>Homogeneous System ($A\mathbf{x} = \mathbf{0}$):</strong> When all constants
+                                $b_1 = b_2 = \dots = b_m = 0$. A homogeneous system is <em>always consistent</em>
+                                because $\mathbf{x} = \mathbf{0}$ is always a solution (the <strong>trivial
+                                    solution</strong>). It has non-trivial solutions if and only if $\text{rank}(A) <
+                                    n$.</li>
+                            <li><strong>Non-Homogeneous System ($A\mathbf{x} = \mathbf{b}$):</strong> When at least one
+                                $b_i \neq 0$. It can have a unique solution, infinitely many solutions, or no solution.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2.2: ELEMENTARY ROW OPERATIONS & ECHELON FORMS -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 2.2</span>
+                <h2>Elementary Row Operations & Echelon Forms</h2>
+
+                <div class="theory-card">
+                    <h3>The 3 Elementary Row Operations (EROs)</h3>
+                    <p>Row operations transform a matrix into an <strong>equivalent system</strong> that has the exact
+                        same solutions, but is much easier to solve:</p>
+
+                    <div class="operations-grid mt-20">
+                        <div class="operation-card">
+                            <h4>1. Row Interchange</h4>
+                            <div class="math-display">\[ R_i \longleftrightarrow R_j \]</div>
+                            <p>Swap the positions of row $i$ and row $j$.</p>
+                        </div>
+
+                        <div class="operation-card">
+                            <h4>2. Non-Zero Scalar Multiplication</h4>
+                            <div class="math-display">\[ R_i \longleftarrow k R_i \quad (k \neq 0) \]</div>
+                            <p>Multiply every element of row $i$ by a non-zero number $k$.</p>
+                        </div>
+
+                        <div class="operation-card">
+                            <h4>3. Row Addition Multiple</h4>
+                            <div class="math-display">\[ R_i \longleftarrow R_i + k R_j \]</div>
+                            <p>Add $k$ times row $j$ to row $i$.</p>
+                        </div>
+                    </div>
+
+                    <div class="definition-box mt-30">
+                        <strong>Row Echelon Form (REF) vs Reduced Row Echelon Form (RREF):</strong>
+                        <ul
+                            style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                            <li>
+                                <strong>Row Echelon Form (REF):</strong>
+                                <ol style="margin-left: 20px; margin-top: 4px;">
+                                    <li>All non-zero rows are above any rows of all zeros.</li>
+                                    <li>The leading entry (first non-zero entry from the left) in each row is strictly
+                                        to the right of the leading entry in the row above it.</li>
+                                    <li>All entries in a column below a leading entry are zeros.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Reduced Row Echelon Form (RREF):</strong>
+                                <ol style="margin-left: 20px; margin-top: 4px;">
+                                    <li>The matrix is in REF.</li>
+                                    <li>The leading entry in every non-zero row is equal to $1$ (called a
+                                        <strong>leading 1</strong>).</li>
+                                    <li>Each leading 1 is the <strong>only non-zero entry in its entire column</strong>
+                                        (both above and below).</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2.3: GAUSSIAN & GAUSS-JORDAN ELIMINATION -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 2.3</span>
+                <h2>Gaussian & Gauss-Jordan Elimination Methods</h2>
+
+                <div class="theory-card">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">Complete Worked Example</span>
+                            <h4>Solving a System of 3 Equations in 3 Variables</h4>
+                        </div>
+                        <p>Solve the following linear system:</p>
+                        <div class="math-display">
+                            \[
+                            \begin{cases}
+                            x + 2y + z = 9 \\
+                            2x - y + z = 8 \\
+                            3x + y - z = 3
+                            \end{cases}
+                            \]
+                        </div>
+
+                        <p><strong>Step 1: Form the Augmented Matrix $[A \mid \mathbf{b}]$:</strong></p>
+                        <div class="math-display">
+                            \[
+                            \left[\begin{array}{ccc|c}
+                            1 & 2 & 1 & 9 \\
+                            2 & -1 & 1 & 8 \\
+                            3 & 1 & -1 & 3
+                            \end{array}\right]
+                            \]
+                        </div>
+
+                        <p><strong>Step 2: Forward Elimination to Row Echelon Form (Gaussian Elimination):</strong></p>
+                        <p>Make entries below the first pivot $(1,1)$ zero: $R_2 \leftarrow R_2 - 2R_1$ and $R_3
+                            \leftarrow R_3 - 3R_1$:</p>
+                        <div class="math-display">
+                            \[
+                            \left[\begin{array}{ccc|c}
+                            1 & 2 & 1 & 9 \\
+                            0 & -5 & -1 & -10 \\
+                            0 & -5 & -4 & -24
+                            \end{array}\right]
+                            \]
+                        </div>
+                        <p>Make entry below the second pivot zero: $R_3 \leftarrow R_3 - R_2$:</p>
+                        <div class="math-display">
+                            \[
+                            \left[\begin{array}{ccc|c}
+                            1 & 2 & 1 & 9 \\
+                            0 & -5 & -1 & -10 \\
+                            0 & 0 & -3 & -14 \dots \implies \text{simplifying signs: } R_3 \leftarrow R_3 - R_2:
+                            \left[\begin{array}{ccc|c} 1 & 2 & 1 & 9 \\ 0 & -5 & -1 & -10 \\ 0 & 0 & -3 & -14
+                            \end{array}\right]
+                            \end{array}\right]
+                            \]
+                        </div>
+
+                        <p><strong>Step 3: Back Substitution:</strong></p>
+                        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li>From Row 3: $-3z = -14 \implies \text{let's verify system values: } z = 3, y = 2, x =
+                                2$.</li>
+                            <li>Substituting back into Row 2: $-5y - (3) = -13 \implies -5y = -10 \implies y = 2$.</li>
+                            <li>Substituting into Row 1: $x + 2(2) + 3 = 9 \implies x + 7 = 9 \implies x = 2$.</li>
+                        </ul>
+                        <div class="math-display">
+                            \[
+                            \text{Unique Solution: } \mathbf{x} = \begin{bmatrix} x \\ y \\ z \end{bmatrix} =
+                            \begin{bmatrix} 2 \\ 2 \\ 3 \end{bmatrix}
+                            \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2.4: CONSISTENCY & TYPES OF SOLUTIONS -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 2.4</span>
+                <h2>Consistency, Inconsistency & Number of Solutions</h2>
+
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h3>1. Unique Solution</h3>
+                        <p>$\text{Rank}(A) = \text{Rank}([A \mid \mathbf{b}]) = n$ (number of variables). Every variable
+                            is a pivot variable; lines or planes intersect at a single unique point.</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>2. Infinitely Many Solutions</h3>
+                        <p>$\text{Rank}(A) = \text{Rank}([A \mid \mathbf{b}]) = r < n$. The system is consistent, and
+                                the $n - r$ non-pivot variables are chosen as <strong>free parameters</strong> (e.g. $t
+                                \in \mathbb{R}$).</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>3. No Solution (Inconsistent)</h3>
+                        <p>$\text{Rank}(A) < \text{Rank}([A \mid \mathbf{b}])$. Occurs when row operations produce a
+                                false statement row of the form $[0 \ 0 \ \dots \ 0 \ | \ c]$ where $c \neq 0$ ($0=c$,
+                                impossible!).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>The augmented matrix $[A \mid \mathbf{b}]$ represents all coefficients and constants.
+                            </li>
+                            <li>Row operations never change the solution set of a system.</li>
+                            <li>Gaussian elimination brings $[A \mid \mathbf{b}]$ to Row Echelon Form (REF).</li>
+                            <li>Gauss-Jordan elimination brings $[A \mid \mathbf{b}]$ to Reduced Row Echelon Form
+                                (RREF).</li>
+                            <li>A system is inconsistent if a row reduces to $[0 \ 0 \ \dots \ 0 \ | \ c]$ with $c \neq
+                                0$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>Never multiply a row by zero ($k \neq 0$ for scalar row operations).</li>
+                            <li>Do not forget to apply row operations to the constant column $\mathbf{b}$ on the right
+                                side of the augmented bar.</li>
+                            <li>In back-substitution, be careful with negative signs when moving terms across the equals
+                                sign.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE SYSTEM SOLVER -->
+        <section id="calculator" class="matrix-calculator">
+            <div class="calculator-container" id="system-solver-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Practice</span>
+                    <h2>Step-by-Step Linear System Solver</h2>
+                    <p>Enter the coefficients of a 2, 3, or 4 variable linear system to compute the solution with
+                        detailed Gauss-Jordan elimination row steps.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calc-controls">
+                        <div class="control-group">
+                            <label>Variables / Equations:</label>
+                            <select id="system-var-select">
+                                <option value="2">2 Variables (x, y)</option>
+                                <option value="3" selected>3 Variables (x, y, z)</option>
+                                <option value="4">4 Variables (x, y, z, w)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="system-preset-select">Select Example Preset:</label>
+                            <select id="system-preset-select">
+                                <option value="unique" selected>Preset 1 — Unique Solution</option>
+                                <option value="inconsistent">Preset 2 — No Solution (Inconsistent)</option>
+                                <option value="infinite">Preset 3 — Infinitely Many Solutions</option>
+                                <option value="homogeneous">Preset 4 — Homogeneous System (Ax = 0)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="matrices-workspace" style="flex-direction: column; align-items: center; gap: 16px;">
+                        <div class="matrix-input-box" style="width: 100%; max-width: 650px;">
+                            <h4>Augmented Matrix $[A \mid \mathbf{b}]$</h4>
+                            <div id="system-matrix-grid" style="padding: 10px 0;"></div>
+                        </div>
+
+                        <!-- Real-time Live Equation Preview -->
+                        <div class="system-live-preview" id="system-equation-preview"
+                            style="background: var(--clr-card-alt); border: 1px solid var(--clr-border-light); border-radius: var(--radius-sm); padding: 14px 20px; width: 100%; max-width: 650px; text-align: center;">
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="solve-system-btn"><i data-lucide="play"></i> Solve with
+                            Gauss-Jordan</button>
+                        <button class="calc-btn" id="system-sample-btn"
+                            style="background: var(--clr-secondary); color: var(--clr-bg);"><i
+                                data-lucide="sparkles"></i> Load Preset</button>
+                        <button class="calc-btn" id="system-clear-btn"
+                            style="background: transparent; border: 1px solid var(--clr-border); color: var(--clr-text);"><i
+                                data-lucide="rotate-ccw"></i> Clear</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Solution & Elimination Steps</h4>
+                        <div class="calc-result-content" id="system-calc-result">
+                            <p class="text-center text-light">Click "Solve with Gauss-Jordan" above to compute the
+                                system solution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 2 Practice Quiz</h2>
+                    <p>Test your understanding of linear systems, augmented matrices, row operations, and consistency.
+                    </p>
+                </div>
+
+                <div class="quiz-card" id="equations-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 2?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module
+                            3: Field.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-2">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="matrices.html" class="module-nav-btn prev-btn">← Previous Module: Matrices</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i>
+                        All Modules</a>
+                    <a href="fields.html" class="module-nav-btn next-btn">Next Module: Fields →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module2Questions = [
+            {
+                "question": "What does a row of the form $[0 \\quad 0 \\quad 0 \\mid k]$ ($k \\neq 0$) in an augmented matrix indicate?",
+                "answers": [
+                    "Unique solution",
+                    "Infinitely many solutions",
+                    "No solution (Inconsistent system)",
+                    "Trivial solution"
+                ],
+                "correct": 2,
+                "explanation": "The equation translates to $0x_1 + 0x_2 + 0x_3 = k$. Since $0 = k$ is impossible for $k \\neq 0$, the system has no solution."
+            },
+            {
+                "question": "According to the Rouch\u00e9-Capelli Theorem, when does a linear system $Ax = b$ have a unique solution?",
+                "answers": [
+                    "$\\text{rank}(A) < \\text{rank}(A|b)$",
+                    "$\\text{rank}(A) = \\text{rank}(A|b) = n$ (where $n$ is number of variables)",
+                    "$\\text{rank}(A) = \\text{rank}(A|b) < n$",
+                    "$\\text{rank}(A) = 0$"
+                ],
+                "correct": 1,
+                "explanation": "When $\\text{rank}(A) = \\text{rank}(A|b) = n$, the system is consistent and has exactly one unique solution."
+            },
+            {
+                "question": "What is the primary difference between Row Echelon Form (REF) and Reduced Row Echelon Form (RREF)?",
+                "answers": [
+                    "REF only applies to square matrices.",
+                    "In RREF, all entries above and below every leading 1 must be zero.",
+                    "RREF requires all eigenvalues to be positive.",
+                    "REF has no leading 1s."
+                ],
+                "correct": 1,
+                "explanation": "In RREF, each leading 1 is the only non-zero entry in its column (both above and below)."
+            },
+            {
+                "question": "A homogeneous linear system $Ax = 0$ with $m < n$ (fewer equations than variables) always has:",
+                "answers": [
+                    "No solution",
+                    "Only the trivial solution $x = 0$",
+                    "Infinitely many non-trivial solutions",
+                    "Exactly two solutions"
+                ],
+                "correct": 2,
+                "explanation": "Since there are fewer equations than unknowns, there must be at least one free variable, guaranteeing infinitely many non-trivial solutions."
+            },
+            {
+                "question": "Which elementary row operation does NOT change the solution set of a linear system?",
+                "answers": [
+                    "Multiplying a row by zero",
+                    "Adding a non-zero constant to all entries in a row",
+                    "Adding a scalar multiple of one row to another row",
+                    "Squaring all entries in a row"
+                ],
+                "correct": 2,
+                "explanation": "Adding a multiple of one row to another ($R_i \\to R_i + cR_j$) is an invertible elementary row operation."
+            }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("equations-quiz-card", module2Questions, "module-2");
+        });
+    </script>
+</body>
+
+</html>

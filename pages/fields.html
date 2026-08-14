@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3: Field | Algebrify</title>
+    <meta name="description" content="Understand algebraic fields: definitions, the 11 field axioms, examples including real numbers R, complex numbers C, and the Galois Field GF(2).">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 03: Field</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 03</span>
+                    <h1>Field</h1>
+                    <p>
+                        In linear algebra, scalars do not have to be ordinary real numbers. A <strong>field</strong> is an algebraic structure where addition, subtraction, multiplication, and division (except by zero) behave with the same familiar rules as standard arithmetic.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#calculator" class="btn-secondary"><i data-lucide="compass"></i> Field Explorer</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> State the formal definition and the 11 algebraic axioms of a field $(F, +, \cdot)$.</li>
+                        <li><i data-lucide="check"></i> Identify examples of fields: Real numbers $\mathbb{R}$, Complex numbers $\mathbb{C}$, and Galois Field $\text{GF}(2)$.</li>
+                        <li><i data-lucide="check"></i> Explain why the set of integers $\mathbb{Z}$ is NOT a field.</li>
+                        <li><i data-lucide="check"></i> Perform addition, multiplication, and find inverses in $\mathbb{C}$ and $\text{GF}(2)$.</li>
+                        <li><i data-lucide="check"></i> Apply cancellation laws and the zero-divisor property ($ab = 0 \implies a = 0$ or $b = 0$).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3.1: DEFINITION & AXIOMS -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 3.1</span>
+                <h2>Definition of a Field and the 11 Axioms</h2>
+                
+                <p class="theory-intro">
+                    A <strong>field</strong> is a set $F$ equipped with two binary operations called <strong>addition</strong> ($+$) and <strong>multiplication</strong> ($\cdot$) that satisfy the following 11 axioms for all elements $a, b, c \in F$:
+                </p>
+
+                <div class="theory-card">
+                    <div class="operations-grid">
+                        <!-- Addition Axioms -->
+                        <div class="operation-card">
+                            <h3>Axioms for Addition ($+$)</h3>
+                            <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem;">
+                                <li><strong>1. Closure:</strong> $a + b \in F$.</li>
+                                <li><strong>2. Associativity:</strong> $(a + b) + c = a + (b + c)$.</li>
+                                <li><strong>3. Commutativity:</strong> $a + b = b + a$.</li>
+                                <li><strong>4. Additive Identity:</strong> There exists an element $0 \in F$ such that $a + 0 = a$.</li>
+                                <li><strong>5. Additive Inverse:</strong> For every $a \in F$, there exists $(-a) \in F$ such that $a + (-a) = 0$.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Multiplication Axioms -->
+                        <div class="operation-card">
+                            <h3>Axioms for Multiplication ($\cdot$)</h3>
+                            <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem;">
+                                <li><strong>6. Closure:</strong> $a \cdot b \in F$.</li>
+                                <li><strong>7. Associativity:</strong> $(a \cdot b) \cdot c = a \cdot (b \cdot c)$.</li>
+                                <li><strong>8. Commutativity:</strong> $a \cdot b = b \cdot a$.</li>
+                                <li><strong>9. Multiplicative Identity:</strong> There exists $1 \in F$ ($1 \neq 0$) such that $a \cdot 1 = a$.</li>
+                                <li><strong>10. Multiplicative Inverse:</strong> For every $a \neq 0$, there exists $a^{-1} = \frac{1}{a} \in F$ such that $a \cdot a^{-1} = 1$.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Distributivity -->
+                    <div class="definition-box mt-20" style="border-left-color: var(--clr-accent);">
+                        <strong>11. Distributive Law of Multiplication over Addition:</strong>
+                        <div class="math-display">
+                            \[ a \cdot (b + c) = a \cdot b + a \cdot c \quad \text{for all } a, b, c \in F \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3.2: EXAMPLES OF FIELDS -->
+        <section class="matrix-types">
+            <div class="matrix-types-container">
+                <span class="section-tag">Section 3.2</span>
+                <h2>Standard Examples of Fields</h2>
+
+                <div class="operations-grid">
+                    <!-- 1. Real Numbers -->
+                    <div class="type-card">
+                        <h3>1. Real Numbers ($\mathbb{R}$)</h3>
+                        <p>The standard continuous number line. Satisfies all 11 axioms under ordinary addition and multiplication.</p>
+                        <div class="math-display">\[ 5 + (-5) = 0, \quad 4 \cdot \frac{1}{4} = 1 \]</div>
+                    </div>
+
+                    <!-- 2. Complex Numbers -->
+                    <div class="type-card">
+                        <h3>2. Complex Numbers ($\mathbb{C}$)</h3>
+                        <p>Numbers of the form $z = a + bi$ where $i^2 = -1$ and $a, b \in \mathbb{R}$.</p>
+                        <div class="math-display">\[ z^{-1} = \frac{a - bi}{a^2 + b^2} \quad (z \neq 0) \]</div>
+                    </div>
+
+                    <!-- 3. Rational Numbers -->
+                    <div class="type-card">
+                        <h3>3. Rational Numbers ($\mathbb{Q}$)</h3>
+                        <p>All fractions of integers $\frac{p}{q}$ ($q \neq 0$). Fully closed under addition, subtraction, multiplication, and non-zero division.</p>
+                        <div class="math-display">\[ \left(\frac{p}{q}\right)^{-1} = \frac{q}{p} \quad (p \neq 0) \]</div>
+                    </div>
+
+                    <!-- 4. Galois Field GF(2) -->
+                    <div class="type-card">
+                        <h3>4. Galois Field ($\text{GF}(2) = \mathbb{Z}_2$)</h3>
+                        <p>The smallest finite field consisting of only two elements: $\{0, 1\}$. Operations are performed modulo 2.</p>
+                        <div class="math-display">\[ 1 + 1 = 0, \quad 1 \cdot 1 = 1 \]</div>
+                    </div>
+                </div>
+
+                <div class="concept-box mt-30">
+                    <h4><i data-lucide="help-circle"></i> Why is the Set of Integers $\mathbb{Z}$ NOT a Field?</h4>
+                    <p>
+                        While the integers $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$ satisfy 10 of the axioms, they <strong>fail Axiom 10 (Multiplicative Inverses)</strong>. For example, for the non-zero integer $2 \in \mathbb{Z}$, its multiplicative inverse is $\frac{1}{2}$, which is <em>not an integer</em> ($\frac{1}{2} \notin \mathbb{Z}$). Therefore, $\mathbb{Z}$ is an integral domain/ring, but <strong>not a field</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3.3: ARITHMETIC IN GF(2) AND COMPLEX NUMBERS -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 3.3</span>
+                <h2>Operations in $\mathbb{C}$ and Galois Field $\text{GF}(2)$</h2>
+
+                <div class="theory-card">
+                    <h3>Arithmetic in Galois Field $\text{GF}(2)$</h3>
+                    <p>
+                        In $\text{GF}(2) = \{0, 1\}$, addition corresponds to the logical <strong>XOR</strong> operation and multiplication corresponds to the logical <strong>AND</strong> operation:
+                    </p>
+
+                    <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-top: 16px;">
+                        <div>
+                            <h4>Addition Table ($+$ mod 2)</h4>
+                            <table style="border-collapse: collapse; margin-top: 8px; width: 150px; text-align: center;">
+                                <tr style="background: var(--clr-card-alt); font-weight: 700;">
+                                    <th style="padding: 8px; border: 1px solid var(--clr-border);">+</th>
+                                    <th style="padding: 8px; border: 1px solid var(--clr-border);">0</th>
+                                    <th style="padding: 8px; border: 1px solid var(--clr-border);">1</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border); font-weight: 700;">0</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border);">0</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border);">1</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border); font-weight: 700;">1</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border);">1</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border); font-weight: 700; color: var(--clr-accent);">0</td>
+                                </tr>
+                            </table>
+                            <p style="font-size: 0.85rem; margin-top: 4px; color: var(--clr-text-light);">Note: $1 + 1 = 0 \implies -1 = 1$.</p>
+                        </div>
+
+                        <div>
+                            <h4>Multiplication Table ($\cdot$ mod 2)</h4>
+                            <table style="border-collapse: collapse; margin-top: 8px; width: 150px; text-align: center;">
+                                <tr style="background: var(--clr-card-alt); font-weight: 700;">
+                                    <th style="padding: 8px; border: 1px solid var(--clr-border);">·</th>
+                                    <th style="padding: 8px; border: 1px solid var(--clr-border);">0</th>
+                                    <th style="padding: 8px; border: 1px solid var(--clr-border);">1</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border); font-weight: 700;">0</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border);">0</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border);">0</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border); font-weight: 700;">1</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border);">0</td>
+                                    <td style="padding: 8px; border: 1px solid var(--clr-border); font-weight: 700; color: var(--clr-accent);">1</td>
+                                </tr>
+                            </table>
+                            <p style="font-size: 0.85rem; margin-top: 4px; color: var(--clr-text-light);">$1^{-1} = 1$.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-box mt-30">
+                        <div class="step-header">
+                            <span class="step-badge">Worked Example</span>
+                            <h4>Complex Number Multiplicative Inverse</h4>
+                        </div>
+                        <p>Find the multiplicative inverse of $z = 3 + 4i \in \mathbb{C}$.</p>
+                        <p><strong>Step-by-Step Solution:</strong></p>
+                        <div class="math-display">
+                            \[
+                            z^{-1} = \frac{1}{3 + 4i} = \frac{1 \cdot (3 - 4i)}{(3 + 4i)(3 - 4i)} = \frac{3 - 4i}{3^2 - (4i)^2} = \frac{3 - 4i}{9 - (-16)} = \frac{3 - 4i}{25} = \frac{3}{25} - \frac{4}{25}i
+                            \]
+                        </div>
+                        <p><strong>Verification:</strong> $(3 + 4i)\left(\frac{3}{25} - \frac{4}{25}i\right) = \frac{9 - 12i + 12i + 16}{25} = \frac{25}{25} = 1$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>A field requires all 11 axioms: addition and multiplication are abelian groups, with distributivity.</li>
+                            <li>Every non-zero element in a field must have a multiplicative inverse ($a^{-1} = \frac{1}{a}$).</li>
+                            <li>$\mathbb{R}, \mathbb{C}, \mathbb{Q},$ and $\text{GF}(2)$ are valid fields.</li>
+                            <li>In any field, $ab = 0 \implies a = 0$ or $b = 0$ (no zero-divisors).</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>Do not confuse integers ($\mathbb{Z}$) with fields; integers lack multiplicative inverses.</li>
+                            <li>In $\text{GF}(2)$, remember that $1 + 1 = 0$ (subtraction and addition are identical).</li>
+                            <li>Division by zero ($0^{-1}$) is never defined in any field.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE FIELD ARITHMETIC EXPLORER -->
+        <section id="calculator" class="matrix-calculator">
+            <div class="calculator-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Practice</span>
+                    <h2>Field Arithmetic Explorer</h2>
+                    <p>Perform addition, multiplication, and inverse computations in Complex Field $\mathbb{C}$ or Galois Field $\text{GF}(2)$.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calc-controls">
+                        <div class="control-group">
+                            <label>Field Type:</label>
+                            <select id="field-type-select">
+                                <option value="complex" selected>Complex Numbers (C)</option>
+                                <option value="gf2">Galois Field GF(2) (Binary Arithmetic)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Complex Inputs -->
+                    <div id="complex-workspace" class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>Number $z_1 = a + bi$</h4>
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <input type="number" id="c_a1" value="3" style="width: 60px; height: 45px; text-align: center; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <span>+</span>
+                                <input type="number" id="c_b1" value="4" style="width: 60px; height: 45px; text-align: center; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <span>$i$</span>
+                            </div>
+                        </div>
+
+                        <div class="matrix-op-sign">⚙️</div>
+
+                        <div class="matrix-input-box">
+                            <h4>Number $z_2 = c + di$</h4>
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <input type="number" id="c_a2" value="1" style="width: 60px; height: 45px; text-align: center; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <span>+</span>
+                                <input type="number" id="c_b2" value="-2" style="width: 60px; height: 45px; text-align: center; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <span>$i$</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GF(2) Inputs -->
+                    <div id="gf2-workspace" class="matrices-workspace" style="display: none;">
+                        <div class="matrix-input-box">
+                            <h4>Bit $x \in \{0, 1\}$</h4>
+                            <select id="gf2_x" style="width: 80px; height: 45px; font-size: 1.2rem; text-align: center;">
+                                <option value="0">0</option>
+                                <option value="1" selected>1</option>
+                            </select>
+                        </div>
+
+                        <div class="matrix-op-sign">⚙️</div>
+
+                        <div class="matrix-input-box">
+                            <h4>Bit $y \in \{0, 1\}$</h4>
+                            <select id="gf2_y" style="width: 80px; height: 45px; font-size: 1.2rem; text-align: center;">
+                                <option value="0">0</option>
+                                <option value="1" selected>1</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="field-add-btn"><i data-lucide="plus"></i> Add (+)</button>
+                        <button class="calc-btn" id="field-mul-btn"><i data-lucide="x"></i> Multiply (·)</button>
+                        <button class="calc-btn" id="field-inv-btn"><i data-lucide="divide"></i> Inverse (z₁⁻¹)</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Result & Properties</h4>
+                        <div class="calc-result-content" id="field-result-box">
+                            <p class="text-center text-light">Select an operation above to compute the field result.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 3 Practice Quiz</h2>
+                    <p>Test your understanding of field axioms, examples, and operations in $\mathbb{R}, \mathbb{C},$ and $\text{GF}(2)$.</p>
+                </div>
+
+                <div class="quiz-card" id="fields-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 3?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module 4: Vectors.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-3">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="equations.html" class="module-nav-btn prev-btn">← Previous Module: Linear Systems</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="vectors.html" class="module-nav-btn next-btn">Next Module: Vectors →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module3Questions = [
+            {
+                        "question": "Which field axiom is NOT satisfied by the set of integers $\\mathbb{Z}$ under standard addition and multiplication?",
+                        "answers": [
+                                    "Additive Identity",
+                                    "Multiplicative Identity",
+                                    "Multiplicative Inverse for non-zero elements",
+                                    "Distributive Law"
+                        ],
+                        "correct": 2,
+                        "explanation": "For an integer such as $2 \\in \\mathbb{Z}$, its multiplicative inverse is $\\frac{1}{2} \\notin \\mathbb{Z}$. Hence $\\mathbb{Z}$ is not a field."
+            },
+            {
+                        "question": "In the Galois Field $\\text{GF}(2) = \\{0, 1\\}$, what is the value of $1 + 1$?",
+                        "answers": [
+                                    "$2$",
+                                    "$0$",
+                                    "$1$",
+                                    "Undefined"
+                        ],
+                        "correct": 1,
+                        "explanation": "In $\\text{GF}(2)$, addition is modulo 2 arithmetic: $1 + 1 = 2 \\equiv 0 \\pmod{2}$."
+            },
+            {
+                        "question": "What is the multiplicative inverse of the complex number $z = a + bi$ ($z \\neq 0$)?",
+                        "answers": [
+                                    "$a - bi$",
+                                    "$\\frac{a - bi}{a^2 + b^2}$",
+                                    "$\\frac{a + bi}{a^2 - b^2}$",
+                                    "$\\frac{1}{a+b}$"
+                        ],
+                        "correct": 1,
+                        "explanation": "$z^{-1} = \\frac{\\bar{z}}{|z|^2} = \\frac{a - bi}{a^2 + b^2}$."
+            },
+            {
+                        "question": "How many elements are in the smallest possible field?",
+                        "answers": [
+                                    "$1$",
+                                    "$2$",
+                                    "$3$",
+                                    "Infinitely many"
+                        ],
+                        "correct": 1,
+                        "explanation": "A field must contain at least two distinct elements: the additive identity $0$ and the multiplicative identity $1$ (e.g., $\\text{GF}(2)$)."
+            },
+            {
+                        "question": "Which of the following sets with standard operations forms a field?",
+                        "answers": [
+                                    "Natural numbers $\\mathbb{N}$",
+                                    "Integers $\\mathbb{Z}$",
+                                    "Rational numbers $\\mathbb{Q}$",
+                                    "Polynomials $\\mathbb{R}[x]$"
+                        ],
+                        "correct": 2,
+                        "explanation": "$\\mathbb{Q}$ satisfies all 11 field axioms including non-zero multiplicative inverses."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("fields-quiz-card", module3Questions, "module-3");
+        });
+    </script>
+</body>
+
+</html>

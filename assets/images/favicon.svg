@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" rx="8" fill="#26A69A"/>
+    <!-- Top-Left Base Tile -->
+    <rect x="6" y="6" width="8.5" height="8.5" rx="2.2" fill="#FFFFFF"/>
+    <!-- Bottom-Left Base Tile -->
+    <rect x="6" y="17.5" width="8.5" height="8.5" rx="2.2" fill="#FFFFFF"/>
+    <!-- Bottom-Right Base Tile -->
+    <rect x="17.5" y="17.5" width="8.5" height="8.5" rx="2.2" fill="#FFFFFF"/>
+    <!-- Top-Right Transformed Geometry Tile -->
+    <rect x="18" y="7" width="7" height="7" rx="1.8" transform="rotate(45 21.5 10.5)" fill="#FFFFFF"/>
+</svg>

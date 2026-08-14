@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6: Linear Transformations | Algebrify</title>
+    <meta name="description" content="Learn linear transformations: definitions, kernel, nullity, image, rank, the Rank-Nullity Dimension Theorem, and the algebra of linear maps with textbook clarity.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 06: Linear Transformations</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 06</span>
+                    <h1>Linear Transformations</h1>
+                    <p>
+                        A linear transformation is a structure-preserving function between vector spaces that preserves addition and scalar multiplication. In this module, you will master the formal algebraic definitions of linear mappings, study Kernel (Null Space) and Image (Range), and prove the cornerstone Rank-Nullity Dimension Theorem.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#visualizer" class="btn-secondary"><i data-lucide="shuffle"></i> Matrix Explorer</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> State the definition and the two linearity conditions for a mapping $T: V \to W$.</li>
+                        <li><i data-lucide="check"></i> Identify examples of linear mappings including matrix mappings, derivative operators, and projections.</li>
+                        <li><i data-lucide="check"></i> Define Kernel ($\text{Ker}(T)$), Image ($\text{Im}(T)$), Nullity, and Rank.</li>
+                        <li><i data-lucide="check"></i> State and apply the fundamental Rank-Nullity Dimension Theorem ($\text{Nullity} + \text{Rank} = \dim(V)$).</li>
+                        <li><i data-lucide="check"></i> Perform algebraic operations on linear mappings (addition, scalar multiplication, composition).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6.1: DEFINITION & LINEARITY -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 6.1</span>
+                <h2>Definition of a Linear Transformation</h2>
+                
+                <p class="theory-intro">
+                    Let $V$ and $W$ be two vector spaces over the same field $F$. A function $T: V \to W$ is called a <strong>linear transformation</strong> (or <strong>linear mapping</strong>) if it satisfies two conditions for all vectors $\mathbf{u}, \mathbf{v} \in V$ and every scalar $c \in F$:
+                </p>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>The Two Linearity Axioms:</strong>
+                        <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; font-size: 1.05rem;">
+                            <li><strong>Additivity:</strong> $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$</li>
+                            <li><strong>Homogeneity (Scalar Scaling):</strong> $T(c\mathbf{u}) = c T(\mathbf{u})$</li>
+                        </ol>
+                        <p style="margin-top: 10px;">
+                            Combining both conditions into a single statement:
+                            \[ T(c_1\mathbf{u} + c_2\mathbf{v}) = c_1 T(\mathbf{u}) + c_2 T(\mathbf{v}) \]
+                        </p>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4><i data-lucide="sparkles"></i> Direct Properties of Linear Transformations</h4>
+                        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li><strong>Zero Vector Property:</strong> $T(\mathbf{0}_V) = \mathbf{0}_W$. (A linear mapping must always map origin to origin).</li>
+                            <li><strong>Negation Property:</strong> $T(-\mathbf{v}) = -T(\mathbf{v})$.</li>
+                            <li><strong>Linear Combinations:</strong> $T\left(\sum_{i=1}^k c_i \mathbf{v}_i\right) = \sum_{i=1}^k c_i T(\mathbf{v}_i)$.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6.2: EXAMPLES OF LINEAR TRANSFORMATIONS -->
+        <section class="matrix-types">
+            <div class="matrix-types-container">
+                <span class="section-tag">Section 6.2</span>
+                <h2>Standard Examples of Linear Transformations</h2>
+
+                <div class="operations-grid">
+                    <!-- Matrix Mapping -->
+                    <div class="type-card">
+                        <h3>1. Matrix Mapping</h3>
+                        <p>Let $A$ be an $m \times n$ matrix. The function $T: \mathbb{R}^n \to \mathbb{R}^m$ defined by $T(\mathbf{x}) = A\mathbf{x}$ is linear because $A(\mathbf{u}+\mathbf{v}) = A\mathbf{u}+A\mathbf{v}$ and $A(c\mathbf{u}) = cA\mathbf{u}$.</p>
+                    </div>
+
+                    <!-- Derivative Operator -->
+                    <div class="type-card">
+                        <h3>2. Derivative Operator</h3>
+                        <p>Let $D: P_n(\mathbb{R}) \to P_{n-1}(\mathbb{R})$ be the differentiation map $D(p(x)) = p'(x)$. Since $(f+g)' = f'+g'$ and $(cf)' = c f'$, differentiation is linear.</p>
+                    </div>
+
+                    <!-- Zero Transformation -->
+                    <div class="type-card">
+                        <h3>3. Zero Transformation</h3>
+                        <p>The mapping $T_0: V \to W$ defined by $T_0(\mathbf{v}) = \mathbf{0}_W$ for all $\mathbf{v} \in V$ is trivially linear.</p>
+                    </div>
+
+                    <!-- Identity Transformation -->
+                    <div class="type-card">
+                        <h3>4. Identity Transformation</h3>
+                        <p>The mapping $I_V: V \to V$ defined by $I_V(\mathbf{v}) = \mathbf{v}$ for all $\mathbf{v} \in V$ is linear.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6.3: KERNEL, IMAGE & RANK-NULLITY -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 6.3</span>
+                <h2>Kernel (Null Space), Image (Range) & Rank-Nullity Theorem</h2>
+
+                <div class="operations-grid">
+                    <!-- Kernel -->
+                    <div class="operation-card">
+                        <h3>1. Kernel ($\text{Ker}(T)$ / Null Space)</h3>
+                        <p>The set of all vectors in domain $V$ that map to the zero vector in $W$:</p>
+                        <div class="math-display">\[ \text{Ker}(T) = \{\mathbf{v} \in V : T(\mathbf{v}) = \mathbf{0}_W\} \]</div>
+                        <p>
+                            $\text{Ker}(T)$ is always a <strong>subspace of $V$</strong>.<br>
+                            <strong>Nullity:</strong> $\text{Nullity}(T) = \dim(\text{Ker}(T))$.<br>
+                            <strong>Injectivity:</strong> $T$ is <strong>one-to-one (injective)</strong> $\iff \text{Ker}(T) = \{\mathbf{0}\}$.
+                        </p>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="operation-card">
+                        <h3>2. Image ($\text{Im}(T)$ / Range)</h3>
+                        <p>The set of all image vectors in codomain $W$ produced by $T$:</p>
+                        <div class="math-display">\[ \text{Im}(T) = \{T(\mathbf{v}) : \mathbf{v} \in V\} \]</div>
+                        <p>
+                            $\text{Im}(T)$ is always a <strong>subspace of $W$</strong>.<br>
+                            <strong>Rank:</strong> $\text{Rank}(T) = \dim(\text{Im}(T))$.<br>
+                            <strong>Surjectivity:</strong> $T$ is <strong>onto (surjective)</strong> $\iff \text{Im}(T) = W$.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Rank-Nullity Theorem Box -->
+                <div class="definition-box mt-30" style="border-left-color: var(--clr-accent);">
+                    <strong>The Fundamental Rank-Nullity Dimension Theorem:</strong>
+                    <p>
+                        If $V$ is a finite-dimensional vector space and $T: V \to W$ is a linear transformation, then:
+                    </p>
+                    <div class="math-display">
+                        \[ \dim(\text{Ker}(T)) + \dim(\text{Im}(T)) = \text{Nullity}(T) + \text{Rank}(T) = \dim(V) \quad (\text{Dimension of Domain}) \]
+                    </div>
+                </div>
+
+                <div class="step-box mt-20">
+                    <div class="step-header">
+                        <span class="step-badge">Worked Example</span>
+                        <h4>Applying the Rank-Nullity Theorem</h4>
+                    </div>
+                    <p>
+                        Let $T: \mathbb{R}^4 \to \mathbb{R}^3$ be a linear transformation defined by $T(\mathbf{x}) = A\mathbf{x}$ where the rank of $A$ is 2. Find the nullity of $T$.
+                    </p>
+                    <p><strong>Solution:</strong></p>
+                    <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                        <li>Dimension of the domain $V = \mathbb{R}^4$ is $\dim(V) = 4$.</li>
+                        <li>$\text{Rank}(T) = \dim(\text{Im}(T)) = 2$.</li>
+                        <li>By the Rank-Nullity Theorem: $\text{Nullity}(T) + \text{Rank}(T) = 4 \implies \text{Nullity}(T) + 2 = 4 \implies \text{Nullity}(T) = \mathbf{2}$.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6.4: ALGEBRA OF LINEAR TRANSFORMATIONS -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 6.4</span>
+                <h2>Algebra of Linear Transformations</h2>
+
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h3>1. Sum ($T_1 + T_2$)</h3>
+                        <div class="math-display">\[ (T_1 + T_2)(\mathbf{v}) = T_1(\mathbf{v}) + T_2(\mathbf{v}) \]</div>
+                        <p>The sum of two linear mappings from $V \to W$ is also a linear mapping from $V \to W$.</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>2. Scalar Multiple ($cT$)</h3>
+                        <div class="math-display">\[ (cT)(\mathbf{v}) = c \cdot T(\mathbf{v}) \]</div>
+                        <p>Scaling a linear mapping produces another valid linear mapping.</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>3. Composition ($T_1 \circ T_2$)</h3>
+                        <div class="math-display">\[ (T_1 \circ T_2)(\mathbf{u}) = T_1(T_2(\mathbf{u})) \]</div>
+                        <p>If $T_2: U \to V$ and $T_1: V \to W$, their composition is a linear mapping $T_1 \circ T_2: U \to W$.</p>
+                    </div>
+                </div>
+
+                <div class="concept-box mt-20">
+                    <h4><i data-lucide="layers"></i> The Vector Space $\mathcal{L}(V, W)$</h4>
+                    <p>
+                        The set of all linear transformations from $V$ to $W$, denoted by $\mathcal{L}(V, W)$ or $\text{Hom}(V, W)$, forms a vector space under transformation addition and scalar multiplication. If $\dim(V) = n$ and $\dim(W) = m$, then $\dim(\mathcal{L}(V, W)) = m \times n$.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>$T$ is linear $\iff T(\mathbf{u}+\mathbf{v}) = T(\mathbf{u})+T(\mathbf{v})$ and $T(c\mathbf{u}) = cT(\mathbf{u})$.</li>
+                            <li>$\text{Ker}(T) \subseteq \text{Domain}$; $\text{Im}(T) \subseteq \text{Codomain}$.</li>
+                            <li>$\text{Nullity}(T) + \text{Rank}(T) = \dim(\text{Domain})$.</li>
+                            <li>$T$ is one-to-one (injective) $\iff \text{Ker}(T) = \{\mathbf{0}\}$ (Nullity = 0).</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>A mapping with a constant offset like $T(x) = 2x + 3$ is NOT a linear transformation because $T(0) = 3 \neq 0$. (It is an affine map).</li>
+                            <li>Do not sum the codomain dimension in the Rank-Nullity theorem; it is always equal to the <strong>domain</strong> dimension $\dim(V)$.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE TRANSFORMATION EXPLORER -->
+        <section id="visualizer" class="matrix-calculator">
+            <div class="calculator-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Tool</span>
+                    <h2>2D Linear Transformation Matrix Explorer</h2>
+                    <p>Select a geometric transformation or enter custom matrix coefficients to observe how input vectors transform under linear mapping.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calc-controls">
+                        <div class="control-group">
+                            <label>Presets:</label>
+                            <div class="preset-btns">
+                                <button class="preset-btn trans-preset-btn active" data-a="0" data-b="-1" data-c="1" data-d="0">Rotate 90°</button>
+                                <button class="preset-btn trans-preset-btn" data-a="2" data-b="0" data-c="0" data-d="2">Scale 2x</button>
+                                <button class="preset-btn trans-preset-btn" data-a="1" data-b="0" data-c="0" data-d="-1">Reflect X</button>
+                                <button class="preset-btn trans-preset-btn" data-a="0" data-b="1" data-c="1" data-d="0">Reflect y=x</button>
+                                <button class="preset-btn trans-preset-btn" data-a="1" data-b="1.5" data-c="0" data-d="1">Shear X</button>
+                                <button class="preset-btn trans-preset-btn" data-a="1" data-b="0" data-c="0" data-d="0">Project X</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>Standard Matrix $[T]$</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 60px); gap: 8px; justify-content: center;">
+                                <input type="number" id="t_11" value="0" step="any" style="width: 60px; height: 50px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="t_12" value="-1" step="any" style="width: 60px; height: 50px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="t_21" value="1" step="any" style="width: 60px; height: 50px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="t_22" value="0" step="any" style="width: 60px; height: 50px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border);">
+                            </div>
+                        </div>
+
+                        <div class="matrix-op-sign">·</div>
+
+                        <div class="matrix-input-box">
+                            <h4>Input Vector $\mathbf{v}$</h4>
+                            <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
+                                <input type="number" id="t_vx" value="3" step="any" placeholder="x" style="width: 60px; height: 50px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="t_vy" value="2" step="any" placeholder="y" style="width: 60px; height: 50px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="trans-calc-btn"><i data-lucide="play"></i> Apply Transformation T(v)</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Transformed Vector $T(\mathbf{v})$</h4>
+                        <div class="calc-result-content" id="trans-result-box">
+                            <p class="text-center text-light">Click "Apply Transformation" to compute.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 6 Practice Quiz</h2>
+                    <p>Test your understanding of linear mappings, kernel, image, and the Rank-Nullity Theorem.</p>
+                </div>
+
+                <div class="quiz-card" id="trans-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 6?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module 7: Linear Transformations and Matrices.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-6">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="vector-spaces.html" class="module-nav-btn prev-btn">← Previous Module: Vector Spaces</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="transformation-matrices.html" class="module-nav-btn next-btn">Next Module: Transformation Matrices →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module6Questions = [
+            {
+                        "question": "What two properties must a mapping $T: V \\to W$ satisfy to be a <strong>linear transformation</strong>?",
+                        "answers": [
+                                    "$T(\\mathbf{u}+\\mathbf{v}) = T(\\mathbf{u})+T(\\mathbf{v})$ and $T(c\\mathbf{u}) = cT(\\mathbf{u})$",
+                                    "$T(\\mathbf{u}\\mathbf{v}) = T(\\mathbf{u})T(\\mathbf{v})$ and $T(0) = 1$",
+                                    "$T$ must be bijective and continuous",
+                                    "$\\det(T) \\neq 0$ and $T(\\mathbf{u}) = \\mathbf{u}$"
+                        ],
+                        "correct": 0,
+                        "explanation": "Linearity requires additivity $T(\\mathbf{u} + \\mathbf{v}) = T(\\mathbf{u}) + T(\\mathbf{v})$ and scalar homogeneity $T(c\\mathbf{u}) = cT(\\mathbf{u})$."
+            },
+            {
+                        "question": "What is the <strong>Kernel (Null Space)</strong> of a linear transformation $T: V \\to W$?",
+                        "answers": [
+                                    "The set of all outputs $T(\\mathbf{v})$ in $W$",
+                                    "The set of all vectors $\\mathbf{v} \\in V$ such that $T(\\mathbf{v}) = \\mathbf{0}$",
+                                    "The dimension of $W$",
+                                    "The set of non-zero eigenvalues"
+                        ],
+                        "correct": 1,
+                        "explanation": "$\\ker(T) = \\{\\mathbf{v} \\in V \\mid T(\\mathbf{v}) = \\mathbf{0}\\}$."
+            },
+            {
+                        "question": "What does the <strong>Rank-Nullity Theorem (Dimension Theorem)</strong> state for $T: V \\to W$?",
+                        "answers": [
+                                    "$\\text{rank}(T) \\times \\text{nullity}(T) = \\dim(V)$",
+                                    "$\\text{rank}(T) + \\text{nullity}(T) = \\dim(V)$",
+                                    "$\\text{rank}(T) + \\text{nullity}(T) = \\dim(W)$",
+                                    "$\\text{rank}(T) = \\text{nullity}(T)$"
+                        ],
+                        "correct": 1,
+                        "explanation": "For any linear transformation with finite-dimensional domain $V$, $\\dim(\\text{im}(T)) + \\dim(\\ker(T)) = \\dim(V)$."
+            },
+            {
+                        "question": "A linear transformation $T: V \\to W$ is <strong>injective (one-to-one)</strong> if and only if:",
+                        "answers": [
+                                    "$\\ker(T) = \\{\\mathbf{0}\\}$",
+                                    "$\\text{im}(T) = W$",
+                                    "$\\text{rank}(T) = 0$",
+                                    "$\\dim(V) = \\dim(W)$"
+                        ],
+                        "correct": 0,
+                        "explanation": "$T$ is injective $\\iff \\ker(T) = \\{\\mathbf{0}\\}$ (nullity is 0)."
+            },
+            {
+                        "question": "If $T: \\mathbb{R}^5 \\to \\mathbb{R}^3$ and $\\dim(\\text{im}(T)) = 3$, what is $\\dim(\\ker(T))$?",
+                        "answers": [
+                                    "$0$",
+                                    "$2$",
+                                    "$3$",
+                                    "$5$"
+                        ],
+                        "correct": 1,
+                        "explanation": "By Rank-Nullity: $\\dim(\\ker(T)) = \\dim(V) - \\text{rank}(T) = 5 - 3 = 2$."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("trans-quiz-card", module6Questions, "module-6");
+        });
+    </script>
+</body>
+
+</html>

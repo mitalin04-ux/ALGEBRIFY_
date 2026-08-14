@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebrify | Learn Linear Algebra Visually</title>
+    <meta name="description"
+        content="Master linear algebra concepts: matrices, systems of equations, fields, vector spaces, linear transformations, inner products, determinants, and eigenvalues with textbook clarity and interactive tools.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor" />
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor" />
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor" />
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)"
+                            fill="currentColor" />
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="#modules" class="nav-dropdown-toggle" id="learn-dropdown-toggle" aria-haspopup="true"
+                        aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="pages/matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="pages/equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="pages/fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="pages/vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="pages/vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="pages/transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="pages/transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="pages/inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="pages/determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="pages/eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="pages/matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true"
+                        aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="pages/matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="pages/equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="pages/fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="pages/vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="pages/vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="pages/transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="pages/transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="pages/inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="pages/determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="pages/eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="pages/matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="pages/ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="pages/dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#modules" class="btn-primary">
+                    Start Learning
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <span class="hero-badge">
+                        <i data-lucide="sparkles"></i> Comprehensive Linear Algebra Course
+                    </span>
+
+                    <h1 class="hero-title">
+                        Learn Linear Algebra.<br>Understand it. Apply&nbsp;it.
+                    </h1>
+
+                    <p class="hero-description">
+                        A complete 10-module curriculum written with textbook clarity, worked examples,
+                        interactive calculators, quizzes, and an intelligent AI tutor.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="#modules" class="btn-primary">
+                            <i data-lucide="grid"></i> Explore Modules
+                        </a>
+                        <a href="pages/matrices.html#calculator" class="btn-secondary">
+                            <i data-lucide="calculator"></i> Try a Calculator
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY LINEAR ALGEBRA SECTION -->
+        <section class="why" id="about">
+            <div class="why-container">
+                <div class="why-left">
+                    <span class="section-tag">About the Course</span>
+                    <h2>Build Solid Mathematical Foundations.</h2>
+                    <p>
+                        Linear Algebra is the language of higher mathematics and computational science. This course
+                        introduces each concept progressively—starting from basic definitions and numerical examples,
+                        and advancing to abstract vector spaces, inner products, and canonical forms.
+                    </p>
+                    <a href="#modules" class="btn-primary">
+                        Explore Modules <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="why-right">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="book-open"></i></div>
+                        <h3>Textbook Clarity</h3>
+                        <p>Clear, natural explanations designed for high school and introductory undergraduate students.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="calculator"></i></div>
+                        <h3>Dynamic Calculators</h3>
+                        <p>Perform matrix operations, solve systems via Gauss-Jordan, and compute eigenvalues on
+                            flexible dimensions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="bot"></i></div>
+                        <h3>AI Math Tutor</h3>
+                        <p>Ask questions anytime, receive step-by-step guidance, and clarify difficult mathematical
+                            steps.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="check-circle-2"></i></div>
+                        <h3>End-of-Module Quizzes</h3>
+                        <p>Test your understanding after every lesson with immediate feedback, detailed solutions, and
+                            progress tracking.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10 LEARNING MODULES SECTION -->
+        <section class="modules" id="modules">
+            <div class="modules-container">
+                <div class="section-heading">
+                    <span class="section-tag">Curriculum</span>
+                    <h2>10 Complete Learning Modules</h2>
+                    <p>
+                        Follow a structured 10-module syllabus covering the full breadth of linear algebra with
+                        textbook-level clarity, complete definitions, worked numerical examples, and interactive tools.
+                    </p>
+                </div>
+
+                <div class="modules-grid">
+                    <!-- Module 1 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="grid-2x2"></i></div>
+                            <span class="section-tag">Module 01</span>
+                            <h3>Algebra of Matrices</h3>
+                            <p>Matrix definition, order, 10 types of matrices, matrix equality, addition, scalar
+                                multiplication, matrix multiplication, and transpose.</p>
+                        </div>
+                        <a href="pages/matrices.html" class="module-link">Start Module 1 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="equal"></i></div>
+                            <span class="section-tag">Module 02</span>
+                            <h3>Systems of Linear Equations</h3>
+                            <p>Homogeneous and non-homogeneous systems, augmented matrices, triangular and echelon
+                                forms, Gaussian & Gauss-Jordan elimination, and consistency.</p>
+                        </div>
+                        <a href="pages/equations.html" class="module-link">Start Module 2 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 3 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="shield"></i></div>
+                            <span class="section-tag">Module 03</span>
+                            <h3>Field</h3>
+                            <p>Definition of a field and field axioms, real numbers $\mathbb{R}$, complex numbers
+                                $\mathbb{C}$, and Galois Field $\text{GF}(2)$ arithmetic.</p>
+                        </div>
+                        <a href="pages/fields.html" class="module-link">Start Module 3 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 4 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="move-right"></i></div>
+                            <span class="section-tag">Module 04</span>
+                            <h3>Vectors</h3>
+                            <p>Geometric and algebraic vectors, vector addition, scalar multiplication, dot product and
+                                its properties, and 3D cross product.</p>
+                        </div>
+                        <a href="pages/vectors.html" class="module-link">Start Module 4 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 5 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="box"></i></div>
+                            <span class="section-tag">Module 05</span>
+                            <h3>Vector Spaces</h3>
+                            <p>Vector space axioms, linear combinations, span, subspaces, row and column spaces, linear
+                                independence, basis, and dimension.</p>
+                        </div>
+                        <a href="pages/vector-spaces.html" class="module-link">Start Module 5 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 6 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="shuffle"></i></div>
+                            <span class="section-tag">Module 06</span>
+                            <h3>Linear Transformations</h3>
+                            <p>Definition of linear mappings, kernel (null space), image (range), rank, nullity, and the
+                                Rank-Nullity Dimension Theorem.</p>
+                        </div>
+                        <a href="pages/transformations.html" class="module-link">Start Module 6 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 7 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="table-properties"></i></div>
+                            <span class="section-tag">Module 07</span>
+                            <h3>Linear Transformations & Matrices</h3>
+                            <p>Matrix representation with respect to bases, standard matrix $[T]$, change of basis
+                                transition matrices, and matrix similarity.</p>
+                        </div>
+                        <a href="pages/transformation-matrices.html" class="module-link">Start Module 7 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 8 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="compass"></i></div>
+                            <span class="section-tag">Module 08</span>
+                            <h3>Inner Product Spaces & Orthogonality</h3>
+                            <p>Inner products, induced norm, Cauchy-Schwarz inequality, orthogonal and orthonormal sets,
+                                and the Gram-Schmidt process.</p>
+                        </div>
+                        <a href="pages/inner-products.html" class="module-link">Start Module 8 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 9 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="hash"></i></div>
+                            <span class="section-tag">Module 09</span>
+                            <h3>Determinants</h3>
+                            <p>Determinants of square matrices, Laplace cofactor expansion, determinant algebraic
+                                properties, Cramer's Rule, and matrix invertibility.</p>
+                        </div>
+                        <a href="pages/determinants.html" class="module-link">Start Module 9 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <!-- Module 10 -->
+                    <div class="module-card">
+                        <div class="module-card-top">
+                            <div class="module-icon"><i data-lucide="sigma"></i></div>
+                            <span class="section-tag">Module 10</span>
+                            <h3>Diagonalization & Eigenvalues</h3>
+                            <p>Characteristic polynomials, eigenvalues, eigenvectors, Cayley-Hamilton theorem, minimal
+                                polynomials, diagonalization, and Jordan form.</p>
+                        </div>
+                        <a href="pages/eigenvalues.html" class="module-link">Start Module 10 <i
+                                data-lucide="arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS SECTION -->
+        <section class="stats">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h2>10</h2>
+                    <p>Learning Modules</p>
+                </div>
+                <div class="stat-item">
+                    <h2>100%</h2>
+                    <p>Textbook-Style Rigor</p>
+                </div>
+                <div class="stat-item">
+                    <h2>5+</h2>
+                    <p>Dynamic Math Tools</p>
+                </div>
+                <div class="stat-item">
+                    <h2>24/7</h2>
+                    <p>AI Tutor Assistance</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="pages/matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="pages/ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="pages/dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="pages/matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="pages/equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="pages/fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="pages/vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="pages/vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="pages/transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="pages/transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="pages/inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="pages/determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="pages/eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="pages/matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="pages/equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="pages/fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="pages/vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="pages/vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="pages/transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="pages/transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="pages/inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="pages/determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="pages/eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="pages/ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

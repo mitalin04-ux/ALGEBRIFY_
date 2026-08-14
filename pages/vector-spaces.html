@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5: Vector Spaces | Algebrify</title>
+    <meta name="description" content="Master vector spaces: 10 axioms, subspaces, span, row and column spaces, linear independence, basis, and dimension with textbook clarity.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 05: Vector Spaces</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 05</span>
+                    <h1>Vector Spaces</h1>
+                    <p>
+                        A vector space is an abstract mathematical universe whose elements (called vectors) can be added together and multiplied by scalars while satisfying 10 fundamental algebraic axioms. In this module, you will explore abstract vector spaces, subspaces, span, linear independence, basis, and dimension.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#checker" class="btn-secondary"><i data-lucide="check-square"></i> Independence Checker</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> State the 10 formal axioms defining a vector space $V$ over a field $F$.</li>
+                        <li><i data-lucide="check"></i> Apply the 3-step subspace test to determine whether a subset is a subspace.</li>
+                        <li><i data-lucide="check"></i> Define linear combinations, span, row space, and column space of a matrix.</li>
+                        <li><i data-lucide="check"></i> Test a set of vectors for linear independence using matrix rank or determinants.</li>
+                        <li><i data-lucide="check"></i> Find a basis and determine the dimension of a vector space and its subspaces.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5.1: DEFINITION & 10 AXIOMS -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 5.1</span>
+                <h2>Definition of a Vector Space and the 10 Axioms</h2>
+                
+                <p class="theory-intro">
+                    Let $F$ be a field (such as $\mathbb{R}$). A <strong>vector space</strong> over $F$ is a non-empty set $V$ equipped with two operations—<strong>vector addition</strong> ($+: V \times V \to V$) and <strong>scalar multiplication</strong> ($\cdot: F \times V \to V$)—that satisfy the following 10 axioms for all $\mathbf{u}, \mathbf{v}, \mathbf{w} \in V$ and scalars $c, d \in F$:
+                </p>
+
+                <div class="theory-card">
+                    <div class="operations-grid">
+                        <div class="operation-card">
+                            <h3>Vector Addition Axioms</h3>
+                            <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 0.95rem;">
+                                <li><strong>1. Closure under Addition:</strong> $\mathbf{u} + \mathbf{v} \in V$.</li>
+                                <li><strong>2. Commutativity:</strong> $\mathbf{u} + \mathbf{v} = \mathbf{v} + \mathbf{u}$.</li>
+                                <li><strong>3. Associativity:</strong> $(\mathbf{u} + \mathbf{v}) + \mathbf{w} = \mathbf{u} + (\mathbf{v} + \mathbf{w})$.</li>
+                                <li><strong>4. Zero Vector:</strong> There exists $\mathbf{0} \in V$ such that $\mathbf{u} + \mathbf{0} = \mathbf{u}$.</li>
+                                <li><strong>5. Additive Inverse:</strong> For each $\mathbf{u}$, there exists $(-\mathbf{u}) \in V$ such that $\mathbf{u} + (-\mathbf{u}) = \mathbf{0}$.</li>
+                            </ul>
+                        </div>
+
+                        <div class="operation-card">
+                            <h3>Scalar Multiplication Axioms</h3>
+                            <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 0.95rem;">
+                                <li><strong>6. Closure under Scalar Mult:</strong> $c\mathbf{u} \in V$.</li>
+                                <li><strong>7. Scalar Distributivity:</strong> $c(\mathbf{u} + \mathbf{v}) = c\mathbf{u} + c\mathbf{v}$.</li>
+                                <li><strong>8. Vector Distributivity:</strong> $(c + d)\mathbf{u} = c\mathbf{u} + d\mathbf{u}$.</li>
+                                <li><strong>9. Associativity of Scalars:</strong> $(cd)\mathbf{u} = c(d\mathbf{u})$.</li>
+                                <li><strong>10. Multiplicative Identity:</strong> $1\mathbf{u} = \mathbf{u}$.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="concept-box mt-20">
+                        <h4><i data-lucide="box"></i> Standard Examples of Vector Spaces</h4>
+                        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li>$\mathbb{R}^n$: Ordered $n$-tuples of real numbers with component-wise operations.</li>
+                            <li>$P_n(\mathbb{R})$: All polynomials of degree $\le n$, with standard polynomial addition.</li>
+                            <li>$M_{m \times n}(\mathbb{R})$: All $m \times n$ matrices under matrix addition and scalar multiplication.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5.2: SUBSPACES & 3-STEP TEST -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 5.2</span>
+                <h2>Subspaces and the 3-Step Subspace Test</h2>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>Definition of a Subspace:</strong>
+                        <p>
+                            A non-empty subset $W$ of a vector space $V$ is called a <strong>subspace</strong> of $V$ if $W$ is itself a vector space under the same addition and scalar multiplication defined on $V$.
+                        </p>
+                    </div>
+
+                    <p><strong>The 3-Step Subspace Test:</strong> To prove that a subset $W \subseteq V$ is a subspace, we only need to verify 3 simple conditions:</p>
+                    <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; font-size: 1.05rem;">
+                        <li><strong>Zero Vector:</strong> The zero vector must belong to $W$ ($\mathbf{0} \in W$).</li>
+                        <li><strong>Closed under Addition:</strong> If $\mathbf{u}, \mathbf{v} \in W$, then $\mathbf{u} + \mathbf{v} \in W$.</li>
+                        <li><strong>Closed under Scalar Multiplication:</strong> If $c \in F$ and $\mathbf{u} \in W$, then $c\mathbf{u} \in W$.</li>
+                    </ol>
+
+                    <div class="step-box mt-20">
+                        <div class="step-header">
+                            <span class="step-badge">Example</span>
+                            <h4>Testing a Plane in $\mathbb{R}^3$ for Subspace Properties</h4>
+                        </div>
+                        <p>Is the set $W = \left\{ \begin{bmatrix} x \\ y \\ z \end{bmatrix} \in \mathbb{R}^3 : 2x - 3y + z = 0 \right\}$ a subspace of $\mathbb{R}^3$?</p>
+                        <p><strong>Verification:</strong></p>
+                        <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li><strong>Zero vector:</strong> $2(0) - 3(0) + 0 = 0 \implies \mathbf{0} \in W$ (holds).</li>
+                            <li><strong>Addition:</strong> For $\mathbf{u}, \mathbf{v} \in W$, $2(u_1+v_1) - 3(u_2+v_2) + (u_3+v_3) = (2u_1-3u_2+u_3) + (2v_1-3v_2+v_3) = 0 + 0 = 0 \implies \mathbf{u}+\mathbf{v} \in W$ (holds).</li>
+                            <li><strong>Scalar multiplication:</strong> $2(cu_1) - 3(cu_2) + (cu_3) = c(2u_1 - 3u_2 + u_3) = c(0) = 0 \implies c\mathbf{u} \in W$ (holds).</li>
+                        </ol>
+                        <p><strong>Conclusion:</strong> Yes, $W$ is a valid 2-dimensional subspace (a plane passing through the origin).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5.3: SPAN, LINEAR INDEPENDENCE, BASIS & DIMENSION -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 5.3</span>
+                <h2>Span, Linear Independence, Basis & Dimension</h2>
+
+                <div class="operations-grid">
+                    <!-- Span -->
+                    <div class="type-card">
+                        <h3>1. Span of Vectors</h3>
+                        <p>The set of all possible linear combinations formed by vectors $S = \{\mathbf{v}_1, \dots, \mathbf{v}_k\}$:</p>
+                        <div class="math-display">\[ \text{Span}(S) = \{c_1\mathbf{v}_1 + \dots + c_k\mathbf{v}_k : c_i \in F\} \]</div>
+                        <p>The span of any set of vectors is automatically a valid subspace of $V$.</p>
+                    </div>
+
+                    <!-- Linear Independence -->
+                    <div class="type-card">
+                        <h3>2. Linear Independence</h3>
+                        <p>A set of vectors $\{\mathbf{v}_1, \dots, \mathbf{v}_k\}$ is <strong>linearly independent</strong> if:</p>
+                        <div class="math-display">\[ c_1\mathbf{v}_1 + c_2\mathbf{v}_2 + \dots + c_k\mathbf{v}_k = \mathbf{0} \implies c_1 = c_2 = \dots = c_k = 0 \]</div>
+                        <p>If non-trivial scalars exist, the vectors are <strong>linearly dependent</strong>.</p>
+                    </div>
+
+                    <!-- Basis -->
+                    <div class="type-card">
+                        <h3>3. Basis of a Vector Space</h3>
+                        <p>A set of vectors $B = \{\mathbf{v}_1, \dots, \mathbf{v}_n\}$ is a <strong>basis</strong> for $V$ if:</p>
+                        <ol>
+                            <li>$B$ is linearly independent.</li>
+                            <li>$B$ spans $V$ ($\text{Span}(B) = V$).</li>
+                        </ol>
+                        <div class="math-display">\[ B \text{ is linearly independent and } \text{Span}(B) = V \]</div>
+                    </div>
+
+                    <!-- Dimension -->
+                    <div class="type-card">
+                        <h3>4. Dimension ($\dim(V)$)</h3>
+                        <p>The number of vectors in any basis of vector space $V$:</p>
+                        <div class="math-display">\[ \dim(\mathbb{R}^n) = n, \quad \dim(P_n) = n + 1, \quad \dim(M_{m \times n}) = m \times n \]</div>
+                        <p>All bases of a finite-dimensional space have the exact same size.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>A subspace must always contain the zero vector ($\mathbf{0} \in W$).</li>
+                            <li>To test linear independence, set up $A\mathbf{c} = \mathbf{0}$; if $\det(A) \neq 0$ (or rank is maximal), the vectors are independent.</li>
+                            <li>A basis is a minimal spanning set and a maximal linearly independent set.</li>
+                            <li>The dimension of $\mathbb{R}^3$ is 3; any basis of $\mathbb{R}^3$ must have exactly 3 independent vectors.</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>A line or plane that does <em>not</em> pass through the origin (e.g. $2x + y = 5$) is NOT a subspace because $\mathbf{0} \notin W$.</li>
+                            <li>Any set containing the zero vector ($\mathbf{0}$) is always linearly dependent.</li>
+                            <li>In $\mathbb{R}^n$, any set with more than $n$ vectors is automatically linearly dependent.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE INDEPENDENCE CHECKER -->
+        <section id="checker" class="matrix-calculator">
+            <div class="calculator-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Tool</span>
+                    <h2>Linear Independence & Span Checker</h2>
+                    <p>Enter up to 3 vectors in $\mathbb{R}^3$ to determine whether they are linearly independent and what dimension they span.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>$\mathbf{v}_1$</h4>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <input type="number" id="lic_v1x" value="1" style="width: 60px; height: 40px; text-align: center;">
+                                <input type="number" id="lic_v1y" value="0" style="width: 60px; height: 40px; text-align: center;">
+                                <input type="number" id="lic_v1z" value="2" style="width: 60px; height: 40px; text-align: center;">
+                            </div>
+                        </div>
+
+                        <div class="matrix-input-box">
+                            <h4>$\mathbf{v}_2$</h4>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <input type="number" id="lic_v2x" value="0" style="width: 60px; height: 40px; text-align: center;">
+                                <input type="number" id="lic_v2y" value="1" style="width: 60px; height: 40px; text-align: center;">
+                                <input type="number" id="lic_v2z" value="1" style="width: 60px; height: 40px; text-align: center;">
+                            </div>
+                        </div>
+
+                        <div class="matrix-input-box">
+                            <h4>$\mathbf{v}_3$</h4>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <input type="number" id="lic_v3x" value="1" style="width: 60px; height: 40px; text-align: center;">
+                                <input type="number" id="lic_v3y" value="2" style="width: 60px; height: 40px; text-align: center;">
+                                <input type="number" id="lic_v3z" value="4" style="width: 60px; height: 40px; text-align: center;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="lic-check-btn"><i data-lucide="check-circle"></i> Test Independence & Basis</button>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Independence Analysis</h4>
+                        <div class="calc-result-content" id="lic-result-box">
+                            <p class="text-center text-light">Click "Test Independence & Basis" above to evaluate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 5 Practice Quiz</h2>
+                    <p>Test your understanding of vector space axioms, subspaces, linear independence, basis, and dimension.</p>
+                </div>
+
+                <div class="quiz-card" id="vspaces-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 5?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module 6: Linear Transformations.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-5">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="vectors.html" class="module-nav-btn prev-btn">← Previous Module: Vectors</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="transformations.html" class="module-nav-btn next-btn">Next Module: Transformations →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module5Questions = [
+            {
+                        "question": "What three conditions must a subset $W \\subseteq V$ satisfy to be a <strong>subspace</strong>?",
+                        "answers": [
+                                    "Contains 0, closed under addition, closed under scalar multiplication.",
+                                    "Contains 1, finite dimension, invertible.",
+                                    "Orthogonal, normalized, span equals $V$.",
+                                    "Non-empty, determinant non-zero, closed under multiplication."
+                        ],
+                        "correct": 0,
+                        "explanation": "A subspace must contain the zero vector $\\mathbf{0} \\in W$, be closed under vector addition ($\\mathbf{u} + \\mathbf{v} \\in W$), and closed under scalar multiplication ($c\\mathbf{u} \\in W$)."
+            },
+            {
+                        "question": "A set of vectors $\\{\\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_k\\}$ is <strong>linearly independent</strong> if $c_1\\mathbf{v}_1 + c_2\\mathbf{v}_2 + \\dots + c_k\\mathbf{v}_k = \\mathbf{0}$ implies:",
+                        "answers": [
+                                    "At least one $c_i \\neq 0$",
+                                    "All scalars $c_1 = c_2 = \\dots = c_k = 0$",
+                                    "$c_1 + c_2 + \\dots + c_k = 1$",
+                                    "The vectors are mutually orthogonal"
+                        ],
+                        "correct": 1,
+                        "explanation": "Linear independence means the only linear combination that equals the zero vector is the trivial combination with all coefficients zero."
+            },
+            {
+                        "question": "What is a <strong>basis</strong> of a vector space $V$?",
+                        "answers": [
+                                    "Any spanning set of $V$",
+                                    "Any linearly independent set in $V$",
+                                    "A linearly independent set that spans $V$",
+                                    "A set of orthogonal unit vectors only"
+                        ],
+                        "correct": 2,
+                        "explanation": "A basis is a minimal spanning set and a maximal linearly independent set (both linearly independent and spanning)."
+            },
+            {
+                        "question": "What is the dimension of the polynomial space $P_n(\\mathbb{R})$ (polynomials of degree $\\le n$)?",
+                        "answers": [
+                                    "$n$",
+                                    "$n - 1$",
+                                    "$n + 1$",
+                                    "$2^n$"
+                        ],
+                        "correct": 2,
+                        "explanation": "The standard basis is $\\{1, x, x^2, \\dots, x^n\\}$, which contains exactly $n + 1$ elements."
+            },
+            {
+                        "question": "If $S$ is a set of $4$ vectors in $\\mathbb{R}^3$, can $S$ be linearly independent?",
+                        "answers": [
+                                    "Yes, always",
+                                    "No, any set of more than $n$ vectors in $\\mathbb{R}^n$ is linearly dependent",
+                                    "Only if they are pairwise orthogonal",
+                                    "Only if the zero vector is excluded"
+                        ],
+                        "correct": 1,
+                        "explanation": "In an $n$-dimensional space, any set with more than $n$ vectors is automatically linearly dependent."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("vspaces-quiz-card", module5Questions, "module-5");
+        });
+    </script>
+</body>
+
+</html>

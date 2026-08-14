@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Vectors | Algebrify</title>
+    <meta name="description" content="A complete textbook lesson on vectors: definitions, geometric vs algebraic representations, vector operations, dot product, and 3D cross product.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Academic Mathematics Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                        <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                    </svg>
+                </span>
+                Algebrify
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="../index.html#modules" class="nav-dropdown-toggle active" id="learn-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Learn <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="learn-dropdown-toggle">
+                        <div class="dropdown-header">10 Learning Modules</div>
+                        <a href="matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Algebra of Matrices</strong>
+                                <small>Order, Types, Equality & Operations</small>
+                            </div>
+                        </a>
+                        <a href="equations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Systems of Linear Equations</strong>
+                                <small>Gaussian Elimination, Echelon Forms</small>
+                            </div>
+                        </a>
+                        <a href="fields.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field</strong>
+                                <small>Axioms, Real, Complex & GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vectors</strong>
+                                <small>Dot & Cross Products, Magnitudes</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Spaces</strong>
+                                <small>Subspaces, Span, Basis & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations</strong>
+                                <small>Kernel, Image, Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear Transformations & Matrices</strong>
+                                <small>Matrix Representation, Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Inner Product Spaces & Orthogonality</strong>
+                                <small>Cauchy-Schwarz, Gram-Schmidt</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinants</strong>
+                                <small>Cofactor Expansion, Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Diagonalization & Eigenvalues</strong>
+                                <small>Eigenvectors, Cayley-Hamilton</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="../index.html#modules" class="dropdown-all-btn">
+                                <i data-lucide="grid"></i> All Modules Selection
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="matrices.html#calculator" class="nav-dropdown-toggle" id="calc-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Calculators <i data-lucide="chevron-down" class="dropdown-icon"></i>
+                    </a>
+                    <div class="nav-dropdown-menu" role="menu" aria-labelledby="calc-dropdown-toggle">
+                        <div class="dropdown-header">Interactive Math Tools</div>
+                        <a href="matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">01</span>
+                            <div class="dropdown-item-text">
+                                <strong>Matrix Calculator</strong>
+                                <small>Addition, Multiplication, Inverse, Rank</small>
+                            </div>
+                        </a>
+                        <a href="equations.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">02</span>
+                            <div class="dropdown-item-text">
+                                <strong>Linear System Solver</strong>
+                                <small>Gauss-Jordan Step-by-Step Solver</small>
+                            </div>
+                        </a>
+                        <a href="fields.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">03</span>
+                            <div class="dropdown-item-text">
+                                <strong>Field Explorer</strong>
+                                <small>Field Axioms & Galois Field GF(2)</small>
+                            </div>
+                        </a>
+                        <a href="vectors.html#calculator" class="dropdown-item active" role="menuitem">
+                            <span class="dropdown-num">04</span>
+                            <div class="dropdown-item-text">
+                                <strong>Vector Calculator</strong>
+                                <small>Dot & Cross Products, Magnitudes, Angles</small>
+                            </div>
+                        </a>
+                        <a href="vector-spaces.html#checker" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">05</span>
+                            <div class="dropdown-item-text">
+                                <strong>Subspace & Basis Checker</strong>
+                                <small>Independence, Span & Dimension</small>
+                            </div>
+                        </a>
+                        <a href="transformations.html#visualizer" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">06</span>
+                            <div class="dropdown-item-text">
+                                <strong>Transformation Visualizer</strong>
+                                <small>Kernel, Image & Rank-Nullity</small>
+                            </div>
+                        </a>
+                        <a href="transformation-matrices.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">07</span>
+                            <div class="dropdown-item-text">
+                                <strong>Change of Basis Tool</strong>
+                                <small>Matrix Representation & Similarity</small>
+                            </div>
+                        </a>
+                        <a href="inner-products.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">08</span>
+                            <div class="dropdown-item-text">
+                                <strong>Gram-Schmidt Calculator</strong>
+                                <small>Orthogonalization & Projections</small>
+                            </div>
+                        </a>
+                        <a href="determinants.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">09</span>
+                            <div class="dropdown-item-text">
+                                <strong>Determinant & Inverse Calculator</strong>
+                                <small>Cofactor Expansion & Cramer's Rule</small>
+                            </div>
+                        </a>
+                        <a href="eigenvalues.html#calculator" class="dropdown-item" role="menuitem">
+                            <span class="dropdown-num">10</span>
+                            <div class="dropdown-item-text">
+                                <strong>Eigen-Solver</strong>
+                                <small>Eigenvalues, Eigenvectors & Diagonalization</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer">
+                            <a href="matrices.html#calculator" class="dropdown-all-btn">
+                                <i data-lucide="calculator"></i> All Calculators & Tools
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="ai-tutor.html">AI Tutor</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="dashboard.html" class="header-progress-ring" id="header-progress-ring" aria-label="Learning Progress Dashboard" title="0% complete · View Dashboard">
+                    <svg width="34" height="34" viewBox="0 0 34 34">
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-bg"></circle>
+                        <circle cx="17" cy="17" r="13.5" class="header-ring-fill"></circle>
+                    </svg>
+                    <span class="header-progress-text">0%</span>
+                    <span class="header-progress-tooltip">0% complete · View Dashboard</span>
+                </a>
+
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+
+                <a href="#quiz" class="btn-primary">
+                    Take Quiz
+                </a>
+
+                <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TOPIC HERO -->
+        <section class="topic-hero">
+            <div class="topic-container">
+                <div class="topic-breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <a href="../index.html#modules">Modules</a>
+                    <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                    <span>Module 04: Vectors</span>
+                </div>
+
+                <div class="topic-content">
+                    <span class="section-tag">Module 04</span>
+                    <h1>Vectors</h1>
+                    <p>
+                        A vector is a mathematical quantity possessing both magnitude and direction. In this module, you will study vectors both geometrically as directed arrows and algebraically as ordered coordinate tuples, master vector addition and scalar multiplication, and learn dot and 3D cross products.
+                    </p>
+
+                    <div class="topic-buttons">
+                        <a href="#theory" class="btn-primary"><i data-lucide="book-open"></i> Read Lesson</a>
+                        <a href="#calculator" class="btn-secondary"><i data-lucide="calculator"></i> Vector Calculator</a>
+                        <a href="#quiz" class="btn-secondary"><i data-lucide="check-circle"></i> Practice Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="objectives-card">
+                    <h3><i data-lucide="target"></i> Learning Objectives</h3>
+                    <ul class="objectives-list">
+                        <li><i data-lucide="check"></i> Understand geometric and algebraic representations of vectors in $\mathbb{R}^n$.</li>
+                        <li><i data-lucide="check"></i> Classify standard vector types: zero, unit, position, and collinear vectors.</li>
+                        <li><i data-lucide="check"></i> Compute vector addition, scalar multiplication, magnitudes, and unit vectors.</li>
+                        <li><i data-lucide="check"></i> Apply the dot product to compute angles, project vectors, and test orthogonality.</li>
+                        <li><i data-lucide="check"></i> Compute 3D cross products, normal vectors, and parallelogram areas.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4.1: WHAT IS A VECTOR -->
+        <section id="theory" class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 4.1</span>
+                <h2>Geometric & Algebraic Representations</h2>
+                
+                <p class="theory-intro">
+                    Vectors can be viewed from two complementary perspectives: geometric and algebraic.
+                </p>
+
+                <div class="theory-card">
+                    <div class="operations-grid">
+                        <div class="operation-card">
+                            <h3>1. Geometric Representation</h3>
+                            <p>
+                                A directed line segment $\vec{AB}$ having an <strong>initial point $A$</strong> and a <strong>terminal point $B$</strong>.
+                            </p>
+                            <ul style="margin-left: 20px; font-size: 0.95rem; display: flex; flex-direction: column; gap: 4px; margin-top: 8px;">
+                                <li><strong>Magnitude:</strong> Length of the segment, denoted by $\|\mathbf{v}\|$ or $|\mathbf{v}|$.</li>
+                                <li><strong>Direction:</strong> Indicated by the arrowhead pointing from $A$ to $B$.</li>
+                            </ul>
+                        </div>
+
+                        <div class="operation-card">
+                            <h3>2. Algebraic Representation</h3>
+                            <p>
+                                An ordered column of $n$ real numbers representing coordinates in Euclidean space $\mathbb{R}^n$:
+                            </p>
+                            <div class="math-display">
+                                \[ \mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix} \in \mathbb{R}^n \]
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="concept-box mt-20">
+                        <h4><i data-lucide="sliders"></i> Vector Magnitude & Unit Vectors</h4>
+                        <p>The <strong>magnitude</strong> (Euclidean norm) of vector $\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix}$ is:</p>
+                        <div class="math-display">
+                            \[ \|\mathbf{v}\| = \sqrt{v_1^2 + v_2^2 + v_3^2} \]
+                        </div>
+                        <p>A <strong>unit vector</strong> $\hat{\mathbf{v}}$ has magnitude $1$ and points in the same direction: $\hat{\mathbf{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|}$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4.2: TYPES OF VECTORS & OPERATIONS -->
+        <section class="matrix-types">
+            <div class="matrix-types-container">
+                <span class="section-tag">Section 4.2</span>
+                <h2>Types of Vectors & Elementary Operations</h2>
+
+                <div class="operations-grid">
+                    <div class="type-card">
+                        <h3>1. Zero Vector ($\mathbf{0}$)</h3>
+                        <p>A vector with magnitude $0$ and undefined/arbitrary direction: $\mathbf{0} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}$.</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>2. Position Vector</h3>
+                        <p>A vector representing the coordinates of a point $P(x, y, z)$ relative to the origin $O(0, 0, 0)$: $\vec{OP} = \begin{bmatrix} x \\ y \\ z \end{bmatrix}$.</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>3. Collinear Vectors</h3>
+                        <p>Vectors that lie along the same or parallel lines. Algebraically, $\mathbf{u} = k\mathbf{v}$ for some scalar $k \neq 0$.</p>
+                    </div>
+
+                    <div class="type-card">
+                        <h3>4. Linear Combination</h3>
+                        <p>Combining addition and scalar multiplication: $\mathbf{w} = c_1\mathbf{v}_1 + c_2\mathbf{v}_2 + \dots + c_k\mathbf{v}_k$ where $c_i \in \mathbb{R}$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4.3: DOT PRODUCT -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 4.3</span>
+                <h2>The Dot Product (Scalar Product)</h2>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>Definition of Dot Product ($\mathbf{u} \cdot \mathbf{v}$):</strong>
+                        <p>For vectors $\mathbf{u} = \begin{bmatrix} u_1 \\ u_2 \\ \dots \\ u_n \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \dots \\ v_n \end{bmatrix}$ in $\mathbb{R}^n$:</p>
+                        <div class="math-display">
+                            \[ \mathbf{u} \cdot \mathbf{v} = u_1 v_1 + u_2 v_2 + \dots + u_n v_n = \|\mathbf{u}\| \|\mathbf{v}\| \cos\theta \]
+                        </div>
+                        <p>Where $\theta$ ($0 \le \theta \le \pi$) is the angle between $\mathbf{u}$ and $\mathbf{v}$.</p>
+                    </div>
+
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">Worked Example</span>
+                            <h4>Angle Between Two Vectors</h4>
+                        </div>
+                        <p>Find the angle between $\mathbf{u} = \begin{bmatrix} 1 \\ 2 \\ 2 \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} 2 \\ 2 \\ -1 \end{bmatrix}$.</p>
+                        <p><strong>Step-by-Step Solution:</strong></p>
+                        <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+                            <li><strong>Dot product:</strong> $\mathbf{u} \cdot \mathbf{v} = (1)(2) + (2)(2) + (2)(-1) = 2 + 4 - 2 = \mathbf{4}$.</li>
+                            <li><strong>Magnitudes:</strong> $\|\mathbf{u}\| = \sqrt{1^2 + 2^2 + 2^2} = \sqrt{9} = \mathbf{3}$, and $\|\mathbf{v}\| = \sqrt{2^2 + 2^2 + (-1)^2} = \sqrt{9} = \mathbf{3}$.</li>
+                            <li><strong>Angle Formula:</strong> $\cos\theta = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|\|\mathbf{v}\|} = \frac{4}{3 \times 3} = \frac{4}{9} \approx 0.444$.</li>
+                            <li>$\theta = \arccos\left(\frac{4}{9}\right) \approx 63.6^\circ$.</li>
+                        </ol>
+                    </div>
+
+                    <p><strong>Important Properties of the Dot Product:</strong></p>
+                    <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+                        <li><strong>Commutative:</strong> $\mathbf{u} \cdot \mathbf{v} = \mathbf{v} \cdot \mathbf{u}$.</li>
+                        <li><strong>Distributive:</strong> $\mathbf{u} \cdot (\mathbf{v} + \mathbf{w}) = \mathbf{u} \cdot \mathbf{v} + \mathbf{u} \cdot \mathbf{w}$.</li>
+                        <li><strong>Orthogonality Test:</strong> Two non-zero vectors are perpendicular ($\theta = 90^\circ$) if and only if $\mathbf{u} \cdot \mathbf{v} = 0$.</li>
+                        <li><strong>Cauchy-Schwarz Inequality:</strong> $|\mathbf{u} \cdot \mathbf{v}| \le \|\mathbf{u}\| \|\mathbf{v}\|$.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4.4: CROSS PRODUCT -->
+        <section class="theory">
+            <div class="theory-container">
+                <span class="section-tag">Section 4.4</span>
+                <h2>The 3D Cross Product (Vector Product)</h2>
+
+                <div class="theory-card">
+                    <div class="definition-box">
+                        <strong>Definition of Cross Product ($\mathbf{u} \times \mathbf{v}$):</strong>
+                        <p>The cross product is defined <em>strictly in 3-dimensional space $\mathbb{R}^3$</em>. It produces a vector that is perpendicular to both $\mathbf{u}$ and $\mathbf{v}$:</p>
+                        <div class="math-display">
+                            \[
+                            \mathbf{u} \times \mathbf{v} = \begin{vmatrix}
+                            \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+                            u_1 & u_2 & u_3 \\
+                            v_1 & v_2 & v_3
+                            \end{vmatrix} = \begin{bmatrix}
+                            u_2 v_3 - u_3 v_2 \\
+                            u_3 v_1 - u_1 v_3 \\
+                            u_1 v_2 - u_2 v_1
+                            \end{bmatrix}
+                            \]
+                        </div>
+                    </div>
+
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">Worked Example</span>
+                            <h4>Computing a Cross Product & Parallelogram Area</h4>
+                        </div>
+                        <p>Compute $\mathbf{u} \times \mathbf{v}$ for $\mathbf{u} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix}$.</p>
+                        <p><strong>Step-by-Step Calculation:</strong></p>
+                        <div class="math-display">
+                            \[
+                            \mathbf{u} \times \mathbf{v} = \begin{bmatrix}
+                            (2)(6) - (3)(5) \\
+                            (3)(4) - (1)(6) \\
+                            (1)(5) - (2)(4)
+                            \end{bmatrix} = \begin{bmatrix}
+                            12 - 15 \\
+                            12 - 6 \\
+                            5 - 8
+                            \end{bmatrix} = \begin{bmatrix}
+                            -3 \\
+                            6 \\
+                            -3
+                            \end{bmatrix}
+                            \]
+                        </div>
+                        <p><strong>Area of Parallelogram:</strong> $\|\mathbf{u} \times \mathbf{v}\| = \sqrt{(-3)^2 + 6^2 + (-3)^2} = \sqrt{9 + 36 + 9} = \sqrt{54} \approx 7.35$ sq units.</p>
+                    </div>
+
+                    <p><strong>Important Properties of the Cross Product:</strong></p>
+                    <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+                        <li><strong>Anti-Commutative:</strong> $\mathbf{u} \times \mathbf{v} = -(\mathbf{v} \times \mathbf{u})$.</li>
+                        <li>$\mathbf{u} \times \mathbf{u} = \mathbf{0}$ for any vector $\mathbf{u}$.</li>
+                        <li>Two non-zero vectors are parallel ($\theta = 0^\circ$ or $180^\circ$) if and only if $\mathbf{u} \times \mathbf{v} = \mathbf{0}$.</li>
+                        <li>$\|\mathbf{u} \times \mathbf{v}\| = \|\mathbf{u}\| \|\mathbf{v}\| \sin\theta$.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMEMBER / KEY TAKEAWAYS -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="takeaways-grid">
+                    <div class="takeaway-card summary">
+                        <h3><i data-lucide="check-circle-2" style="color: var(--clr-accent);"></i> Key Points</h3>
+                        <ul>
+                            <li>The dot product $\mathbf{u} \cdot \mathbf{v}$ yields a <strong>scalar</strong>.</li>
+                            <li>The cross product $\mathbf{u} \times \mathbf{v}$ yields a <strong>vector</strong> (in $\mathbb{R}^3$).</li>
+                            <li>$\mathbf{u} \perp \mathbf{v} \iff \mathbf{u} \cdot \mathbf{v} = 0$.</li>
+                            <li>$\mathbf{u} \parallel \mathbf{v} \iff \mathbf{u} \times \mathbf{v} = \mathbf{0}$.</li>
+                            <li>$\mathbf{u} \times \mathbf{v} = -(\mathbf{v} \times \mathbf{u})$ (cross product is anti-commutative).</li>
+                        </ul>
+                    </div>
+
+                    <div class="takeaway-card mistakes">
+                        <h3><i data-lucide="alert-triangle" style="color: var(--clr-error);"></i> Common Mistakes</h3>
+                        <ul>
+                            <li>Do not attempt cross products in $\mathbb{R}^2$ or $\mathbb{R}^4$; standard cross product is defined only in $\mathbb{R}^3$.</li>
+                            <li>Do not forget the negative sign when computing the $y$-component of a cross product: $-(u_1 v_3 - u_3 v_1) = u_3 v_1 - u_1 v_3$.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE VECTOR CALCULATOR -->
+        <section id="calculator" class="matrix-calculator">
+            <div class="calculator-container" id="vector-calc-container">
+                <div class="section-heading">
+                    <span class="section-tag">Interactive Practice</span>
+                    <h2>Vector Calculator (2D & 3D)</h2>
+                    <p>Perform addition, subtraction, dot product, cross product, magnitude, unit vector, and angle computations between vectors.</p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calc-controls">
+                        <div class="control-group">
+                            <label>Dimension:</label>
+                            <select id="vector-dim-select">
+                                <option value="2">2D Space (R²)</option>
+                                <option value="3" selected>3D Space (R³)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Vector Inputs -->
+                    <div class="matrices-workspace">
+                        <div class="matrix-input-box">
+                            <h4>Vector $\mathbf{u}$</h4>
+                            <div style="display: flex; gap: 8px; justify-content: center;">
+                                <input type="number" id="u_x" value="1" placeholder="x" style="width: 55px; height: 45px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="u_y" value="2" placeholder="y" style="width: 55px; height: 45px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="u_z" value="3" placeholder="z" class="vec-z-input" style="width: 55px; height: 45px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border);">
+                            </div>
+                        </div>
+
+                        <div class="matrix-op-sign">→</div>
+
+                        <div class="matrix-input-box">
+                            <h4>Vector $\mathbf{v}$</h4>
+                            <div style="display: flex; gap: 8px; justify-content: center;">
+                                <input type="number" id="v_x" value="4" placeholder="x" style="width: 55px; height: 45px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="v_y" value="5" placeholder="y" style="width: 55px; height: 45px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border);">
+                                <input type="number" id="v_z" value="6" placeholder="z" class="vec-z-input" style="width: 55px; height: 45px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="calc-action-buttons">
+                        <button class="calc-btn" id="vec-add-btn"><i data-lucide="plus"></i> Add (u + v)</button>
+                        <button class="calc-btn" id="vec-sub-btn"><i data-lucide="minus"></i> Subtract (u - v)</button>
+                        <button class="calc-btn" id="vec-dot-btn"><i data-lucide="dot"></i> Dot Product (u · v)</button>
+                        <button class="calc-btn" id="vec-cross-btn"><i data-lucide="x"></i> Cross Product (u × v)</button>
+                        <button class="calc-btn" id="vec-mag-btn"><i data-lucide="maximize-2"></i> Magnitudes ‖u‖, ‖v‖</button>
+                        <button class="calc-btn" id="vec-angle-btn"><i data-lucide="compass"></i> Angle θ</button>
+                        <button class="calc-btn" id="vec-unit-btn"><i data-lucide="arrow-up-right"></i> Unit Vector û</button>
+                    </div>
+
+                    <!-- Result -->
+                    <div class="calc-result-box">
+                        <h4><i data-lucide="check-circle-2"></i> Vector Output</h4>
+                        <div class="calc-result-content" id="vector-calc-result">
+                            <p class="text-center text-light">Select a vector operation above to compute the result.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE QUIZ -->
+        <section id="quiz" class="matrix-quiz">
+            <div class="quiz-container">
+                <div class="section-heading">
+                    <span class="section-tag">Assessment</span>
+                    <h2>Module 4 Practice Quiz</h2>
+                    <p>Test your understanding of dot products, cross products, angles, and unit vectors.</p>
+                </div>
+
+                <div class="quiz-card" id="vectors-quiz-card"></div>
+            </div>
+        </section>
+
+        <!-- MODULE COMPLETION & NAVIGATION -->
+        <section style="padding-top: 0;">
+            <div class="theory-container">
+                <div class="completion-banner">
+                    <div class="completion-info">
+                        <h3>Finished Module 4?</h3>
+                        <p>Mark this module as completed to update your progress on the dashboard and advance to Module 5: Vector Spaces.</p>
+                    </div>
+                    <button class="complete-topic-btn" data-module-id="module-4">
+                        <i data-lucide="check"></i> Mark Module as Completed
+                    </button>
+                </div>
+
+                <div class="module-nav-footer">
+                    <a href="fields.html" class="module-nav-btn prev-btn">← Previous Module: Fields</a>
+                    <a href="../index.html#modules" class="module-nav-btn all-modules-btn"><i data-lucide="grid"></i> All Modules</a>
+                    <a href="vector-spaces.html" class="module-nav-btn next-btn">Next Module: Vector Spaces →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <span class="logo-icon" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="4" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="4" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="18" y="18" width="10" height="10" rx="3" fill="currentColor"/>
+                                <rect x="19" y="5" width="8" height="8" rx="2" transform="rotate(45 23 9)" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        Algebrify
+                    </a>
+                    <p>An interactive, rigorous, textbook-style learning platform for mastering Linear Algebra visually and conceptually.</p>
+                    <div class="footer-badges">
+                        <span class="footer-badge"><i data-lucide="book-open"></i> 10 Rigorous Modules</span>
+                        <span class="footer-badge"><i data-lucide="calculator"></i> 10 Interactive Tools</span>
+                        <span class="footer-badge"><i data-lucide="bot"></i> AI Math Tutor</span>
+                    </div>
+                    <div class="footer-quick-links">
+                        <a href="../index.html"><i data-lucide="home"></i> Home</a>
+                        <a href="../index.html#modules"><i data-lucide="layers"></i> Learn</a>
+                        <a href="matrices.html#calculator"><i data-lucide="calculator"></i> Calculators</a>
+                        <a href="ai-tutor.html"><i data-lucide="bot"></i> AI Tutor</a>
+                        <a href="dashboard.html"><i data-lucide="bar-chart-2"></i> Dashboard</a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="layers"></i> 10 Learning Modules</h4>
+                    <ul>
+                        <li><a href="matrices.html"><span class="footer-num-tag">01</span> Algebra of Matrices</a></li>
+                        <li><a href="equations.html"><span class="footer-num-tag">02</span> Systems of Equations</a></li>
+                        <li><a href="fields.html"><span class="footer-num-tag">03</span> Field</a></li>
+                        <li><a href="vectors.html"><span class="footer-num-tag">04</span> Vectors</a></li>
+                        <li><a href="vector-spaces.html"><span class="footer-num-tag">05</span> Vector Spaces</a></li>
+                        <li><a href="transformations.html"><span class="footer-num-tag">06</span> Linear Transformations</a></li>
+                        <li><a href="transformation-matrices.html"><span class="footer-num-tag">07</span> Transformation Matrices</a></li>
+                        <li><a href="inner-products.html"><span class="footer-num-tag">08</span> Inner Products & Orthogonality</a></li>
+                        <li><a href="determinants.html"><span class="footer-num-tag">09</span> Determinants</a></li>
+                        <li><a href="eigenvalues.html"><span class="footer-num-tag">10</span> Eigenvalues & Diagonalization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i data-lucide="wrench"></i> Interactive Math Tools</h4>
+                    <ul>
+                        <li><a href="matrices.html#calculator"><i data-lucide="grid" class="footer-tool-icon"></i> Matrix Calculator</a></li>
+                        <li><a href="equations.html#calculator"><i data-lucide="sliders" class="footer-tool-icon"></i> Linear System Solver</a></li>
+                        <li><a href="fields.html#calculator"><i data-lucide="orbit" class="footer-tool-icon"></i> Field Explorer</a></li>
+                        <li><a href="vectors.html#calculator"><i data-lucide="navigation-2" class="footer-tool-icon"></i> Vector Calculator</a></li>
+                        <li><a href="vector-spaces.html#checker"><i data-lucide="check-circle" class="footer-tool-icon"></i> Subspace & Basis Checker</a></li>
+                        <li><a href="transformations.html#visualizer"><i data-lucide="maximize-2" class="footer-tool-icon"></i> Transformation Visualizer</a></li>
+                        <li><a href="transformation-matrices.html#calculator"><i data-lucide="refresh-cw" class="footer-tool-icon"></i> Change of Basis Tool</a></li>
+                        <li><a href="inner-products.html#calculator"><i data-lucide="compass" class="footer-tool-icon"></i> Gram-Schmidt Calculator</a></li>
+                        <li><a href="determinants.html#calculator"><i data-lucide="box" class="footer-tool-icon"></i> Determinant Calculator</a></li>
+                        <li><a href="eigenvalues.html#calculator"><i data-lucide="sigma" class="footer-tool-icon"></i> Eigen-Solver</a></li>
+                        <li><a href="ai-tutor.html"><i data-lucide="bot" class="footer-tool-icon"></i> AI Math Tutor</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Algebrify. Built with mathematical rigor for students and educators worldwide.</p>
+                <div class="footer-bottom-right">
+                    <a href="#top" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;"><i data-lucide="arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/calculators.js"></script>
+    <script>
+        const module4Questions = [
+            {
+                        "question": "What does a <strong>dot product of zero</strong> ($\\mathbf{u} \\cdot \\mathbf{v} = 0$) between two non-zero vectors signify?",
+                        "answers": [
+                                    "The vectors are parallel.",
+                                    "The vectors are orthogonal (perpendicular, $90^\\circ$).",
+                                    "One vector is a scalar multiple of the other.",
+                                    "The cross product is also zero."
+                        ],
+                        "correct": 1,
+                        "explanation": "Since $\\mathbf{u} \\cdot \\mathbf{v} = \\|\\mathbf{u}\\| \\|\\mathbf{v}\\| \\cos\\theta$, a dot product of 0 implies $\\cos\\theta = 0 \\implies \\theta = 90^\\circ$ (perpendicular)."
+            },
+            {
+                        "question": "Which of the following is true for the <strong>cross product</strong> of two vectors in $\\mathbb{R}^3$?",
+                        "answers": [
+                                    "$\\mathbf{u} \\times \\mathbf{v} = \\mathbf{v} \\times \\mathbf{u}$ (commutative)",
+                                    "$\\mathbf{u} \\times \\mathbf{v} = -(\\mathbf{v} \\times \\mathbf{u})$ (anti-commutative)",
+                                    "$\\mathbf{u} \\times \\mathbf{u} = 1$",
+                                    "The cross product results in a scalar number."
+                        ],
+                        "correct": 1,
+                        "explanation": "The cross product changes sign when operands are swapped: $\\mathbf{u} \\times \\mathbf{v} = -(\\mathbf{v} \\times \\mathbf{u})$."
+            },
+            {
+                        "question": "What is the Euclidean magnitude of the vector $\\mathbf{v} = \\begin{bmatrix} 3 \\\\ -4 \\end{bmatrix}$?",
+                        "answers": [
+                                    "$7$",
+                                    "$-1$",
+                                    "$5$",
+                                    "$25$"
+                        ],
+                        "correct": 2,
+                        "explanation": "$\\|\\mathbf{v}\\| = \\sqrt{3^2 + (-4)^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5$."
+            },
+            {
+                        "question": "What is the cross product of any vector with itself ($\\mathbf{u} \\times \\mathbf{u}$)?",
+                        "answers": [
+                                    "$\\mathbf{0}$ (Zero Vector)",
+                                    "$\\|\\mathbf{u}\\|^2$",
+                                    "$\\mathbf{u}$",
+                                    "$1$"
+                        ],
+                        "correct": 0,
+                        "explanation": "Since the angle $\\theta = 0$, $\\sin(0) = 0$, so $\\mathbf{u} \\times \\mathbf{u} = \\mathbf{0}$."
+            },
+            {
+                        "question": "How is a <strong>unit vector</strong> $\\hat{\\mathbf{v}}$ obtained from a non-zero vector $\\mathbf{v}$?",
+                        "answers": [
+                                    "$\\mathbf{v} \\cdot \\mathbf{v}$",
+                                    "$\\frac{\\mathbf{v}}{\\|\\mathbf{v}\\|}$",
+                                    "$\\mathbf{v} \\times \\mathbf{v}$",
+                                    "$\\|\\mathbf{v}\\| \\mathbf{v}$"
+                        ],
+                        "correct": 1,
+                        "explanation": "Dividing a vector by its magnitude normalizes it to length 1: $\\hat{\\mathbf{v}} = \\frac{\\mathbf{v}}{\\|\\mathbf{v}\\|}$."
+            }
+];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            new AlgebrifyQuiz("vectors-quiz-card", module4Questions, "module-4");
+        });
+    </script>
+</body>
+
+</html>
