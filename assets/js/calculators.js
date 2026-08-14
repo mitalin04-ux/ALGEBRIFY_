@@ -913,9 +913,220 @@ class EigenSolver {
     }
 }
 
+// ==========================================================================
+// 4. FIELD ARITHMETIC EXPLORER (COMPLEX NUMBERS & GF(2))
+// ==========================================================================
+
+class FieldCalculator {
+    constructor() {
+        this.resultContainer = document.getElementById("field-result-box");
+        const typeSelect = document.getElementById("field-type-select");
+        if (typeSelect || this.resultContainer) this.init();
+    }
+
+    init() {
+        const typeSelect = document.getElementById("field-type-select");
+        if (typeSelect) {
+            typeSelect.addEventListener("change", (e) => {
+                this.updateFieldType(e.target.value);
+            });
+        }
+
+        const addBtn = document.getElementById("field-add-btn");
+        const mulBtn = document.getElementById("field-mul-btn");
+        const invBtn = document.getElementById("field-inv-btn");
+
+        if (addBtn) addBtn.addEventListener("click", () => this.add());
+        if (mulBtn) mulBtn.addEventListener("click", () => this.multiply());
+        if (invBtn) invBtn.addEventListener("click", () => this.inverse());
+    }
+
+    updateFieldType(type) {
+        const complexWs = document.getElementById("complex-workspace");
+        const gf2Ws = document.getElementById("gf2-workspace");
+        const invBtn = document.getElementById("field-inv-btn");
+
+        if (type === "gf2") {
+            if (complexWs) complexWs.style.display = "none";
+            if (gf2Ws) gf2Ws.style.display = "flex";
+            if (invBtn) invBtn.innerHTML = '<i data-lucide="divide"></i> Inverse (x⁻¹)';
+        } else {
+            if (complexWs) complexWs.style.display = "flex";
+            if (gf2Ws) gf2Ws.style.display = "none";
+            if (invBtn) invBtn.innerHTML = '<i data-lucide="divide"></i> Inverse (z₁⁻¹)';
+        }
+        if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    getFieldType() {
+        const typeSelect = document.getElementById("field-type-select");
+        return typeSelect ? typeSelect.value : "complex";
+    }
+
+    getComplexInputs() {
+        const a1 = parseInputNumber(document.getElementById("c_a1")?.value);
+        const b1 = parseInputNumber(document.getElementById("c_b1")?.value);
+        const a2 = parseInputNumber(document.getElementById("c_a2")?.value);
+        const b2 = parseInputNumber(document.getElementById("c_b2")?.value);
+        return { a1, b1, a2, b2 };
+    }
+
+    getGF2Inputs() {
+        const x = parseInt(document.getElementById("gf2_x")?.value || "0", 10);
+        const y = parseInt(document.getElementById("gf2_y")?.value || "0", 10);
+        return { x, y };
+    }
+
+    formatComplex(a, b) {
+        const tol = 1e-6;
+        if (Math.abs(a) < tol && Math.abs(b) < tol) return "0";
+        if (Math.abs(b) < tol) return formatNumber(a);
+        if (Math.abs(a) < tol) {
+            if (Math.abs(b - 1) < tol) return "i";
+            if (Math.abs(b + 1) < tol) return "-i";
+            return `${formatNumber(b)}i`;
+        }
+        const aStr = formatNumber(a);
+        if (b > 0) {
+            const bStr = Math.abs(b - 1) < tol ? "i" : `${formatNumber(b)}i`;
+            return `${aStr} + ${bStr}`;
+        } else {
+            const bStr = Math.abs(b + 1) < tol ? "i" : `${formatNumber(Math.abs(b))}i`;
+            return `${aStr} - ${bStr}`;
+        }
+    }
+
+    showResult(html) {
+        if (!this.resultContainer) return;
+        this.resultContainer.innerHTML = html;
+        if (typeof renderAllMath === "function") renderAllMath(this.resultContainer);
+        if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    add() {
+        const type = this.getFieldType();
+        if (type === "gf2") {
+            const { x, y } = this.getGF2Inputs();
+            const sum = (x + y) % 2;
+            this.showResult(`
+                <div class="math-display">
+                    \\[ x \\oplus y = ${x} + ${y} \\equiv ${sum} \\pmod{2} \\]
+                </div>
+                <div class="calc-steps">
+                    <strong>Galois Field $\\text{GF}(2)$ Addition (XOR):</strong>
+                    <p>In $\\text{GF}(2)$, addition is modulo 2 arithmetic: $1 + 1 = 0$, meaning every element is its own additive inverse ($\\text{char}(\\text{GF}(2)) = 2$).</p>
+                </div>
+            `);
+        } else {
+            const { a1, b1, a2, b2 } = this.getComplexInputs();
+            const real = a1 + a2;
+            const imag = b1 + b2;
+            const z1Str = `(${this.formatComplex(a1, b1)})`;
+            const z2Str = `(${this.formatComplex(a2, b2)})`;
+            const resStr = this.formatComplex(real, imag);
+
+            this.showResult(`
+                <div class="math-display">
+                    \\[ z_1 + z_2 = ${z1Str} + ${z2Str} = ${resStr} \\]
+                </div>
+                <div class="calc-steps">
+                    <strong>Complex Addition Rule:</strong>
+                    <p>Add real parts and imaginary parts separately: $(a + c) + (b + d)i = (${formatPlainNumber(a1)} + ${formatPlainNumber(a2)}) + (${formatPlainNumber(b1)} + ${formatPlainNumber(b2)})i = ${resStr}$.</p>
+                </div>
+            `);
+        }
+    }
+
+    multiply() {
+        const type = this.getFieldType();
+        if (type === "gf2") {
+            const { x, y } = this.getGF2Inputs();
+            const prod = (x * y) % 2;
+            this.showResult(`
+                <div class="math-display">
+                    \\[ x \\cdot y = ${x} \\cdot ${y} \\equiv ${prod} \\pmod{2} \\]
+                </div>
+                <div class="calc-steps">
+                    <strong>Galois Field $\\text{GF}(2)$ Multiplication (AND):</strong>
+                    <p>In $\\text{GF}(2)$, multiplication is standard modulo 2 multiplication. $1$ is the multiplicative identity, and $0$ is the absorbing element.</p>
+                </div>
+            `);
+        } else {
+            const { a1, b1, a2, b2 } = this.getComplexInputs();
+            const real = a1 * a2 - b1 * b2;
+            const imag = a1 * b2 + b1 * a2;
+            const z1Str = `(${this.formatComplex(a1, b1)})`;
+            const z2Str = `(${this.formatComplex(a2, b2)})`;
+            const resStr = this.formatComplex(real, imag);
+
+            this.showResult(`
+                <div class="math-display">
+                    \\[ z_1 \\cdot z_2 = ${z1Str} \\cdot ${z2Str} = ${resStr} \\]
+                </div>
+                <div class="calc-steps">
+                    <strong>Complex Multiplication Breakdown ($i^2 = -1$):</strong>
+                    <p>$(ac - bd) + (ad + bc)i = (${formatPlainNumber(a1)}\\cdot${formatPlainNumber(a2)} - (${formatPlainNumber(b1)})(${formatPlainNumber(b2)})) + (${formatPlainNumber(a1)}\\cdot(${formatPlainNumber(b2)}) + (${formatPlainNumber(b1)})\\cdot${formatPlainNumber(a2)})i = ${resStr}$.</p>
+                </div>
+            `);
+        }
+    }
+
+    inverse() {
+        const type = this.getFieldType();
+        if (type === "gf2") {
+            const { x } = this.getGF2Inputs();
+            if (x === 0) {
+                this.showResult(`
+                    <div class="alert-message alert-error">
+                        <strong>❌ Arithmetic Error:</strong> The additive identity $0$ has no multiplicative inverse in $\\text{GF}(2)$ (division by zero is undefined).
+                    </div>
+                `);
+                return;
+            }
+            this.showResult(`
+                <div class="math-display">
+                    \\[ x^{-1} = 1^{-1} = 1 \\quad (\\text{since } 1 \\cdot 1 = 1) \\]
+                </div>
+                <div class="calc-steps">
+                    <strong>Multiplicative Inverse in $\\text{GF}(2)$:</strong>
+                    <p>The non-zero element $1$ is its own multiplicative inverse in $\\text{GF}(2)$.</p>
+                </div>
+            `);
+        } else {
+            const { a1, b1 } = this.getComplexInputs();
+            const denom = a1 * a1 + b1 * b1;
+            if (Math.abs(denom) < 1e-9) {
+                this.showResult(`
+                    <div class="alert-message alert-error">
+                        <strong>❌ Arithmetic Error:</strong> The additive identity $z_1 = 0$ has no multiplicative inverse in $\\mathbb{C}$ (division by zero is undefined).
+                    </div>
+                `);
+                return;
+            }
+
+            const invReal = a1 / denom;
+            const invImag = -b1 / denom;
+            const z1Str = this.formatComplex(a1, b1);
+            const resStr = this.formatComplex(invReal, invImag);
+
+            this.showResult(`
+                <div class="math-display">
+                    \\[ z_1^{-1} = \\frac{\\bar{z}_1}{|z_1|^2} = \\frac{${formatPlainNumber(a1)} - (${formatPlainNumber(b1)})i}{${formatPlainNumber(a1)}^2 + (${formatPlainNumber(b1)})^2} = ${resStr} \\]
+                </div>
+                <div class="calc-steps">
+                    <strong>Complex Multiplicative Inverse:</strong>
+                    <p>Modulus squared $|z_1|^2 = a^2 + b^2 = ${formatNumber(denom)}$. Complex conjugate $\\bar{z}_1 = ${formatPlainNumber(a1)} ${b1 >= 0 ? '-' : '+'} ${formatPlainNumber(Math.abs(b1))}i$.</p>
+                    <p>Verification: $z_1 \\cdot z_1^{-1} = (${z1Str})(${resStr}) = 1$.</p>
+                </div>
+            `);
+        }
+    }
+}
+
 // Auto instantiate
 document.addEventListener("DOMContentLoaded", () => {
     window.vectorCalculatorInstance = new VectorCalculator();
     window.linearSystemSolverInstance = new LinearSystemSolver();
     window.eigenSolverInstance = new EigenSolver();
+    window.fieldCalculatorInstance = new FieldCalculator();
 });
