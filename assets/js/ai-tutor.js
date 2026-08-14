@@ -42,92 +42,108 @@ class LinearAlgebraReasoningEngine {
         this.topicRegistry = {
             "matrices": {
                 title: "Algebra of Matrices",
-                keywords: ["matrix", "matrices", "transpose", "symmetric", "skew-symmetric", "orthogonal matrix", "identity matrix", "diagonal matrix", "trace", "matrix multiplication", "matrix addition", "order of matrix", "row matrix", "column matrix"],
+                keywords: ["matrix", "matrices", "transpose", "symmetric", "skew-symmetric", "orthogonal matrix", "identity matrix", "diagonal matrix", "trace", "matrix multiplication", "matrix addition", "order of matrix", "row matrix", "column matrix", "matrix operations", "algebra of matrices"],
                 definition: {
                     what: "A **matrix** is a rectangular arrangement (or 2D grid) of numbers, symbols, or expressions arranged in horizontal **rows** and vertical **columns**.",
                     order: "If a matrix has $m$ rows and $n$ columns, its **order (or dimension)** is written as $m \\times n$ (read as '$m$ by $n$').",
                     notation: "A general matrix $A$ of order $m \\times n$ is represented as:\n$$ A = \\begin{bmatrix} a_{11} & a_{12} & \\dots & a_{1n} \\\\ a_{21} & a_{22} & \\dots & a_{2n} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ a_{m1} & a_{m2} & \\dots & a_{mn} \\end{bmatrix} = [a_{ij}]_{m \\times n} $$ where $a_{ij}$ is the entry in row $i$ and column $j$.",
                     example: "For example, $A = \\begin{bmatrix} 2 & -1 & 5 \\\\ 0 & 4 & 3 \\end{bmatrix}$ is a matrix of order $2 \\times 3$ with $2$ rows and $3$ columns.",
-                    intuition: "Think of a matrix as a compact way to store and transform multiple interconnected pieces of data at once—such as the coefficients in a system of linear equations or a transformation that stretches, rotates, and scales space."
+                    intuition: "Think of a matrix as a compact way to store and transform multiple interconnected pieces of data at once—such as the coefficients in a system of linear equations or a geometric operation that stretches, rotates, and scales coordinate space."
                 }
             },
             "linear-systems": {
                 title: "Systems of Linear Equations",
-                keywords: ["system of linear equations", "linear system", "gaussian elimination", "gauss-jordan", "echelon form", "row echelon", "rref", "augmented matrix", "row operations", "homogeneous", "cramer", "consistency", "inconsistent", "free variable", "pivot"],
+                keywords: ["system of linear equations", "systems of equations", "linear system", "gaussian elimination", "gauss-jordan", "echelon form", "row echelon", "rref", "ref", "augmented matrix", "row operations", "homogeneous", "cramer", "consistency", "inconsistent", "free variable", "pivot", "back-substitution"],
                 definition: {
                     what: "A **system of linear equations** is a collection of one or more linear equations involving the same set of variables.",
                     form: "A system of $m$ linear equations in $n$ variables $x_1, x_2, \\dots, x_n$ is written in matrix form as:\n$$ A\\mathbf{x} = \\mathbf{b} $$ where $A_{m \\times n}$ is the coefficient matrix, $\\mathbf{x}_{n \\times 1}$ is the variable vector, and $\\mathbf{b}_{m \\times 1}$ is the constant vector.",
+                    example: "For example:\n$$\\begin{cases} 2x + y = 5 \\\\ x - y = 1 \\end{cases} \\implies \\begin{bmatrix} 2 & 1 \\\\ 1 & -1 \\end{bmatrix} \\begin{bmatrix} x \\\\ y \\end{bmatrix} = \\begin{bmatrix} 5 \\\\ 1 \\end{bmatrix}$$",
                     intuition: "Solving $A\\mathbf{x} = \\mathbf{b}$ means finding the intersection of hyperplanes, or finding the exact combination of the columns of $A$ that produces the target vector $\\mathbf{b}$."
                 }
             },
             "fields": {
-                title: "Field Axioms & Galois Fields",
-                keywords: ["field", "fields", "galois field", "gf(2)", "characteristic", "abelian", "field axioms", "closure", "additive inverse", "multiplicative inverse"],
+                title: "Field",
+                keywords: ["field", "fields", "galois field", "gf(2)", "characteristic", "abelian", "field axioms", "closure", "additive inverse", "multiplicative inverse", "f_p"],
                 definition: {
                     what: "A **field** $\\mathbb{F} = (F, +, \\cdot)$ is an algebraic structure consisting of a set $F$ equipped with two operations: **addition ($+$)** and **multiplication ($\\cdot$)**, satisfying 11 fundamental axioms.",
                     axioms: "1. **Closure:** $a+b \\in F$ and $a \\cdot b \\in F$\n2. **Associativity:** $(a+b)+c = a+(b+c)$ and $(a \\cdot b) \\cdot c = a \\cdot (b \\cdot c)$\n3. **Commutativity:** $a+b = b+a$ and $a \\cdot b = b \\cdot a$\n4. **Identities:** Additive identity $0$ and Multiplicative identity $1 \\neq 0$\n5. **Inverses:** Additive inverse $-a$ and Multiplicative inverse $a^{-1}$ (for $a \\neq 0$)\n6. **Distributivity:** $a \\cdot (b + c) = a \\cdot b + a \\cdot c$",
-                    examples: "Standard fields include $\\mathbb{R}$ (Real numbers), $\\mathbb{C}$ (Complex numbers), $\\mathbb{Q}$ (Rational numbers), and the finite field $\\text{GF}(2) = \\{0, 1\\}$ where arithmetic is modulo $2$ ($1 + 1 = 0$)."
+                    example: "Standard fields include $\\mathbb{R}$ (Real numbers), $\\mathbb{C}$ (Complex numbers), $\\mathbb{Q}$ (Rational numbers), and the finite field $\\text{GF}(2) = \\{0, 1\\}$ where arithmetic is modulo $2$ ($1 + 1 = 0$).",
+                    intuition: "A field is the most well-behaved mathematical sandbox for arithmetic where you can add, subtract, multiply, and divide (by anything except zero) without ever leaving the set."
                 }
             },
             "vectors": {
-                title: "Vectors & Operations",
-                keywords: ["vector", "vectors", "dot product", "cross product", "scalar product", "vector product", "magnitude", "norm", "unit vector", "angle between vectors", "projection"],
+                title: "Vectors",
+                keywords: ["vector", "vectors", "dot product", "cross product", "scalar product", "vector product", "magnitude", "norm", "unit vector", "angle between vectors", "projection", "orthogonal projection"],
                 definition: {
-                    what: "A **vector** is a mathematical object that possesses both **magnitude (length)** and **direction**. In $\\mathbb{R}^n$, an algebraic vector is an ordered $n$-tuple of real numbers $\\mathbf{v} = (v_1, v_2, \\dots, v_n)$.",
-                    dotProduct: "The **dot product (inner product)** of $\\mathbf{u} = (u_1, u_2, \\dots, u_n)$ and $\\mathbf{v} = (v_1, v_2, \\dots, v_n)$ is:\n$$ \\mathbf{u} \\cdot \\mathbf{v} = \\sum_{i=1}^n u_i v_i = u_1 v_1 + u_2 v_2 + \\dots + u_n v_n = \\|\\mathbf{u}\\| \\|\\mathbf{v}\\| \\cos\\theta $$",
-                    magnitude: "The **magnitude (Euclidean norm)** is $\\|\\mathbf{v}\\| = \\sqrt{v_1^2 + v_2^2 + \\dots + v_n^2} = \\sqrt{\\mathbf{v} \\cdot \\mathbf{v}}$."
+                    what: "A **vector** is a mathematical object possessing both **magnitude (length)** and **direction**. In $\\mathbb{R}^n$, an algebraic vector is an ordered $n$-tuple of real numbers $\\mathbf{v} = (v_1, v_2, \\dots, v_n)$.",
+                    dotProduct: "The **dot product (inner product)** of $\\mathbf{u} = (u_1, \\dots, u_n)$ and $\\mathbf{v} = (v_1, \\dots, v_n)$ is:\n$$ \\mathbf{u} \\cdot \\mathbf{v} = \\sum_{i=1}^n u_i v_i = \\|\\mathbf{u}\\| \\|\\mathbf{v}\\| \\cos\\theta $$",
+                    magnitude: "The **magnitude (Euclidean norm)** is $\\|\\mathbf{v}\\| = \\sqrt{v_1^2 + v_2^2 + \\dots + v_n^2} = \\sqrt{\\mathbf{v} \\cdot \\mathbf{v}}$.",
+                    example: "For $\\mathbf{u} = \\begin{bmatrix} 1 \\\\ 3 \\end{bmatrix}$ and $\\mathbf{v} = \\begin{bmatrix} 4 \\\\ -2 \\end{bmatrix}$:\n$$ \\mathbf{u} \\cdot \\mathbf{v} = (1)(4) + (3)(-2) = 4 - 6 = -2 $$",
+                    intuition: "Geometrically, a vector represents displacement or an arrow in space. Algebraically, it is an ordered list of numbers that can be added component-wise and scaled by numbers."
                 }
             },
             "vector-spaces": {
-                title: "Vector Spaces & Subspaces",
-                keywords: ["vector space", "subspace", "span", "spanning", "linear combination", "linear independence", "linearly independent", "linearly dependent", "basis", "dimension", "subspaces"],
+                title: "Vector Spaces",
+                keywords: ["vector space", "vector spaces", "subspace", "subspaces", "span", "spanning", "linear combination", "linear independence", "linearly independent", "linearly dependent", "basis", "dimension"],
                 definition: {
-                    what: "A **vector space** $V$ over a field $\\mathbb{F}$ is a non-empty set of objects (called vectors) on which two operations are defined: **vector addition** and **scalar multiplication**, satisfying the 8 vector space axioms.",
-                    subspace: "A non-empty subset $W \\subseteq V$ is called a **subspace** if $W$ is itself a vector space under the same operations. This is tested using the **3-Step Subspace Test**:\n1. **Zero Vector:** $\\mathbf{0} \\in W$\n2. **Closure under Addition:** $\\mathbf{u}, \\mathbf{v} \\in W \\implies \\mathbf{u} + \\mathbf{v} \\in W$\n3. **Closure under Scalar Multiplication:** $c \\in \\mathbb{F}, \\mathbf{u} \\in W \\implies c\\mathbf{u} \\in W$."
+                    what: "A **vector space** $V$ over a field $\\mathbb{F}$ is a non-empty set of objects (called vectors) on which two operations are defined: **vector addition** and **scalar multiplication**, satisfying 8 axioms.",
+                    subspace: "A non-empty subset $W \\subseteq V$ is called a **subspace** if $W$ is itself a vector space under the same operations. It is verified using the **3-Step Subspace Test**:\n1. **Zero Vector:** $\\mathbf{0} \\in W$\n2. **Closure under Addition:** $\\mathbf{u}, \\mathbf{v} \\in W \\implies \\mathbf{u} + \\mathbf{v} \\in W$\n3. **Closure under Scalar Multiplication:** $c \\in \\mathbb{F}, \\mathbf{u} \\in W \\implies c\\mathbf{u} \\in W$",
+                    example: "In $\\mathbb{R}^3$, the set $W = \\{(x, y, z) \\in \\mathbb{R}^3 \\mid z = 0\\}$ (the $xy$-plane) is a 2D subspace containing $(0,0,0)$.",
+                    intuition: "Think of a vector space as an infinite coordinate universe that contains the origin and never leaks outside itself when you add or scale vectors."
                 }
             },
             "linear-transformations": {
                 title: "Linear Transformations",
-                keywords: ["linear transformation", "linear map", "linear mapping", "kernel", "null space", "image", "range", "rank-nullity", "rank-nullity theorem", "dimension theorem", "injective", "surjective", "isomorphism"],
+                keywords: ["linear transformation", "linear transformations", "linear map", "linear mapping", "kernel", "null space", "image", "range", "rank-nullity", "rank-nullity theorem", "dimension theorem", "injective", "surjective", "isomorphism"],
                 definition: {
-                    what: "A function $T: V \\to W$ between two vector spaces over the same field $\\mathbb{F}$ is called a **linear transformation** if it preserves addition and scalar multiplication for all $\\mathbf{u}, \\mathbf{v} \\in V$ and $c \\in \\mathbb{F}$:\n1. $T(\\mathbf{u} + \\mathbf{v}) = T(\\mathbf{u}) + T(\\mathbf{v})$\n2. $T(c\\mathbf{u}) = cT(\\mathbf{u})$",
+                    what: "A function $T: V \\to W$ between two vector spaces over a field $\\mathbb{F}$ is a **linear transformation** if it preserves addition and scalar multiplication for all $\\mathbf{u}, \\mathbf{v} \\in V$ and $c \\in \\mathbb{F}$:\n1. $T(\\mathbf{u} + \\mathbf{v}) = T(\\mathbf{u}) + T(\\mathbf{v})$\n2. $T(c\\mathbf{u}) = cT(\\mathbf{u})$",
                     kernelImage: "**Kernel (Null Space):** $\\ker(T) = \\{\\mathbf{v} \\in V \\mid T(\\mathbf{v}) = \\mathbf{0}_W\\}$\n**Image (Range):** $\\text{Im}(T) = \\{T(\\mathbf{v}) \\in W \\mid \\mathbf{v} \\in V\\}$",
-                    rankNullity: "**Rank-Nullity Theorem:** $\\dim(V) = \\text{nullity}(T) + \\text{rank}(T) = \\dim(\\ker(T)) + \\dim(\\text{Im}(T))$."
+                    rankNullity: "**Rank-Nullity Theorem:**\n$$ \\dim(V) = \\text{nullity}(T) + \\text{rank}(T) = \\dim(\\ker(T)) + \\dim(\\text{Im}(T)) $$",
+                    example: "For $T(x, y) = (2x, x+y)$, $T$ is linear with $\\ker(T) = \\{\\mathbf{0}\\}$ (nullity $= 0$) and $\\text{rank}(T) = 2$.",
+                    intuition: "A linear transformation moves space around without bending grid lines or moving the origin $\\mathbf{0} \\mapsto \\mathbf{0}$. Parallel lines stay parallel and evenly spaced."
                 }
             },
             "transformation-matrices": {
-                title: "Linear Transformations & Matrices",
-                keywords: ["transformation matrix", "matrix representation", "change of basis", "similarity", "similar matrices", "transition matrix", "standard matrix", "basis change"],
+                title: "Linear Transformations and Matrices",
+                keywords: ["transformation matrix", "transformation matrices", "matrix representation", "change of basis", "similarity", "similar matrices", "transition matrix", "standard matrix", "basis change", "coordinate vector"],
                 definition: {
                     what: "Every linear transformation $T: \\mathbb{R}^n \\to \\mathbb{R}^m$ can be represented uniquely by an $m \\times n$ matrix $A$ such that $T(\\mathbf{x}) = A\\mathbf{x}$.",
-                    standardMatrix: "The **standard matrix** $[T]$ is formed by evaluating $T$ on the standard basis vectors: $[T] = [T(\\mathbf{e}_1) \\mid T(\\mathbf{e}_2) \\mid \\dots \\mid T(\\mathbf{e}_n)]$.",
-                    similarity: "Two square matrices $A$ and $B$ are **similar** ($A \\sim B$) if there exists an invertible transition matrix $P$ such that $B = P^{-1}AP$. Similar matrices represent the same linear operator under different bases."
+                    standardMatrix: "The **standard matrix** $[T]$ is constructed by evaluating $T$ on the standard basis vectors: $[T] = [T(\\mathbf{e}_1) \\mid T(\\mathbf{e}_2) \\mid \\dots \\mid T(\\mathbf{e}_n)]$.",
+                    similarity: "Two square matrices $A$ and $B$ are **similar** ($A \\sim B$) if there exists an invertible transition matrix $P$ such that $B = P^{-1}AP$. Similar matrices represent the same linear operator under different bases.",
+                    example: "A counter-clockwise rotation by angle $\\theta$ in $\\mathbb{R}^2$ has standard matrix $R_\\theta = \\begin{bmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{bmatrix}$.",
+                    intuition: "Matrices are coordinate representations of geometric transformations. Changing basis is simply describing the exact same physical movement from a different observer's point of view."
                 }
             },
             "inner-products": {
                 title: "Inner Product Spaces & Orthogonality",
-                keywords: ["inner product", "inner product space", "orthogonality", "orthogonal", "orthonormal", "cauchy-schwarz", "gram-schmidt", "orthogonal projection", "orthogonal complement"],
+                keywords: ["inner product", "inner products", "inner product space", "orthogonality", "orthogonal", "orthonormal", "cauchy-schwarz", "gram-schmidt", "orthogonal projection", "orthogonal complement", "orthonormal basis"],
                 definition: {
-                    what: "An **inner product space** is a vector space $V$ over $\\mathbb{R}$ or $\\mathbb{C}$ equipped with an inner product $\\langle \\mathbf{u}, \\mathbf{v} \\rangle$ that satisfies conjugate symmetry, linearity in the first argument, and positive-definiteness ($\n\\langle \\mathbf{v}, \\mathbf{v} \\rangle \\ge 0$ with equality iff $\\mathbf{v} = \\mathbf{0}$).",
-                    gramSchmidt: "The **Gram-Schmidt Process** converts an arbitrary basis $\\{\\mathbf{v}_1, \\dots, \\mathbf{v}_k\\}$ into an orthogonal basis $\\{\\mathbf{u}_1, \\dots, \\mathbf{u}_k\\}$:\n$$ \\mathbf{u}_1 = \\mathbf{v}_1 $$\n$$ \\mathbf{u}_k = \\mathbf{v}_k - \\sum_{j=1}^{k-1} \\frac{\\langle \\mathbf{v}_k, \\mathbf{u}_j \\rangle}{\\langle \\mathbf{u}_j, \\mathbf{u}_j \\rangle} \\mathbf{u}_j $$"
+                    what: "An **inner product space** is a vector space $V$ equipped with an inner product $\\langle \\mathbf{u}, \\mathbf{v} \\rangle$ satisfying conjugate symmetry, linearity in the first argument, and positive-definiteness ($\\langle \\mathbf{v}, \\mathbf{v} \\rangle \\ge 0$ with equality iff $\\mathbf{v} = \\mathbf{0}$).",
+                    gramSchmidt: "The **Gram-Schmidt Process** converts an arbitrary basis $\\{\\mathbf{v}_1, \\dots, \\mathbf{v}_k\\}$ into an orthogonal basis $\\{\\mathbf{u}_1, \\dots, \\mathbf{u}_k\\}$:\n$$ \\mathbf{u}_1 = \\mathbf{v}_1 $$\n$$ \\mathbf{u}_k = \\mathbf{v}_k - \\sum_{j=1}^{k-1} \\frac{\\langle \\mathbf{v}_k, \\mathbf{u}_j \\rangle}{\\langle \\mathbf{u}_j, \\mathbf{u}_j \\rangle} \\mathbf{u}_j $$",
+                    example: "Two vectors $\\mathbf{u} = \\begin{bmatrix} 1 \\\\ 2 \\end{bmatrix}$ and $\\mathbf{v} = \\begin{bmatrix} -2 \\\\ 1 \\end{bmatrix}$ are orthogonal because $\\langle \\mathbf{u}, \\mathbf{v} \\rangle = (1)(-2) + (2)(1) = 0$.",
+                    intuition: "Inner products give geometric concepts like angles, lengths, and perpendicularity (orthogonality) to abstract vector spaces."
                 }
             },
             "determinants": {
                 title: "Determinants",
-                keywords: ["determinant", "det", "cofactor", "minor", "laplace expansion", "cramer's rule", "singular matrix", "invertible", "invertibility", "properties of determinants"],
+                keywords: ["determinant", "determinants", "det", "cofactor", "minor", "laplace expansion", "cramer's rule", "singular matrix", "invertible", "invertibility", "properties of determinants", "adjugate"],
                 definition: {
                     what: "The **determinant** is a scalar-valued function $\\det: M_{n \\times n}(\\mathbb{F}) \\to \\mathbb{F}$ associated with every square matrix that characterizes its geometric scaling factor and invertibility.",
                     formula2x2: "For a $2 \\times 2$ matrix $A = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$:\n$$ \\det(A) = |A| = ad - bc $$",
-                    properties: "1. **Invertibility Criterion:** $A$ is invertible if and only if $\\det(A) \\neq 0$.\n2. **Multiplicative:** $\\det(AB) = \\det(A)\\det(B)$.\n3. **Transpose:** $\\det(A^T) = \\det(A)$.\n4. **Scalar Multiplication:** $\\det(k A_{n \\times n}) = k^n \\det(A)$."
+                    properties: "1. **Invertibility Criterion:** $A$ is invertible if and only if $\\det(A) \\neq 0$.\n2. **Multiplicative:** $\\det(AB) = \\det(A)\\det(B)$.\n3. **Transpose:** $\\det(A^T) = \\det(A)$.\n4. **Scalar Multiplication:** $\\det(k A_{n \\times n}) = k^n \\det(A)$.",
+                    example: "For $A = \\begin{bmatrix} 3 & 1 \\\\ 2 & 4 \\end{bmatrix}$, $\\det(A) = (3)(4) - (1)(2) = 12 - 2 = 10$.",
+                    intuition: "The determinant measures how much a matrix stretches or squashes areas (in 2D) or volumes (in 3D). If $\\det(A) = 0$, space has been flattened to a line or point, making the operation non-invertible."
                 }
             },
             "eigenvalues": {
-                title: "Eigenvalues, Eigenvectors & Diagonalization",
-                keywords: ["eigenvalue", "eigenvalues", "eigenvector", "eigenvectors", "diagonalization", "diagonalizable", "characteristic polynomial", "characteristic equation", "eigenspace", "cayley-hamilton"],
+                title: "Diagonalization, Eigenvalues and Eigenvectors",
+                keywords: ["eigenvalue", "eigenvalues", "eigenvector", "eigenvectors", "diagonalization", "diagonalizable", "characteristic polynomial", "characteristic equation", "eigenspace", "cayley-hamilton", "eigen-solver"],
                 definition: {
                     what: "Let $A$ be an $n \\times n$ square matrix. A non-zero vector $\\mathbf{v} \\neq \\mathbf{0}$ is called an **eigenvector** of $A$ if there exists a scalar $\\lambda$ (called the **eigenvalue**) such that:\n$$ A\\mathbf{v} = \\lambda \\mathbf{v} $$",
                     characteristicEquation: "To find eigenvalues, solve the **characteristic equation**:\n$$ \\det(A - \\lambda I) = 0 $$",
-                    eigenspace: "For each eigenvalue $\\lambda_i$, the corresponding **eigenspace** is $E_{\\lambda_i} = \\ker(A - \\lambda_i I)$, found by solving $(A - \\lambda_i I)\\mathbf{v} = \\mathbf{0}$."
+                    eigenspace: "For each eigenvalue $\\lambda_i$, the corresponding **eigenspace** is $E_{\\lambda_i} = \\ker(A - \\lambda_i I)$, found by solving $(A - \\lambda_i I)\\mathbf{v} = \\mathbf{0}$.",
+                    example: "For diagonal matrix $D = \\begin{bmatrix} 2 & 0 \\\\ 0 & 3 \\end{bmatrix}$, the eigenvalues are directly on the diagonal: $\\lambda_1 = 2, \\lambda_2 = 3$.",
+                    intuition: "When a matrix acts on space, most vectors change their direction. Eigenvectors are the special invariant directions that do not rotate at all—they only get stretched, shrunk, or flipped by a factor of $\\lambda$."
                 }
             }
         };
@@ -140,11 +156,11 @@ class LinearAlgebraReasoningEngine {
         const cleanQuery = query.trim();
         const lowerQ = cleanQuery.toLowerCase();
 
-        // 1. Resolve multi-turn context (Topic, Entities, Follow-up state)
+        // 1. Resolve multi-turn context (Topic, Entities, Follow-up state, previous matrices)
         const context = this.extractContext(session, lowerQ);
 
         // 2. Check for explicit matrix math problems (e.g. [[2,0],[0,3]] or inverse, determinant, eigenvalues)
-        const matrixData = this.extractMatrix(cleanQuery);
+        const matrixData = this.extractMatrix(cleanQuery) || (this.isMatrixFollowUp(lowerQ) ? context.lastMatrix : null);
         if (matrixData) {
             return this.solveMatrixProblem(matrixData, lowerQ, cleanQuery, context);
         }
@@ -192,6 +208,19 @@ class LinearAlgebraReasoningEngine {
         }
     }
 
+    isMatrixFollowUp(lowerQ) {
+        return (
+            lowerQ.includes("this matrix") ||
+            lowerQ.includes("it") ||
+            lowerQ.includes("its determinant") ||
+            lowerQ.includes("its eigenvalues") ||
+            lowerQ.includes("its inverse") ||
+            lowerQ.includes("why is it zero") ||
+            lowerQ.includes("why is the determinant zero") ||
+            lowerQ.includes("why is the determinant of this matrix zero")
+        );
+    }
+
     // =========================================================================
     // CONTEXT & INTENT CLASSIFICATION
     // =========================================================================
@@ -200,17 +229,20 @@ class LinearAlgebraReasoningEngine {
         let activeTopicKey = null;
         let lastUserMsg = "";
         let lastTutorMsg = "";
+        let lastMatrix = null;
 
         if (session && session.messages && session.messages.length > 0) {
-            // Traverse backward to find recent topics and messages
             for (let i = session.messages.length - 1; i >= 0; i--) {
                 const msg = session.messages[i];
                 if (msg.role === "user" && !lastUserMsg) lastUserMsg = msg.text;
                 if (msg.role === "model" && !lastTutorMsg) lastTutorMsg = msg.text;
+                if (!lastMatrix) {
+                    lastMatrix = this.extractMatrix(msg.text);
+                }
             }
         }
 
-        // Detect topic directly in current query
+        // 1. Detect topic directly in current query
         for (const [key, topic] of Object.entries(this.topicRegistry)) {
             for (const kw of topic.keywords) {
                 if (lowerQ.includes(kw)) {
@@ -221,7 +253,7 @@ class LinearAlgebraReasoningEngine {
             if (activeTopicKey) break;
         }
 
-        // If no topic in current query, inherit from previous context
+        // 2. If no topic in current query, inherit from previous context
         if (!activeTopicKey && (lastUserMsg || lastTutorMsg)) {
             const combinedHistory = (lastUserMsg + " " + lastTutorMsg).toLowerCase();
             for (const [key, topic] of Object.entries(this.topicRegistry)) {
@@ -244,7 +276,8 @@ class LinearAlgebraReasoningEngine {
             topicKey: activeTopicKey,
             topic: this.topicRegistry[activeTopicKey],
             lastUserMsg: lastUserMsg,
-            lastTutorMsg: lastTutorMsg
+            lastTutorMsg: lastTutorMsg,
+            lastMatrix: lastMatrix
         };
     }
 
@@ -256,24 +289,16 @@ class LinearAlgebraReasoningEngine {
             lowerQ.includes("simpler") ||
             lowerQ.includes("simple words") ||
             lowerQ.includes("in simple") ||
+            lowerQ.includes("simpler terms") ||
             lowerQ.includes("easy way") ||
             lowerQ.includes("layman") ||
             lowerQ.includes("eli5") ||
             lowerQ.includes("confused") ||
-            lowerQ.includes("explain again")
+            lowerQ.includes("explain again") ||
+            lowerQ.includes("still don't get") ||
+            lowerQ.includes("what does this mean")
         ) {
             return "SIMPLIFICATION";
-        }
-
-        // Example request intent
-        if (
-            lowerQ.includes("example") ||
-            lowerQ.includes("give me an example") ||
-            lowerQ.includes("show me an example") ||
-            lowerQ.includes("worked example") ||
-            lowerQ.includes("instance of")
-        ) {
-            return "EXAMPLE_REQUEST";
         }
 
         // Comparison intent
@@ -282,9 +307,25 @@ class LinearAlgebraReasoningEngine {
             lowerQ.includes("compare") ||
             lowerQ.includes(" vs ") ||
             lowerQ.includes("versus") ||
-            lowerQ.includes("distinguish")
+            lowerQ.includes("distinguish") ||
+            lowerQ.includes("differ from")
         ) {
             return "COMPARISON";
+        }
+
+        // Example request intent
+        if (
+            lowerQ.includes("give me an example") ||
+            lowerQ.includes("give me a simple example") ||
+            lowerQ.includes("show me an example") ||
+            lowerQ.includes("worked example") ||
+            lowerQ.includes("instance of") ||
+            lowerQ === "example" ||
+            lowerQ === "give me an example." ||
+            lowerQ.startsWith("example of") ||
+            (lowerQ.includes("example") && !lowerQ.includes("solve"))
+        ) {
+            return "EXAMPLE_REQUEST";
         }
 
         // "Why" / Reasoning intent
@@ -293,7 +334,8 @@ class LinearAlgebraReasoningEngine {
             lowerQ.includes("why is ") ||
             lowerQ.includes("why does ") ||
             lowerQ.includes("why are ") ||
-            lowerQ.includes("reason for")
+            lowerQ.includes("reason for") ||
+            lowerQ.includes("what is the reason")
         ) {
             return "WHY_REASONING";
         }
@@ -304,7 +346,8 @@ class LinearAlgebraReasoningEngine {
             lowerQ.includes("how to ") ||
             lowerQ.includes("how can i ") ||
             lowerQ.includes("steps to ") ||
-            lowerQ.includes("method to ")
+            lowerQ.includes("method to ") ||
+            lowerQ.includes("algorithm for ")
         ) {
             return "HOW_TO_SOLVE";
         }
@@ -346,7 +389,8 @@ class LinearAlgebraReasoningEngine {
         if (
             lowerQ.startsWith("explain ") ||
             lowerQ.includes("tell me about") ||
-            lowerQ.includes("teach me")
+            lowerQ.includes("teach me") ||
+            lowerQ.includes("overview of")
         ) {
             return "EXPLANATION";
         }
@@ -359,10 +403,10 @@ class LinearAlgebraReasoningEngine {
     // =========================================================================
 
     extractMatrix(text) {
-        // Match [[a, b], [c, d]] or [[a,b,c],[d,e,f],[g,h,i]] or [a b; c d]
+        if (!text) return null;
         const clean = text.replace(/\\begin\{bmatrix\}|\\end\{bmatrix\}|\$+/g, "");
 
-        // Match 2x2: [[a,b],[c,d]]
+        // Match 2x2: [[a, b], [c, d]] or [[a,b],[c,d]]
         const m2Regex = /\[\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*,\s*\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]\s*\]/;
         const match2 = clean.match(m2Regex);
         if (match2) {
@@ -391,8 +435,8 @@ class LinearAlgebraReasoningEngine {
             };
         }
 
-        // Match semicolon format: [a b; c d]
-        const semiRegex = /\[\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*;\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*\]/;
+        // Match semicolon format: [a b; c d] or [a, b; c, d]
+        const semiRegex = /\[\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)\s*;\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)\s*\]/;
         const matchSemi = clean.match(semiRegex);
         if (matchSemi) {
             return {
@@ -409,6 +453,7 @@ class LinearAlgebraReasoningEngine {
     }
 
     extractLinearSystem(text) {
+        if (!text) return null;
         // Match 2x2 system e.g. "2x + y = 5, x - y = 1" or "2x+y=5 and x-y=1"
         const eqRegex = /(-?\d*)\s*x\s*([+-]\s*\d*)\s*y\s*=\s*(-?\d+)[,\s]+(?:and\s+)?(-?\d*)\s*x\s*([+-]\s*\d*)\s*y\s*=\s*(-?\d+)/i;
         const match = text.match(eqRegex);
@@ -450,7 +495,7 @@ class LinearAlgebraReasoningEngine {
         }
 
         // 3. Determinant / Singularity
-        if (lowerQ.includes("det") || lowerQ.includes("determinant") || lowerQ.includes("singular")) {
+        if (lowerQ.includes("det") || lowerQ.includes("determinant") || lowerQ.includes("singular") || lowerQ.includes("zero")) {
             if (rows === 2 && cols === 2) {
                 return this.solve2x2Determinant(data[0][0], data[0][1], data[1][0], data[1][1], lowerQ.includes("why"));
             } else if (rows === 3 && cols === 3) {
@@ -479,12 +524,15 @@ $$ A = \\begin{bmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{bmatrix} $$
 ---
 
 #### Step 1: Formulate the Characteristic Equation
-Eigenvalues $\\lambda$ satisfy $A\\mathbf{v} = \\lambda\\mathbf{v}$, which rearranges to $(A - \\lambda I)\\mathbf{v} = \\mathbf{0}$. For non-trivial solutions $(\\mathbf{v} \\neq \\mathbf{0})$, the characteristic determinant must equal zero:
+Eigenvalues $\\lambda$ satisfy the linear transformation condition $A\\mathbf{v} = \\lambda\\mathbf{v}$, which rearranges to:
+$$ (A - \\lambda I)\\mathbf{v} = \\mathbf{0} $$
+
+For non-trivial eigenvector solutions $(\\mathbf{v} \\neq \\mathbf{0})$, the characteristic matrix $(A - \\lambda I)$ must be singular (non-invertible), requiring:
 $$ \\det(A - \\lambda I) = 0 $$
 
 $$ \\det \\begin{bmatrix} ${a} - \\lambda & ${b} \\\\ ${c} & ${d} - \\lambda \\end{bmatrix} = (${a} - \\lambda)(${d} - \\lambda) - (${b})(${c}) = 0 $$
 
-Expanding the polynomial:
+Expanding the characteristic polynomial:
 $$ \\lambda^2 - (${trace})\\lambda + (${det}) = 0 $$
 
 ---
@@ -506,23 +554,23 @@ $$ \\lambda = \\frac{${trace} \\pm \\sqrt{${disc}}}{2} \\implies \\lambda_1 = ${
 ---
 
 #### Step 3: Find Corresponding Eigenvectors
-- **For $\\lambda_1 = ${l1Str}$:** Solve $(A - ${l1Str}I)\\mathbf{v} = \\mathbf{0}$:
-  $$ \\begin{bmatrix} ${a - lambda1} & ${b} \\\\ ${c} & ${d - lambda1} \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} $$
+- **For $\\lambda_1 = ${l1Str}$:** Solve $(A - (${l1Str})I)\\mathbf{v} = \\mathbf{0}$:
+  $$ \\begin{bmatrix} ${(a - lambda1).toFixed(2)} & ${b} \\\\ ${c} & ${(d - lambda1).toFixed(2)} \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} $$
 `;
-            let v1 = b !== 0 ? `\\begin{bmatrix} ${-b} \\\\ ${a - lambda1} \\end{bmatrix}` : (a - lambda1 === 0 ? `\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}` : `\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}`);
-            let v2 = b !== 0 ? `\\begin{bmatrix} ${-b} \\\\ ${a - lambda2} \\end{bmatrix}` : (a - lambda2 === 0 ? `\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}` : `\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}`);
+            let v1 = b !== 0 ? `\\begin{bmatrix} ${-b} \\\\ ${(a - lambda1).toFixed(2)} \\end{bmatrix}` : (a - lambda1 === 0 ? `\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}` : `\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}`);
+            let v2 = b !== 0 ? `\\begin{bmatrix} ${-b} \\\\ ${(a - lambda2).toFixed(2)} \\end{bmatrix}` : (a - lambda2 === 0 ? `\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}` : `\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}`);
 
             solutionSteps += `  Row reduction yields the eigenvector: $\\mathbf{v}_1 = ${v1}$.
 
-- **For $\\lambda_2 = ${l2Str}$:** Solve $(A - ${l2Str}I)\\mathbf{v} = \\mathbf{0}$:
-  $$ \\begin{bmatrix} ${a - lambda2} & ${b} \\\\ ${c} & ${d - lambda2} \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} $$
+- **For $\\lambda_2 = ${l2Str}$:** Solve $(A - (${l2Str})I)\\mathbf{v} = \\mathbf{0}$:
+  $$ \\begin{bmatrix} ${(a - lambda2).toFixed(2)} & ${b} \\\\ ${c} & ${(d - lambda2).toFixed(2)} \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} $$
   Row reduction yields the eigenvector: $\\mathbf{v}_2 = ${v2}$.
 
 ---
 
 #### Step 4: Verification
-- **Trace Check:** $\\lambda_1 + \\lambda_2 = ${l1Str} + ${l2Str} = ${trace} = \\text{tr}(A)$ ✓
-- **Determinant Check:** $\\lambda_1 \\cdot \\lambda_2 = (${l1Str})(${l2Str}) = ${det} = \\det(A)$ ✓
+- **Trace Property Check:** $\\lambda_1 + \\lambda_2 = ${l1Str} + ${l2Str} = ${trace} = \\text{tr}(A)$ ✓
+- **Determinant Property Check:** $\\lambda_1 \\cdot \\lambda_2 = (${l1Str})(${l2Str}) = ${det} = \\det(A)$ ✓
 
 **Final Answer:**
 - **Eigenvalues:** $\\lambda_1 = ${l1Str}, \\quad \\lambda_2 = ${l2Str}$
@@ -532,11 +580,11 @@ $$ \\lambda = \\frac{${trace} \\pm \\sqrt{${disc}}}{2} \\implies \\lambda_1 = ${
             const realPart = (trace / 2).toFixed(2);
             const imagPart = (Math.sqrt(-disc) / 2).toFixed(2);
             solutionSteps += `
-Since the discriminant is negative ($\n\\Delta = ${disc} < 0$), the matrix has complex conjugate eigenvalues:
+Since the discriminant is negative ($\\Delta = ${disc} < 0$), the matrix has complex conjugate eigenvalues:
 $$ \\lambda = ${realPart} \\pm ${imagPart}i $$
 
 **Final Answer:**
-The matrix represents a rotation and scaling with complex eigenvalues $\\lambda = ${realPart} \\pm ${imagPart}i$.
+The matrix represents a rotation and scaling transformation with complex eigenvalues $\\lambda = ${realPart} \\pm ${imagPart}i$.
 `;
         }
 
@@ -564,7 +612,7 @@ $$ \\det(A) = ad - bc = (${a})(${d}) - (${b})(${c}) = ${a * d} - (${b * c}) = ${
 
 #### Step 2: Invertibility Test
 Since **$\\det(A) = 0$**, the matrix is **singular (non-invertible)**. 
-Geometrically, this transformation squashes 2D space into a 1D line or 0D point, so it is impossible to reverse.
+Geometrically, this transformation squashes 2D space into a 1D line or 0D point, so the operation cannot be reversed.
 
 **Final Answer:**
 $$\\mathbf{A^{-1}\\ \\text{does NOT exist (Matrix is Singular)}}.$$
@@ -715,7 +763,7 @@ ${det !== 0 ? `
 $$ A^{-1} = \\frac{1}{${det}} \\begin{bmatrix} ${d} & ${-b} \\\\ ${-c} & ${a} \\end{bmatrix} = \\begin{bmatrix} ${(d / det).toFixed(2)} & ${(-b / det).toFixed(2)} \\\\ ${(-c / det).toFixed(2)} & ${(a / det).toFixed(2)} \\end{bmatrix} $$
 ` : ""}
 
-*Ask me to calculate the eigenvectors or perform power iterations on this matrix!*
+*Ask me to calculate the eigenvectors or explain the geometric transformation of this matrix!*
 `;
     }
 
@@ -743,7 +791,6 @@ $$ \\left[ \\begin{array}{cc|c} ${a11} & ${a12} & ${b1} \\\\ ${a21} & ${a22} & $
         }
 
         if (Math.abs(detA) < 1e-9) {
-            // Consistent vs Inconsistent
             const ratio = a11 !== 0 ? a21 / a11 : a22 / a12;
             const expectedB2 = b1 * ratio;
             const isConsistent = Math.abs(b2 - expectedB2) < 1e-9;
@@ -772,7 +819,6 @@ $$\\mathbf{\\text{Inconsistent System (No Solution)}}.$$
             return response;
         }
 
-        // Unique solution via Gauss-Jordan
         const k = a21 / a11;
         const newA22 = a22 - k * a12;
         const newB2 = b2 - k * b1;
@@ -881,6 +927,33 @@ A **Vector Space** $V$ over a field $\\mathbb{F}$ is a non-empty set equipped wi
 *Would you like me to show the 3-step subspace test or check if a specific set is a subspace?*`;
         }
 
+        if (lowerQ.includes("determinant")) {
+            return `### 🔍 What is a Determinant?
+
+#### 1. Intuition in Simple Words
+The **determinant** is a single number computed from a square matrix that tells you how much the matrix scales areas (in 2D) or volumes (in 3D).
+- If $\\det(A) = 2$, any shape transformed by matrix $A$ doubles in area.
+- If $\\det(A) = 0$, the matrix squashes space flat into a line or point, meaning the transformation cannot be undone (no inverse exists).
+
+---
+
+#### 2. Formal Mathematical Definition
+For a square matrix $A = [a_{ij}]_{n \\times n}$, the determinant $\\det(A) = |A|$ is defined via Laplace expansion along any row $i$:
+$$ \\det(A) = \\sum_{j=1}^n (-1)^{i+j} a_{ij} M_{ij} $$
+where $M_{ij}$ is the minor determinant of the $(n-1) \\times (n-1)$ submatrix obtained by deleting row $i$ and column $j$.
+
+---
+
+#### 3. Concrete $2 \\times 2$ Formula & Example
+For $A = \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix}$:
+$$ \\det(A) = ad - bc $$
+
+**Example:** For $A = \\begin{bmatrix} 5 & 2 \\\\ 1 & 3 \\end{bmatrix}$:
+$$ \\det(A) = (5)(3) - (2)(1) = 15 - 2 = 13 $$
+
+*Ask me to calculate the determinant of any matrix or explain its properties!*`;
+        }
+
         return `### 📚 ${topic.title} - Definition & Key Concepts
 
 #### 1. Intuition
@@ -904,22 +977,25 @@ ${def.example || def.examples || "Let $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\e
     }
 
     generateWhyExplanation(lowerQ, context) {
-        if (lowerQ.includes("determinant") && (lowerQ.includes("zero") || lowerQ.includes("0"))) {
+        if (
+            (lowerQ.includes("determinant") || lowerQ.includes("it")) &&
+            (lowerQ.includes("zero") || lowerQ.includes("0") || lowerQ.includes("singular"))
+        ) {
             return `### 💡 Why is the Determinant Zero? (Geometric & Algebraic Meaning)
 
 When $\\det(A) = 0$, it signifies a fundamental breakdown in the matrix transformation. Here is why from 4 distinct perspectives:
 
 ---
 
-#### 1. Geometric Perspective: Space is Flattened (Volume = 0)
+#### 1. Geometric Perspective: Space is Flattened (Area / Volume = 0)
 The determinant measures the **scaling factor of area (in 2D) or volume (in 3D)** under the transformation $A$:
 - In 2D: The transformation squashes the entire 2D plane onto a **1D straight line** or a **single 0D point**. The area of the resulting flat shape is $0$.
 - In 3D: A 3D solid box is squashed onto a flat 2D plane or line (volume = $0$).
 
 ---
 
-#### 2. Algebraic Perspective: Linearly Dependent Rows/Columns
-$\\det(A) = 0$ means the rows (or columns) of $A$ are **not linearly independent**:
+#### 2. Algebraic Perspective: Linearly Dependent Rows / Columns
+$\\det(A) = 0$ means the rows (or columns) of $A$ are **linearly dependent**:
 - One row can be written as a linear combination of the other rows.
 - **Example:** For $A = \\begin{bmatrix} 1 & 2 \\\\ 2 & 4 \\end{bmatrix}$, Row 2 is $2 \\times \\text{Row 1}$.
   $$ \\det(A) = (1)(4) - (2)(2) = 4 - 4 = 0 $$
@@ -934,10 +1010,22 @@ If $\\det(A) = 0$, this requires **division by zero**, which is undefined. There
 ---
 
 #### 4. Linear Equations & Kernel Perspective
-- The homogeneous system $A\\mathbf{x} = \\mathbf{0}$ has **infinitely many non-trivial solutions** (non-zero vectors $\\mathbf{x} \\neq \\mathbf{0}$ that get mapped to zero).
-- The matrix has **at least one eigenvalue equal to zero ($\lambda = 0$)** because $\\det(A) = \\lambda_1 \\lambda_2 \\dots \\lambda_n = 0$.
+- The homogeneous system $A\\mathbf{x} = \\mathbf{0}$ has **infinitely many non-trivial solutions** (non-zero vectors $\\mathbf{x} \\neq \\mathbf{0}$ that get collapsed to zero).
+- The matrix has **at least one eigenvalue equal to zero ($\\lambda = 0$)** because $\\det(A) = \\lambda_1 \\lambda_2 \\dots \\lambda_n = 0$.
 
 **Summary:** $\\det(A) = 0 \\iff$ Matrix is Singular $\\iff$ Columns are Dependent $\\iff$ Space is Flattened $\\iff$ $\\lambda = 0$ is an eigenvalue.`;
+        }
+
+        if (lowerQ.includes("matrix multiplication") || lowerQ.includes("dimensions")) {
+            return `### 💡 Why Must Inner Dimensions Match for Matrix Multiplication?
+
+To multiply matrix $A_{m \\times k}$ by matrix $B_{p \\times n}$, we **must have $k = p$** (inner dimensions equal).
+
+#### The Mathematical Reason:
+Each entry $(AB)_{ij}$ is computed as the **dot product** of **Row $i$ of $A$** and **Column $j$ of $B$**:
+$$ (AB)_{ij} = \\sum_{r=1}^k a_{ir} b_{rj} = a_{i1}b_{1j} + a_{i2}b_{2j} + \\dots + a_{ik}b_{kj} $$
+
+If Row $i$ has $k$ elements and Column $j$ has $p$ elements, you cannot pair up the numbers to multiply them unless $k = p$!`;
         }
 
         return `### 💡 Conceptual Reasoning: ${context.topic.title}
@@ -945,8 +1033,8 @@ If $\\det(A) = 0$, this requires **division by zero**, which is undefined. There
 In Linear Algebra, properties are deeply interconnected across algebra and geometry:
 
 1. **Algebraic Consistency:** Operations are governed by the linearity conditions $T(c\\mathbf{u} + \\mathbf{v}) = cT(\\mathbf{u}) + T(\\mathbf{v})$.
-2. **Geometric Invariance:** Transformations manipulate coordinate frames while preserving origin ($\mathbf{0} \\mapsto \\mathbf{0}$) and parallel lines.
-3. **Dimensional Balance (Rank-Nullity):** Information cannot be destroyed without leaving a trace in the null space: $\\text{dim}(V) = \\text{rank}(A) + \\text{nullity}(A)$.
+2. **Geometric Invariance:** Transformations manipulate coordinate frames while preserving the origin ($\mathbf{0} \\mapsto \\mathbf{0}$) and grid parallelism.
+3. **Dimensional Balance (Rank-Nullity):** Information cannot be destroyed without leaving a trace in the null space: $\\dim(V) = \\text{rank}(A) + \\text{nullity}(A)$.
 
 *Would you like me to demonstrate this reasoning on a specific numerical matrix or equation?*`;
     }
@@ -999,6 +1087,31 @@ To prove a subset $W \\subseteq V$ is a subspace, verify:
   - **Span:** $\\text{span}(S) = \\mathbb{R}^2$ (it reaches all 2D space).
   - **Is it a Basis?** **NO**, because $\\begin{bmatrix} 2 \\\\ 3 \\end{bmatrix} = 2\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} + 3\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}$ (it is linearly dependent).
 - Removing the redundant third vector gives the standard basis $\mathcal{B} = \\left\\{ \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}, \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix} \\right\\}$.`;
+        }
+
+        // 3. Linear Independence vs Dependence
+        if (lowerQ.includes("independent") && lowerQ.includes("dependent")) {
+            return `### ⚖️ Linearly Independent vs. Linearly Dependent Sets
+
+| Feature | **Linearly Independent Set** | **Linearly Dependent Set** |
+| :--- | :--- | :--- |
+| **Equation $c_1\\mathbf{v}_1 + \\dots + c_k\\mathbf{v}_k = \\mathbf{0}$** | Only the trivial solution: $c_1 = c_2 = \\dots = c_k = 0$. | There exists a non-trivial solution where not all $c_i = 0$. |
+| **Redundancy** | No vector in the set can be written as a combination of the others. | At least one vector is a combination of the others. |
+| **Determinant Test (Square)** | $\\det([\\mathbf{v}_1 \\dots \\mathbf{v}_n]) \\neq 0$. | $\\det([\\mathbf{v}_1 \\dots \\mathbf{v}_n]) = 0$. |
+| **Geometric Meaning** | Vectors point in genuinely new directions, adding a new dimension. | At least one vector lies within the flat span of the others. |`;
+        }
+
+        // 4. REF vs RREF
+        if (lowerQ.includes("ref") || lowerQ.includes("rref") || lowerQ.includes("echelon")) {
+            return `### ⚖️ Row Echelon Form (REF) vs. Reduced Row Echelon Form (RREF)
+
+| Feature | **Row Echelon Form (REF)** | **Reduced Row Echelon Form (RREF)** |
+| :--- | :--- | :--- |
+| **Leading Entries (Pivots)** | Can be any non-zero number (e.g., $2, -5$). | Must be strictly scaled to **$1$**. |
+| **Entries Above Pivots** | Can be non-zero arbitrary values. | Must be strictly **zeros ($0$)**. |
+| **Entries Below Pivots** | Must be all **zeros ($0$)**. | Must be all **zeros ($0$)**. |
+| **Uniqueness** | Not unique (multiple valid REFs exist). | **Strictly unique** for every matrix. |
+| **Algorithm Used** | Gaussian Elimination (Forward elimination). | Gauss-Jordan Elimination (Forward + Backward elimination). |`;
         }
 
         return `### ⚖️ Concept Comparison in ${context.topic.title}
@@ -1063,6 +1176,20 @@ Gaussian Elimination reduces an augmented matrix $[A \\mid \\mathbf{b}]$ to **Ro
 *Would you like me to solve a linear system for you? Paste equations like \`2x + y = 5, x - y = 1\`!*`;
         }
 
+        if (lowerQ.includes("gram") || lowerQ.includes("schmidt")) {
+            return `### 🧭 How to Perform the Gram-Schmidt Orthogonalization Process
+
+The Gram-Schmidt process converts any linearly independent basis $\\{\\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_k\\}$ into an **orthogonal basis** $\\{\\mathbf{u}_1, \\mathbf{u}_2, \\dots, \\mathbf{u}_k\\}$:
+
+#### Step-by-Step Formulas:
+1. **First Vector:** $\\mathbf{u}_1 = \\mathbf{v}_1$.
+2. **Second Vector:** Subtract the projection of $\\mathbf{v}_2$ onto $\\mathbf{u}_1$:
+   $$ \\mathbf{u}_2 = \\mathbf{v}_2 - \\frac{\\mathbf{v}_2 \\cdot \\mathbf{u}_1}{\\mathbf{u}_1 \\cdot \\mathbf{u}_1} \\mathbf{u}_1 $$
+3. **Third Vector:** Subtract projections onto both $\\mathbf{u}_1$ and $\\mathbf{u}_2$:
+   $$ \\mathbf{u}_3 = \\mathbf{v}_3 - \\frac{\\mathbf{v}_3 \\cdot \\mathbf{u}_1}{\\mathbf{u}_1 \\cdot \\mathbf{u}_1} \\mathbf{u}_1 - \\frac{\\mathbf{v}_3 \\cdot \\mathbf{u}_2}{\\mathbf{u}_2 \\cdot \\mathbf{u}_2} \\mathbf{u}_2 $$
+4. **Normalize (for Orthonormal Basis):** $\\mathbf{e}_i = \\frac{\\mathbf{u}_i}{\\|\\mathbf{u}_i\\|}$.`;
+        }
+
         return `### 📐 Method Walkthrough: ${context.topic.title}
 
 1. **Identify Given Information:** Write down the matrix or vector coordinates.
@@ -1101,7 +1228,7 @@ Most arrows drawn on the fabric will **change their angle and rotate** as you st
 However, there are a few special, magical arrows that **do not change their direction at all**—they only get longer or shorter along their original line.
 
 - **Eigenvector:** The special arrow that points in that unwavering direction.
-- **Eigenvalue ($\lambda$):** The number telling you how much that arrow got stretched (e.g. $\\lambda = 3$ means it became $3$ times longer; $\\lambda = -1$ means it flipped backwards).
+- **Eigenvalue ($\\lambda$):** The number telling you how much that arrow got stretched (e.g. $\\lambda = 3$ means it became $3$ times longer; $\\lambda = -1$ means it flipped backwards).
 
 Does this help clarify what $A\\mathbf{v} = \\lambda\\mathbf{v}$ means?`;
 
@@ -1116,6 +1243,41 @@ Think of vector spaces like cooking with ingredients:
 - The **Vector Space** is the entire kitchen filled with all possible dishes!
 
 How does this sound to you?`;
+
+            case "matrices":
+                return `### 💡 Matrices Explained in Super Simple Words
+
+Think of a matrix like a spreadsheet or a digital photo filter:
+- Each row and column holds a specific dial or number.
+- When you pass a 2D drawing through the matrix "filter", it can rotate it, stretch it sideways, flip it upside down, or scale it larger.
+- A matrix is just a compact remote control for moving numbers and shapes around!`;
+
+            case "linear-transformations":
+                return `### 💡 Linear Transformations in Super Simple Words
+
+Imagine a grid of straight, evenly spaced lines drawn on graph paper.
+
+A **Linear Transformation** is any transformation of the paper that follows two strict rules:
+1. The center point $(0,0)$ stays locked at $(0,0)$.
+2. All straight grid lines remain straight and evenly spaced (no bending, curving, or tearing).
+
+You can stretch, rotate, flip, or shear the paper—as long as the grid stays straight and parallel!`;
+
+            case "inner-products":
+                return `### 💡 Inner Products & Orthogonality in Super Simple Words
+
+An **inner product** is a mathematical "similarity detector" between two arrows:
+- If two arrows point in the exact same direction, their inner product is high and positive.
+- If two arrows point in opposite directions, their inner product is negative.
+- If two arrows meet at a perfect $90^\\circ$ right angle (perpendicular / orthogonal), they have zero overlap, so their **inner product is exactly $0$**!`;
+
+            case "fields":
+                return `### 💡 Fields Explained in Super Simple Words
+
+A **field** is simply a playground where the 4 basic rules of arithmetic $(+, -, \\times, \\div)$ work smoothly and never break:
+- You can add or multiply any two numbers and stay in the playground.
+- Every number has an opposite $(-x)$ and an inverse $(1/x$, except $0$).
+- Real numbers $\\mathbb{R}$ are a field. Clock arithmetic (like $\\text{GF}(2)$ where $1+1=0$) is also a valid field!`;
 
             case "linear-systems":
             default:
@@ -1158,6 +1320,35 @@ $$ \\lambda^2 - 7\\lambda + 12 - 2 = \\lambda^2 - 7\\lambda + 10 = 0 $$
 $$ (\\lambda - 5)(\\lambda - 2) = 0 \\implies \\lambda_1 = 5, \\quad \\lambda_2 = 2 $$
 
 **Final Answer:** Eigenvalues are $\\lambda_1 = 5$ and $\\lambda_2 = 2$.`;
+
+            case "matrices":
+                return `### 📝 Worked Example: $2 \\times 2$ Matrix Multiplication
+
+Let $A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$ and $B = \\begin{bmatrix} 5 & 6 \\\\ 0 & 7 \\end{bmatrix}$.
+
+#### Step-by-Step Multiplication $C = AB$:
+1. $c_{11} = (1)(5) + (2)(0) = 5 + 0 = 5$
+2. $c_{12} = (1)(6) + (2)(7) = 6 + 14 = 20$
+3. $c_{21} = (3)(5) + (4)(0) = 15 + 0 = 15$
+4. $c_{22} = (3)(6) + (4)(7) = 18 + 28 = 46$
+
+**Final Answer:**
+$$ AB = \\begin{bmatrix} 5 & 20 \\\\ 15 & 46 \\end{bmatrix} $$`;
+
+            case "vectors":
+                return `### 📝 Worked Example: Dot Product and Angle Between Vectors
+
+Let $\\mathbf{u} = \\begin{bmatrix} 1 \\\\ 2 \\end{bmatrix}$ and $\\mathbf{v} = \\begin{bmatrix} 3 \\\\ 4 \\end{bmatrix}$.
+
+#### Step-by-Step:
+1. **Dot Product:** $\\mathbf{u} \\cdot \\mathbf{v} = (1)(3) + (2)(4) = 3 + 8 = 11$.
+2. **Magnitudes:**
+   - $\\|\\mathbf{u}\\| = \\sqrt{1^2 + 2^2} = \\sqrt{5} \\approx 2.24$
+   - $\\|\\mathbf{v}\\| = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$
+3. **Angle ($\\theta$):**
+   $$ \\cos\\theta = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|} = \\frac{11}{5\\sqrt{5}} = \\frac{11}{11.18} \\approx 0.9839 \\implies \\theta \\approx 10.3^\\circ $$
+
+**Final Answer:** $\\mathbf{u} \\cdot \\mathbf{v} = 11$, with angle $\\theta \\approx 10.3^\\circ$.`;
 
             case "vector-spaces":
             default:
@@ -1290,7 +1481,7 @@ class AlgebrifyAITutor {
         this.activeChatTitle = document.getElementById("active-chat-title");
         this.clearChatBtn = document.getElementById("clear-chat-btn");
 
-        // API Key modal elements
+        // API Key modal elements (if present)
         this.apiKeyBtn = document.getElementById("tutor-api-key-btn");
         this.apiKeyModal = document.getElementById("api-key-modal");
         this.closeModalBtn = document.getElementById("close-modal-btn");
@@ -1366,22 +1557,22 @@ class AlgebrifyAITutor {
         // Sidebar Toggle for Mobile & Desktop
         if (this.sidebarToggleBtn) {
             this.sidebarToggleBtn.addEventListener("click", () => {
-                this.sidebar.classList.toggle("open");
+                if (this.sidebar) this.sidebar.classList.toggle("open");
                 if (this.sidebarBackdrop) this.sidebarBackdrop.classList.toggle("active");
             });
         }
 
         if (this.sidebarCloseBtn) {
             this.sidebarCloseBtn.addEventListener("click", () => {
-                this.sidebar.classList.remove("open");
+                if (this.sidebar) this.sidebar.classList.remove("open");
                 if (this.sidebarBackdrop) this.sidebarBackdrop.classList.remove("active");
             });
         }
 
         if (this.sidebarBackdrop) {
             this.sidebarBackdrop.addEventListener("click", () => {
-                this.sidebar.classList.remove("open");
-                this.sidebarBackdrop.classList.remove("active");
+                if (this.sidebar) this.sidebar.classList.remove("open");
+                if (this.sidebarBackdrop) this.sidebarBackdrop.classList.remove("active");
             });
         }
 
