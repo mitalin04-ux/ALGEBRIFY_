@@ -1123,10 +1123,172 @@ class FieldCalculator {
     }
 }
 
+// ==========================================================================
+// 5. LINEAR INDEPENDENCE & BASIS CHECKER (MODULE 5)
+// ==========================================================================
+
+class IndependenceChecker {
+    constructor() {
+        this.resultContainer = document.getElementById("lic-result-box");
+        const btn = document.getElementById("lic-check-btn");
+        if (btn || this.resultContainer) this.init();
+    }
+
+    init() {
+        const btn = document.getElementById("lic-check-btn");
+        if (btn) {
+            btn.addEventListener("click", () => this.check());
+        }
+    }
+
+    getVectors() {
+        const v1 = [
+            parseInputNumber(document.getElementById("lic_v1x")?.value),
+            parseInputNumber(document.getElementById("lic_v1y")?.value),
+            parseInputNumber(document.getElementById("lic_v1z")?.value)
+        ];
+        const v2 = [
+            parseInputNumber(document.getElementById("lic_v2x")?.value),
+            parseInputNumber(document.getElementById("lic_v2y")?.value),
+            parseInputNumber(document.getElementById("lic_v2z")?.value)
+        ];
+        const v3 = [
+            parseInputNumber(document.getElementById("lic_v3x")?.value),
+            parseInputNumber(document.getElementById("lic_v3y")?.value),
+            parseInputNumber(document.getElementById("lic_v3z")?.value)
+        ];
+        return { v1, v2, v3 };
+    }
+
+    computeRank(matrix) {
+        const mat = matrix.map(r => [...r]);
+        const R = mat.length;
+        const C = mat[0].length;
+        let rank = C;
+
+        for (let row = 0; row < rank; row++) {
+            if (Math.abs(mat[row][row]) > 1e-9) {
+                for (let col = 0; col < R; col++) {
+                    if (col !== row) {
+                        const mult = mat[col][row] / mat[row][row];
+                        for (let i = 0; i < rank; i++) {
+                            mat[col][i] -= mult * mat[row][i];
+                        }
+                    }
+                }
+            } else {
+                let reduce = true;
+                for (let i = row + 1; i < R; i++) {
+                    if (Math.abs(mat[i][row]) > 1e-9) {
+                        const temp = mat[row];
+                        mat[row] = mat[i];
+                        mat[i] = temp;
+                        reduce = false;
+                        break;
+                    }
+                }
+                if (reduce) {
+                    rank--;
+                    for (let i = 0; i < R; i++) {
+                        mat[i][row] = mat[i][rank];
+                    }
+                }
+                row--;
+            }
+        }
+        return rank;
+    }
+
+    showResult(html) {
+        if (!this.resultContainer) return;
+        this.resultContainer.innerHTML = html;
+        if (typeof renderAllMath === "function") renderAllMath(this.resultContainer);
+        if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    check() {
+        const { v1, v2, v3 } = this.getVectors();
+
+        // Form matrix with vectors as columns
+        const matrix = [
+            [v1[0], v2[0], v3[0]],
+            [v1[1], v2[1], v3[1]],
+            [v1[2], v2[2], v3[2]]
+        ];
+
+        // 3x3 Determinant
+        const det = (
+            matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1]) -
+            matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
+            matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0])
+        );
+
+        const rank = this.computeRank(matrix);
+        const isIndependent = Math.abs(det) > 1e-7 && rank === 3;
+
+        const matLatex = `\\begin{bmatrix} ${formatPlainNumber(v1[0])} & ${formatPlainNumber(v2[0])} & ${formatPlainNumber(v3[0])} \\\\ ${formatPlainNumber(v1[1])} & ${formatPlainNumber(v2[1])} & ${formatPlainNumber(v3[1])} \\\\ ${formatPlainNumber(v1[2])} & ${formatPlainNumber(v2[2])} & ${formatPlainNumber(v3[2])} \\end{bmatrix}`;
+
+        let spanDescription = "";
+        if (rank === 3) {
+            spanDescription = "Entire 3-dimensional space $\\mathbb{R}^3$ (Volume > 0).";
+        } else if (rank === 2) {
+            spanDescription = "A <strong>2D plane</strong> passing through the origin in $\\mathbb{R}^3$.";
+        } else if (rank === 1) {
+            spanDescription = "A <strong>1D line</strong> passing through the origin in $\\mathbb{R}^3$.";
+        } else {
+            spanDescription = "The trivial subspace $\\{\\mathbf{0}\\}$ (Point at the origin).";
+        }
+
+        if (isIndependent) {
+            this.showResult(`
+                <div class="alert-message alert-info" style="background: rgba(38, 166, 154, 0.12); border-left: 4px solid var(--clr-accent); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <h4 style="margin-bottom: 8px; color: var(--clr-accent-dark);"><i data-lucide="check-circle-2"></i> Result: Linearly Independent & Forms a Basis for $\\mathbb{R}^3$</h4>
+                    <p style="margin: 0; font-size: 0.95rem;">
+                        The vectors $\\{\\mathbf{v}_1, \\mathbf{v}_2, \\mathbf{v}_3\\}$ are <strong>linearly independent</strong> and span $\\mathbb{R}^3$. Since $\\dim(\\mathbb{R}^3) = 3$ and we have 3 linearly independent vectors, they form a <strong>valid Basis for $\\mathbb{R}^3$</strong>.
+                    </p>
+                </div>
+                <div class="math-display">
+                    \\[ A = [\\mathbf{v}_1 \\mid \\mathbf{v}_2 \\mid \\mathbf{v}_3] = ${matLatex}, \\quad \\det(A) = ${formatNumber(det)} \\neq 0 \\]
+                </div>
+                <div class="calc-steps" style="margin-top: 16px;">
+                    <h4>Analysis Summary:</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li><strong>Matrix Rank:</strong> $\\text{Rank}(A) = 3$ (Full Rank).</li>
+                        <li><strong>Spanned Subspace:</strong> ${spanDescription}</li>
+                        <li><strong>Linear Combination:</strong> $c_1 \\mathbf{v}_1 + c_2 \\mathbf{v}_2 + c_3 \\mathbf{v}_3 = \\mathbf{0} \\implies c_1 = c_2 = c_3 = 0$ (Only the trivial solution exists).</li>
+                    </ul>
+                </div>
+            `);
+        } else {
+            this.showResult(`
+                <div class="alert-message alert-error" style="background: rgba(239, 83, 80, 0.1); border-left: 4px solid var(--clr-error); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <h4 style="margin-bottom: 8px; color: var(--clr-error);"><i data-lucide="alert-triangle"></i> Result: Linearly Dependent (Does NOT Form a Basis for $\\mathbb{R}^3$)</h4>
+                    <p style="margin: 0; font-size: 0.95rem;">
+                        The vectors $\\{\\mathbf{v}_1, \\mathbf{v}_2, \\mathbf{v}_3\\}$ are <strong>linearly dependent</strong> (redundant). At least one vector can be written as a linear combination of the others.
+                    </p>
+                </div>
+                <div class="math-display">
+                    \\[ A = [\\mathbf{v}_1 \\mid \\mathbf{v}_2 \\mid \\mathbf{v}_3] = ${matLatex}, \\quad \\det(A) = 0 \\]
+                </div>
+                <div class="calc-steps" style="margin-top: 16px;">
+                    <h4>Analysis Summary:</h4>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li><strong>Matrix Rank:</strong> $\\text{Rank}(A) = ${rank} < 3$ (Rank-deficient).</li>
+                        <li><strong>Dimension of Spanned Subspace:</strong> $\\dim(\\text{Span}\\{\\mathbf{v}_1, \\mathbf{v}_2, \\mathbf{v}_3\\}) = ${rank}$.</li>
+                        <li><strong>Geometric Subspace:</strong> ${spanDescription}</li>
+                        <li><strong>Basis Status:</strong> Cannot form a basis for $\\mathbb{R}^3$ because $\\text{Rank} < 3$.</li>
+                    </ul>
+                </div>
+            `);
+        }
+    }
+}
+
 // Auto instantiate
 document.addEventListener("DOMContentLoaded", () => {
     window.vectorCalculatorInstance = new VectorCalculator();
     window.linearSystemSolverInstance = new LinearSystemSolver();
     window.eigenSolverInstance = new EigenSolver();
     window.fieldCalculatorInstance = new FieldCalculator();
+    window.independenceCheckerInstance = new IndependenceChecker();
 });
