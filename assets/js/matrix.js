@@ -1,8 +1,8 @@
 /**
  * ALGEBRIFY - DYNAMIC MATRIX CALCULATOR
- * Supports 1x1 up to 5x5 dynamic dimensions, presets, addition, subtraction,
- * scalar mult, matrix mult (with compatibility checks), transpose, determinant,
- * inverse, rank, trace, and step-by-step mathematical breakdown.
+ * Calls Python/Flask backend (/api/matrix) for all matrix mathematical operations:
+ * addition, subtraction, scalar mult, matrix mult, transpose, determinant,
+ * inverse, rank, trace, and step-by-step breakdown.
  */
 
 // ==========================================================================
@@ -266,98 +266,82 @@ class DynamicMatrixCalculator {
         if (clearBtn) clearBtn.addEventListener("click", () => this.clear());
     }
 
-    // ====== OPERATIONS ======
+    // ====== OPERATIONS DELEGATED TO FLASK BACKEND ======
 
-    add() {
-        if (this.rowsA !== this.rowsB || this.colsA !== this.colsB) {
-            this.showError(`Addition requires identical dimensions. Matrix A is ${this.rowsA}×${this.colsA} but Matrix B is ${this.rowsB}×${this.colsB}.`);
-            return;
-        }
-
+    async add() {
         const A = this.getMatrixA();
         const B = this.getMatrixB();
-        const C = [];
 
-        for (let r = 0; r < this.rowsA; r++) {
-            const row = [];
-            for (let c = 0; c < this.colsA; c++) {
-                row.push(A[r][c] + B[r][c]);
-            }
-            C.push(row);
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "add",
+            matrixA: A,
+            matrixB: B
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Addition failed.");
+            return;
         }
 
         this.showResult(`
             <div class="math-display">
-                \\[ A + B = ${this.matrixToLatex(A)} + ${this.matrixToLatex(B)} = ${this.matrixToLatex(C)} \\]
+                \\[ A + B = ${response.latex_a} + ${response.latex_b} = ${response.latex_result} \\]
             </div>
             <div class="calc-steps">
-                <strong>Step-by-Step Addition:</strong>
-                <p>Add corresponding entries: $C_{ij} = A_{ij} + B_{ij}$.</p>
+                <strong>Step-by-Step Addition (Python Flask Backend):</strong>
+                <p>${response.explanation}</p>
             </div>
         `);
     }
 
-    subtract() {
-        if (this.rowsA !== this.rowsB || this.colsA !== this.colsB) {
-            this.showError(`Subtraction requires identical dimensions. Matrix A is ${this.rowsA}×${this.colsA} but Matrix B is ${this.rowsB}×${this.colsB}.`);
-            return;
-        }
-
+    async subtract() {
         const A = this.getMatrixA();
         const B = this.getMatrixB();
-        const C = [];
 
-        for (let r = 0; r < this.rowsA; r++) {
-            const row = [];
-            for (let c = 0; c < this.colsA; c++) {
-                row.push(A[r][c] - B[r][c]);
-            }
-            C.push(row);
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "subtract",
+            matrixA: A,
+            matrixB: B
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Subtraction failed.");
+            return;
         }
 
         this.showResult(`
             <div class="math-display">
-                \\[ A - B = ${this.matrixToLatex(A)} - ${this.matrixToLatex(B)} = ${this.matrixToLatex(C)} \\]
+                \\[ A - B = ${response.latex_a} - ${response.latex_b} = ${response.latex_result} \\]
             </div>
             <div class="calc-steps">
-                <strong>Step-by-Step Subtraction:</strong>
-                <p>Subtract corresponding entries: $C_{ij} = A_{ij} - B_{ij}$.</p>
+                <strong>Step-by-Step Subtraction (Python Flask Backend):</strong>
+                <p>${response.explanation}</p>
             </div>
         `);
     }
 
-    multiply() {
-        if (this.colsA !== this.rowsB) {
-            this.showError(`Matrix multiplication $A \\times B$ is only defined when columns of $A$ equal rows of $B$. Here, columns of $A$ = ${this.colsA} and rows of $B$ = ${this.rowsB}.`);
+    async multiply() {
+        const A = this.getMatrixA();
+        const B = this.getMatrixB();
+
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "multiply",
+            matrixA: A,
+            matrixB: B
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Multiplication failed.");
             return;
         }
 
-        const A = this.getMatrixA();
-        const B = this.getMatrixB();
-        const C = [];
-        const steps = [];
-
-        for (let i = 0; i < this.rowsA; i++) {
-            const row = [];
-            for (let j = 0; j < this.colsB; j++) {
-                let sum = 0;
-                const terms = [];
-                for (let k = 0; k < this.colsA; k++) {
-                    sum += A[i][k] * B[k][j];
-                    terms.push(`(${formatPlainNumber(A[i][k])} \\cdot ${formatPlainNumber(B[k][j])})`);
-                }
-                row.push(sum);
-                steps.push(`$c_{${i+1}${j+1}} = ${terms.join(" + ")} = ${formatNumber(sum)}$`);
-            }
-            C.push(row);
-        }
-
+        const steps = response.steps || [];
         this.showResult(`
             <div class="math-display">
-                \\[ A \\cdot B = ${this.matrixToLatex(A)} \\cdot ${this.matrixToLatex(B)} = ${this.matrixToLatex(C)} \\]
+                \\[ A \\cdot B = ${response.latex_a} \\cdot ${response.latex_b} = ${response.latex_result} \\]
             </div>
             <div class="calc-steps">
-                <strong>Step-by-Step Dot Products:</strong>
+                <strong>Step-by-Step Dot Products (Python Flask Backend):</strong>
                 <ol>
                     ${steps.slice(0, 8).map(step => `<li>${step}</li>`).join("")}
                     ${steps.length > 8 ? `<li>... and so on for all ${steps.length} entries.</li>` : ""}
@@ -366,241 +350,160 @@ class DynamicMatrixCalculator {
         `);
     }
 
-    scalarMultiply() {
+    async scalarMultiply() {
         const scalarInput = document.getElementById("scalar-k");
         const k = scalarInput && scalarInput.value !== "" ? parseFloat(scalarInput.value) : 2;
         const A = this.getMatrixA();
-        const C = A.map(row => row.map(val => val * k));
 
-        this.showResult(`
-            <div class="math-display">
-                \\[ ${k} \\cdot A = ${k} \\cdot ${this.matrixToLatex(A)} = ${this.matrixToLatex(C)} \\]
-            </div>
-            <div class="calc-steps">
-                <strong>Step-by-Step Scalar Multiplication:</strong>
-                <p>Multiply every entry of Matrix A by $k = ${k}$.</p>
-            </div>
-        `);
-    }
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "scalar_multiply",
+            matrixA: A,
+            scalar: k
+        });
 
-    transposeA() {
-        const A = this.getMatrixA();
-        const AT = [];
-        for (let c = 0; c < this.colsA; c++) {
-            const row = [];
-            for (let r = 0; r < this.rowsA; r++) {
-                row.push(A[r][c]);
-            }
-            AT.push(row);
+        if (!response.success) {
+            this.showError(response.error || "Scalar multiplication failed.");
+            return;
         }
 
         this.showResult(`
             <div class="math-display">
-                \\[ A^T = \\left( ${this.matrixToLatex(A)} \\right)^T = ${this.matrixToLatex(AT)} \\]
+                \\[ ${k} \\cdot A = ${k} \\cdot ${response.latex_a} = ${response.latex_result} \\]
             </div>
             <div class="calc-steps">
-                <strong>Transpose Property:</strong>
+                <strong>Step-by-Step Scalar Multiplication (Python Flask Backend):</strong>
+                <p>${response.explanation}</p>
+            </div>
+        `);
+    }
+
+    async transposeA() {
+        const A = this.getMatrixA();
+
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "transpose",
+            matrixA: A
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Transpose failed.");
+            return;
+        }
+
+        this.showResult(`
+            <div class="math-display">
+                \\[ A^T = \\left( ${response.latex_a} \\right)^T = ${response.latex_result} \\]
+            </div>
+            <div class="calc-steps">
+                <strong>Transpose Property (Python Flask Backend):</strong>
                 <p>Swapped rows and columns. Dimensions transformed from ${this.rowsA}×${this.colsA} to ${this.colsA}×${this.rowsA}.</p>
             </div>
         `);
     }
 
-    determinantA() {
+    async determinantA() {
         if (this.rowsA !== this.colsA) {
             this.showError(`Determinant is only defined for square matrices ($n \\times n$). Matrix A is ${this.rowsA}×${this.colsA}.`);
             return;
         }
 
         const A = this.getMatrixA();
-        const det = this.computeDeterminant(A);
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "determinant",
+            matrixA: A
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Determinant failed.");
+            return;
+        }
 
         this.showResult(`
             <div class="math-display">
-                \\[ \\det(A) = \\begin{vmatrix} ${A.map(r => r.map(v => formatNumber(v)).join(" & ")).join(" \\\\ ")} \\end{vmatrix} = ${formatNumber(det)} \\]
+                \\[ \\det(A) = ${response.vmatrix_latex} = ${response.formatted_det} \\]
             </div>
             <div class="calc-steps">
-                <strong>Interpretation:</strong>
-                <p>${det === 0 
-                    ? "The determinant is <strong>0</strong>. Matrix A is <strong>singular (non-invertible)</strong>; its columns are linearly dependent." 
-                    : `The determinant is non-zero (<strong>${formatNumber(det)}</strong>). Matrix A is <strong>invertible (non-singular)</strong>.`}</p>
+                <strong>Interpretation (Python Flask Backend):</strong>
+                <p>${response.interpretation}</p>
             </div>
         `);
     }
 
-    computeDeterminant(matrix) {
-        const n = matrix.length;
-        if (n === 1) return matrix[0][0];
-        if (n === 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-
-        let det = 0;
-        for (let j = 0; j < n; j++) {
-            const sub = matrix.slice(1).map(row => row.filter((_, colIdx) => colIdx !== j));
-            const cofactor = (j % 2 === 0 ? 1 : -1) * matrix[0][j] * this.computeDeterminant(sub);
-            det += cofactor;
-        }
-        return det;
-    }
-
-    inverseA() {
+    async inverseA() {
         if (this.rowsA !== this.colsA) {
             this.showError(`Inverse is only defined for square matrices ($n \\times n$). Matrix A is ${this.rowsA}×${this.colsA}.`);
             return;
         }
 
         const A = this.getMatrixA();
-        const det = this.computeDeterminant(A);
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "inverse",
+            matrixA: A
+        });
 
-        if (Math.abs(det) < 1e-7) {
-            this.showError(`Matrix A is <strong>singular</strong> because $\\det(A) = 0$. A singular matrix has linearly dependent columns and therefore has no inverse.`);
-            return;
-        }
-
-        const inv = this.computeInverse(A);
-        if (!inv) {
-            this.showError(`Could not compute inverse for this matrix.`);
+        if (!response.success) {
+            this.showError(response.error || "Could not compute inverse for this matrix.");
             return;
         }
 
         this.showResult(`
             <div class="math-display">
-                \\[ A^{-1} = ${this.matrixToLatex(inv)} \\]
+                \\[ A^{-1} = ${response.latex_result} \\]
             </div>
             <div class="calc-steps">
-                <strong>Verification:</strong>
-                <p>Since $\\det(A) = ${formatNumber(det)} \\neq 0$, $A^{-1}$ exists and satisfies $A \\cdot A^{-1} = I$.</p>
+                <strong>Verification (Python Flask Backend):</strong>
+                <p>${response.explanation}</p>
             </div>
         `);
     }
 
-    computeInverse(matrix) {
-        const n = matrix.length;
-        // Create augmented matrix [A | I]
-        const aug = [];
-        for (let i = 0; i < n; i++) {
-            const row = [...matrix[i]];
-            for (let j = 0; j < n; j++) {
-                row.push(i === j ? 1 : 0);
-            }
-            aug.push(row);
-        }
-
-        // Gauss-Jordan elimination
-        for (let i = 0; i < n; i++) {
-            // Pivot search
-            let maxRow = i;
-            for (let k = i + 1; k < n; k++) {
-                if (Math.abs(aug[k][i]) > Math.abs(aug[maxRow][i])) {
-                    maxRow = k;
-                }
-            }
-            if (Math.abs(aug[maxRow][i]) < 1e-9) return null; // Singular
-
-            // Swap rows
-            const temp = aug[i];
-            aug[i] = aug[maxRow];
-            aug[maxRow] = temp;
-
-            // Normalize pivot row
-            const pivot = aug[i][i];
-            for (let j = 0; j < 2 * n; j++) {
-                aug[i][j] /= pivot;
-            }
-
-            // Eliminate column entries
-            for (let k = 0; k < n; k++) {
-                if (k !== i) {
-                    const factor = aug[k][i];
-                    for (let j = 0; j < 2 * n; j++) {
-                        aug[k][j] -= factor * aug[i][j];
-                    }
-                }
-            }
-        }
-
-        // Extract inverse
-        const inv = [];
-        for (let i = 0; i < n; i++) {
-            inv.push(aug[i].slice(n));
-        }
-        return inv;
-    }
-
-    rankA() {
+    async rankA() {
         const A = this.getMatrixA();
-        const rank = this.computeRank(A);
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "rank",
+            matrixA: A
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Rank computation failed.");
+            return;
+        }
 
         this.showResult(`
             <div class="math-display">
-                \\[ \\text{Rank}(A) = ${rank} \\]
+                \\[ \\text{Rank}(A) = ${response.rank} \\]
             </div>
             <div class="calc-steps">
-                <strong>Rank Explanation:</strong>
-                <p>The rank is the maximum number of linearly independent rows or columns. For a ${this.rowsA}×${this.colsA} matrix, maximum possible rank is $\\min(${this.rowsA}, ${this.colsA}) = ${Math.min(this.rowsA, this.colsA)}$.</p>
-                <p>${rank === Math.min(this.rowsA, this.colsA) ? "Matrix A has <strong>full rank</strong>." : "Matrix A is <strong>rank-deficient</strong>."}</p>
+                <strong>Rank Explanation (Python Flask Backend):</strong>
+                <p>${response.explanation}</p>
             </div>
         `);
     }
 
-    computeRank(matrix) {
-        const mat = matrix.map(r => [...r]);
-        const R = mat.length;
-        const C = mat[0].length;
-        let rank = C;
-
-        for (let row = 0; row < rank; row++) {
-            if (mat[row][row] !== 0) {
-                for (let col = 0; col < R; col++) {
-                    if (col !== row) {
-                        const mult = mat[col][row] / mat[row][row];
-                        for (let i = 0; i < rank; i++) {
-                            mat[col][i] -= mult * mat[row][i];
-                        }
-                    }
-                }
-            } else {
-                let reduce = true;
-                for (let i = row + 1; i < R; i++) {
-                    if (mat[i][row] !== 0) {
-                        const temp = mat[row];
-                        mat[row] = mat[i];
-                        mat[i] = temp;
-                        reduce = false;
-                        break;
-                    }
-                }
-                if (reduce) {
-                    rank--;
-                    for (let i = 0; i < R; i++) {
-                        mat[i][row] = mat[i][rank];
-                    }
-                }
-                row--;
-            }
-        }
-        return rank;
-    }
-
-    traceA() {
+    async traceA() {
         if (this.rowsA !== this.colsA) {
             this.showError(`Trace is only defined for square matrices ($n \\times n$). Matrix A is ${this.rowsA}×${this.colsA}.`);
             return;
         }
 
         const A = this.getMatrixA();
-        let tr = 0;
-        const terms = [];
-        for (let i = 0; i < this.rowsA; i++) {
-            tr += A[i][i];
-            terms.push(formatPlainNumber(A[i][i]));
+        const response = await algebrifyApi("/api/matrix", {
+            operation: "trace",
+            matrixA: A
+        });
+
+        if (!response.success) {
+            this.showError(response.error || "Trace computation failed.");
+            return;
         }
 
         this.showResult(`
             <div class="math-display">
-                \\[ \\text{tr}(A) = \\sum_{i=1}^{${this.rowsA}} a_{ii} = ${terms.join(" + ")} = ${formatNumber(tr)} \\]
+                \\[ \\text{tr}(A) = \\sum_{i=1}^{${this.rowsA}} a_{ii} = ${response.diagonal_terms} = ${response.formatted_trace} \\]
             </div>
             <div class="calc-steps">
-                <strong>Trace Property:</strong>
-                <p>The trace equals the sum of the principal diagonal elements (which is also equal to the sum of its eigenvalues).</p>
+                <strong>Trace Property (Python Flask Backend):</strong>
+                <p>${response.explanation}</p>
             </div>
         `);
     }
