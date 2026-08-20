@@ -14,36 +14,62 @@ Main application server exposing structured calculation endpoints for:
 """
 
 import os
+import sys
 import json
 import urllib.request
 import urllib.error
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
-from .calculator import calculate_expression
-from .matrix import (
-    matrix_add, matrix_subtract, matrix_multiply, matrix_scalar_multiply,
-    matrix_transpose, matrix_determinant, matrix_inverse, matrix_rank, matrix_trace
-)
-from .equations import solve_linear_system
-from .vectors import (
-    vector_add, vector_subtract, vector_dot, vector_cross,
-    vector_magnitude, vector_angle, vector_unit
-)
-from .eigen import solve_eigen_2x2, solve_eigen_3x3
-from .fields import (
-    complex_add, complex_multiply, complex_inverse,
-    gf2_add, gf2_multiply, gf2_inverse
-)
-from .vector_spaces import check_linear_independence
-from .transformations import (
-    apply_2d_transformation, change_of_basis_2d, gram_schmidt_2d
-)
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+if CURRENT_DIR not in sys.path:
+    sys.path.insert(0, CURRENT_DIR)
+
+try:
+    from .calculator import calculate_expression
+    from .matrix import (
+        matrix_add, matrix_subtract, matrix_multiply, matrix_scalar_multiply,
+        matrix_transpose, matrix_determinant, matrix_inverse, matrix_rank, matrix_trace
+    )
+    from .equations import solve_linear_system
+    from .vectors import (
+        vector_add, vector_subtract, vector_dot, vector_cross,
+        vector_magnitude, vector_angle, vector_unit
+    )
+    from .eigen import solve_eigen_2x2, solve_eigen_3x3
+    from .fields import (
+        complex_add, complex_multiply, complex_inverse,
+        gf2_add, gf2_multiply, gf2_inverse
+    )
+    from .vector_spaces import check_linear_independence
+    from .transformations import (
+        apply_2d_transformation, change_of_basis_2d, gram_schmidt_2d
+    )
+except (ImportError, ValueError):
+    from calculator import calculate_expression
+    from matrix import (
+        matrix_add, matrix_subtract, matrix_multiply, matrix_scalar_multiply,
+        matrix_transpose, matrix_determinant, matrix_inverse, matrix_rank, matrix_trace
+    )
+    from equations import solve_linear_system
+    from vectors import (
+        vector_add, vector_subtract, vector_dot, vector_cross,
+        vector_magnitude, vector_angle, vector_unit
+    )
+    from eigen import solve_eigen_2x2, solve_eigen_3x3
+    from fields import (
+        complex_add, complex_multiply, complex_inverse,
+        gf2_add, gf2_multiply, gf2_inverse
+    )
+    from vector_spaces import check_linear_independence
+    from transformations import (
+        apply_2d_transformation, change_of_basis_2d, gram_schmidt_2d
+    )
 
 # Initialize Flask App
 STATIC_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 app = Flask(__name__, static_folder=STATIC_FOLDER, static_url_path="")
-CORS(app)  # Enable Cross-Origin Resource Sharing for API consumers
+CORS(app, resources={r"/api/*": {"origins": "*"}})  # Enable Cross-Origin Resource Sharing for API consumers
 
 # AI Tutor Environment Keys
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
@@ -476,6 +502,11 @@ def serve_frontend(path):
 
 
 if __name__ == "__main__":
+    if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
     port = int(os.environ.get("PORT", 5000))
-    print(f"🚀 Algebrify Full-Stack Flask Backend running on http://localhost:{port}")
+    print(f"Algebrify Flask Backend running on http://127.0.0.1:{port} (or http://localhost:{port})")
     app.run(host="0.0.0.0", port=port, debug=True)

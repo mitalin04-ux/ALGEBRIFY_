@@ -5,7 +5,11 @@ and the Finite Galois Field GF(2) (Binary field with characteristic 2).
 """
 
 import math
-from .utils import format_number, format_plain_number
+
+try:
+    from .utils import format_number, format_plain_number
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number
 
 
 def format_complex_str(a, b, tolerance=1e-6):

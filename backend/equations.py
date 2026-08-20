@@ -6,7 +6,10 @@ underdetermined systems (infinitely many solutions with free variables).
 Generates detailed LaTeX row reduction steps for educational display.
 """
 
-from .utils import format_number, format_plain_number
+try:
+    from .utils import format_number, format_plain_number
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number
 
 
 def solve_linear_system(augmented_matrix):

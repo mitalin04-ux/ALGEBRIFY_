@@ -7,7 +7,11 @@ eigenvectors, and matrix diagonalization (A = P D P^-1).
 import math
 import numpy as np
 import sympy as sp
-from .utils import format_number, format_plain_number, matrix_to_latex, vector_to_latex
+
+try:
+    from .utils import format_number, format_plain_number, matrix_to_latex, vector_to_latex
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number, matrix_to_latex, vector_to_latex
 
 
 def solve_eigen_2x2(matrix_2x2):

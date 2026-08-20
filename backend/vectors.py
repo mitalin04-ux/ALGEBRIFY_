@@ -7,7 +7,11 @@ Angle between vectors, and Unit Vector Normalization.
 
 import math
 import numpy as np
-from .utils import format_number, format_plain_number, vector_to_latex
+
+try:
+    from .utils import format_number, format_plain_number, vector_to_latex
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number, vector_to_latex
 
 
 def vector_add(u, v):

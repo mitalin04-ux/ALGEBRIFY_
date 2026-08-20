@@ -6,7 +6,11 @@ square roots, fractions, and trigonometric functions without unsafe eval().
 """
 
 import sympy as sp
-from .utils import format_number
+
+try:
+    from .utils import format_number
+except (ImportError, ValueError):
+    from utils import format_number
 
 
 def calculate_expression(expression_str):

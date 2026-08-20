@@ -7,7 +7,11 @@ Includes detailed mathematical step-by-step explanations and LaTeX outputs.
 
 import numpy as np
 import sympy as sp
-from .utils import format_number, format_plain_number, matrix_to_latex
+
+try:
+    from .utils import format_number, format_plain_number, matrix_to_latex
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number, matrix_to_latex
 
 
 def matrix_add(matrix_a, matrix_b):

@@ -6,7 +6,11 @@ and Gram-Schmidt Orthogonalization with step-by-step LaTeX construction.
 
 import math
 import numpy as np
-from .utils import format_number, format_plain_number, matrix_to_latex, vector_to_latex
+
+try:
+    from .utils import format_number, format_plain_number, matrix_to_latex, vector_to_latex
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number, matrix_to_latex, vector_to_latex
 
 
 def apply_2d_transformation(matrix_t, vector_v):

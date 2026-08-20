@@ -5,7 +5,11 @@ Computes matrix rank, determinant, and classifies the spanned geometric subspace
 """
 
 import numpy as np
-from .utils import format_number, format_plain_number, matrix_to_latex
+
+try:
+    from .utils import format_number, format_plain_number, matrix_to_latex
+except (ImportError, ValueError):
+    from utils import format_number, format_plain_number, matrix_to_latex
 
 
 def check_linear_independence(v1, v2, v3):
