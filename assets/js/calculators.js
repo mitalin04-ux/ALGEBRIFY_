@@ -1322,5 +1322,46 @@ document.addEventListener("DOMContentLoaded", () => {
             e.target.select();
         }
     });
+
+    // Upper and Lower Arrow Key Stepper Functionality for all calculator inputs
+    document.addEventListener("keydown", (e) => {
+        const input = e.target;
+        if (!input || input.tagName !== "INPUT" || (input.type !== "text" && input.type !== "number")) return;
+
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            e.preventDefault();
+            const step = e.shiftKey ? 10 : (e.altKey ? 0.1 : 1);
+            let current = parseFloat(input.value);
+            if (isNaN(current)) current = 0;
+
+            if (e.key === "ArrowUp") {
+                current = Math.round((current + step) * 1000) / 1000;
+            } else {
+                current = Math.round((current - step) * 1000) / 1000;
+            }
+
+            input.value = current;
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+            input.select();
+        }
+    });
+
+    // Mouse wheel up/down stepper when focusing an input
+    document.addEventListener("wheel", (e) => {
+        const input = document.activeElement;
+        if (!input || input.tagName !== "INPUT" || (input.type !== "text" && input.type !== "number")) return;
+        if (e.target === input) {
+            e.preventDefault();
+            const step = e.deltaY < 0 ? 1 : -1;
+            let current = parseFloat(input.value);
+            if (isNaN(current)) current = 0;
+            current = Math.round((current + step) * 1000) / 1000;
+            input.value = current;
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+            input.select();
+        }
+    }, { passive: false });
 });
 

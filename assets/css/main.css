@@ -2065,7 +2065,7 @@ section {
 }
 
 .matrix-grid-input input {
-    width: 56px;
+    width: 66px;
     height: 48px;
     text-align: center;
     font-size: 1.05rem;
@@ -2082,6 +2082,25 @@ section {
     -webkit-user-select: text;
     position: relative;
     z-index: 3;
+    padding: 0 4px;
+}
+
+.matrix-grid-input input::-webkit-inner-spin-button,
+.matrix-grid-input input::-webkit-outer-spin-button,
+.matrix-input-box input[type="number"]::-webkit-inner-spin-button,
+.matrix-input-box input[type="number"]::-webkit-outer-spin-button,
+.control-group input[type="number"]::-webkit-inner-spin-button,
+.control-group input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.85;
+    cursor: pointer;
+    height: 32px;
+}
+
+.matrix-grid-input input:hover::-webkit-inner-spin-button,
+.matrix-grid-input input:focus::-webkit-inner-spin-button,
+.matrix-input-box input[type="number"]:hover::-webkit-inner-spin-button,
+.matrix-input-box input[type="number"]:focus::-webkit-inner-spin-button {
+    opacity: 1;
 }
 
 .matrix-grid-input input:focus {
