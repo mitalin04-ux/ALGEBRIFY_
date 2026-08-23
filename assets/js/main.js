@@ -508,6 +508,8 @@ function renderAllMath(container = document.body) {
                     { left: "$", right: "$", display: false },
                     { left: "\\(", right: "\\)", display: false }
                 ],
+                ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "annotation", "annotation-xml", "input", "select", "button", "option"],
+                ignoredClasses: ["matrix-grid-input", "matrices-workspace", "calc-input-box", "control-group", "matrix-input-box"],
                 throwOnError: false
             });
         } catch (err) {
