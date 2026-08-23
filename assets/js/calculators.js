@@ -1291,7 +1291,7 @@ class DeterminantCalculator {
     }
 }
 
-// Auto instantiate
+// Auto instantiate & attach universal input handlers
 document.addEventListener("DOMContentLoaded", () => {
     window.vectorCalculatorInstance = new VectorCalculator();
     window.linearSystemSolverInstance = new LinearSystemSolver();
@@ -1302,4 +1302,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.changeOfBasisCalculatorInstance = new ChangeOfBasisCalculator();
     window.gramSchmidtCalculatorInstance = new GramSchmidtCalculator();
     window.determinantCalculatorInstance = new DeterminantCalculator();
+
+    // Universal auto-select and editing helper for all calculator inputs
+    document.addEventListener("focusin", (e) => {
+        if (e.target && e.target.tagName === "INPUT" && (e.target.type === "text" || e.target.type === "number")) {
+            setTimeout(() => e.target.select(), 10);
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (e.target && e.target.tagName === "INPUT" && (e.target.type === "text" || e.target.type === "number")) {
+            e.target.select();
+        }
+    });
 });
+

@@ -2031,6 +2031,7 @@ section {
     justify-content: center;
     padding: 10px;
     position: relative;
+    pointer-events: auto;
 }
 
 .matrix-grid-input::before,
@@ -2042,6 +2043,8 @@ section {
     width: 8px;
     border-top: 3px solid var(--clr-primary);
     border-bottom: 3px solid var(--clr-primary);
+    pointer-events: none;
+    z-index: 2;
 }
 
 .matrix-grid-input::before {
@@ -2073,6 +2076,12 @@ section {
     color: var(--clr-text);
     outline: none;
     transition: all 0.2s ease;
+    pointer-events: auto;
+    cursor: text;
+    user-select: text;
+    -webkit-user-select: text;
+    position: relative;
+    z-index: 3;
 }
 
 .matrix-grid-input input:focus {

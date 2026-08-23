@@ -38,6 +38,25 @@ function formatPlainNumber(val, tolerance = 1e-6) {
     return parseFloat(val.toFixed(4)).toString();
 }
 
+function parseInputNumber(str) {
+    if (typeof str === "number") return isNaN(str) ? 0 : str;
+    if (!str || typeof str !== "string") return 0;
+    str = str.trim();
+    if (!str) return 0;
+    if (str.includes("/")) {
+        const parts = str.split("/");
+        if (parts.length === 2) {
+            const num = parseFloat(parts[0]);
+            const den = parseFloat(parts[1]);
+            if (!isNaN(num) && !isNaN(den) && Math.abs(den) > 1e-9) {
+                return num / den;
+            }
+        }
+    }
+    const val = parseFloat(str);
+    return isNaN(val) ? 0 : val;
+}
+
 // ==========================================================================
 // DYNAMIC MATRIX CALCULATOR CLASS
 // ==========================================================================
@@ -71,23 +90,27 @@ class DynamicMatrixCalculator {
 
         if (rowsASelect && colsASelect) {
             rowsASelect.addEventListener("change", (e) => {
+                const oldVals = this.getMatrixA();
                 this.rowsA = parseInt(e.target.value, 10);
-                this.renderGridA();
+                this.renderGridA(oldVals);
             });
             colsASelect.addEventListener("change", (e) => {
+                const oldVals = this.getMatrixA();
                 this.colsA = parseInt(e.target.value, 10);
-                this.renderGridA();
+                this.renderGridA(oldVals);
             });
         }
 
         if (rowsBSelect && colsBSelect) {
             rowsBSelect.addEventListener("change", (e) => {
+                const oldVals = this.getMatrixB();
                 this.rowsB = parseInt(e.target.value, 10);
-                this.renderGridB();
+                this.renderGridB(oldVals);
             });
             colsBSelect.addEventListener("change", (e) => {
+                const oldVals = this.getMatrixB();
                 this.colsB = parseInt(e.target.value, 10);
-                this.renderGridB();
+                this.renderGridB(oldVals);
             });
         }
 
@@ -114,6 +137,7 @@ class DynamicMatrixCalculator {
                 if (colsBSelect) colsBSelect.value = cB;
 
                 this.renderGrids();
+                this.populateSampleValues();
             });
         });
     }
@@ -123,7 +147,7 @@ class DynamicMatrixCalculator {
         this.renderGridB();
     }
 
-    renderGridA() {
+    renderGridA(preserveVals = null) {
         if (!this.matrixAContainer) return;
         this.matrixAContainer.style.gridTemplateColumns = `repeat(${this.colsA}, 1fr)`;
         this.matrixAContainer.innerHTML = "";
@@ -131,16 +155,24 @@ class DynamicMatrixCalculator {
         for (let r = 0; r < this.rowsA; r++) {
             for (let c = 0; c < this.colsA; c++) {
                 const input = document.createElement("input");
-                input.type = "number";
+                input.type = "text";
+                input.inputMode = "decimal";
                 input.id = `a_${r}_${c}`;
-                input.step = "any";
                 input.placeholder = "0";
+                if (preserveVals && preserveVals[r] && preserveVals[r][c] !== undefined) {
+                    input.value = preserveVals[r][c];
+                }
+                input.addEventListener("focus", () => input.select());
+                input.addEventListener("click", () => input.select());
+                input.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") this.add();
+                });
                 this.matrixAContainer.appendChild(input);
             }
         }
     }
 
-    renderGridB() {
+    renderGridB(preserveVals = null) {
         if (!this.matrixBContainer) return;
         this.matrixBContainer.style.gridTemplateColumns = `repeat(${this.colsB}, 1fr)`;
         this.matrixBContainer.innerHTML = "";
@@ -148,10 +180,18 @@ class DynamicMatrixCalculator {
         for (let r = 0; r < this.rowsB; r++) {
             for (let c = 0; c < this.colsB; c++) {
                 const input = document.createElement("input");
-                input.type = "number";
+                input.type = "text";
+                input.inputMode = "decimal";
                 input.id = `b_${r}_${c}`;
-                input.step = "any";
                 input.placeholder = "0";
+                if (preserveVals && preserveVals[r] && preserveVals[r][c] !== undefined) {
+                    input.value = preserveVals[r][c];
+                }
+                input.addEventListener("focus", () => input.select());
+                input.addEventListener("click", () => input.select());
+                input.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") this.add();
+                });
                 this.matrixBContainer.appendChild(input);
             }
         }
@@ -172,10 +212,12 @@ class DynamicMatrixCalculator {
         for (let r = 0; r < this.rowsA; r++) {
             for (let c = 0; c < this.colsA; c++) {
                 const input = document.getElementById(`a_${r}_${c}`);
-                if (input && sampleA[r] && sampleA[r][c] !== undefined) {
-                    input.value = sampleA[r][c];
-                } else if (input) {
-                    input.value = r === c ? "1" : "0";
+                if (input && (!input.value || input.value === "0")) {
+                    if (sampleA[r] && sampleA[r][c] !== undefined) {
+                        input.value = sampleA[r][c];
+                    } else {
+                        input.value = r === c ? "1" : "0";
+                    }
                 }
             }
         }
@@ -183,10 +225,12 @@ class DynamicMatrixCalculator {
         for (let r = 0; r < this.rowsB; r++) {
             for (let c = 0; c < this.colsB; c++) {
                 const input = document.getElementById(`b_${r}_${c}`);
-                if (input && sampleB[r] && sampleB[r][c] !== undefined) {
-                    input.value = sampleB[r][c];
-                } else if (input) {
-                    input.value = r === c ? "1" : "0";
+                if (input && (!input.value || input.value === "0")) {
+                    if (sampleB[r] && sampleB[r][c] !== undefined) {
+                        input.value = sampleB[r][c];
+                    } else {
+                        input.value = r === c ? "1" : "0";
+                    }
                 }
             }
         }
@@ -198,8 +242,8 @@ class DynamicMatrixCalculator {
             const row = [];
             for (let c = 0; c < this.colsA; c++) {
                 const el = document.getElementById(`a_${r}_${c}`);
-                const val = el && el.value !== "" ? parseFloat(el.value) : 0;
-                row.push(isNaN(val) ? 0 : val);
+                const val = parseInputNumber(el?.value);
+                row.push(val);
             }
             matrix.push(row);
         }
@@ -212,8 +256,8 @@ class DynamicMatrixCalculator {
             const row = [];
             for (let c = 0; c < this.colsB; c++) {
                 const el = document.getElementById(`b_${r}_${c}`);
-                const val = el && el.value !== "" ? parseFloat(el.value) : 0;
-                row.push(isNaN(val) ? 0 : val);
+                const val = parseInputNumber(el?.value);
+                row.push(val);
             }
             matrix.push(row);
         }
