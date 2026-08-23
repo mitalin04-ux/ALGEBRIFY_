@@ -366,13 +366,15 @@ class LinearSystemSolver {
 
             for (let c = 0; c < this.vars; c++) {
                 const input = document.createElement("input");
-                input.type = "text";
+                input.type = "number";
+                input.step = "any";
                 input.id = `sys_${r}_${c}`;
                 input.className = "matrix-cell-input";
                 input.style.cssText = "width: 100%; height: 44px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border); background: var(--clr-card); color: var(--clr-text); font-size: 1rem; outline: none; transition: border-color 0.2s;";
                 input.placeholder = "0";
 
                 input.addEventListener("focus", () => input.select());
+                input.addEventListener("click", () => input.select());
                 input.addEventListener("input", () => this.updateLivePreview());
                 input.addEventListener("keydown", (e) => {
                     if (e.key === "Enter") this.solve();
@@ -387,13 +389,15 @@ class LinearSystemSolver {
             rowDiv.appendChild(dividerCell);
 
             const bInput = document.createElement("input");
-            bInput.type = "text";
+            bInput.type = "number";
+            bInput.step = "any";
             bInput.id = `sys_${r}_b`;
             bInput.className = "matrix-cell-input matrix-b-cell";
             bInput.style.cssText = "width: 100%; height: 44px; text-align: center; font-weight: 700; border-radius: 8px; border: 2px solid var(--clr-accent); background: var(--clr-card); color: var(--clr-text); font-size: 1.05rem; outline: none;";
             bInput.placeholder = "0";
 
             bInput.addEventListener("focus", () => bInput.select());
+            bInput.addEventListener("click", () => bInput.select());
             bInput.addEventListener("input", () => this.updateLivePreview());
             bInput.addEventListener("keydown", (e) => {
                 if (e.key === "Enter") this.solve();
@@ -612,11 +616,13 @@ class EigenSolver {
         for (let r = 0; r < this.dim; r++) {
             for (let c = 0; c < this.dim; c++) {
                 const input = document.createElement("input");
-                input.type = "text";
+                input.type = "number";
+                input.step = "any";
                 input.id = `eigen_${r}_${c}`;
                 input.value = defaultVals[r][c];
                 input.style.cssText = "width: 55px; height: 48px; text-align: center; font-weight: 600; border-radius: 8px; border: 1px solid var(--clr-border); background: var(--clr-card); color: var(--clr-text); font-size: 1.05rem;";
                 input.addEventListener("focus", () => input.select());
+                input.addEventListener("click", () => input.select());
                 grid.appendChild(input);
             }
         }
@@ -1212,6 +1218,7 @@ class DeterminantCalculator {
                 input.step = "any";
                 input.style.cssText = "width: 52px; height: 44px; text-align: center; font-weight: 700; border-radius: 8px; border: 1px solid var(--clr-border); background: var(--clr-card); color: var(--clr-text); font-size: 1rem;";
                 input.addEventListener("focus", () => input.select());
+                input.addEventListener("click", () => input.select());
                 input.addEventListener("keydown", (e) => {
                     if (e.key === "Enter") this.computeDet();
                 });

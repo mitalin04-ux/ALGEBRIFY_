@@ -155,8 +155,8 @@ class DynamicMatrixCalculator {
         for (let r = 0; r < this.rowsA; r++) {
             for (let c = 0; c < this.colsA; c++) {
                 const input = document.createElement("input");
-                input.type = "text";
-                input.inputMode = "decimal";
+                input.type = "number";
+                input.step = "any";
                 input.id = `a_${r}_${c}`;
                 input.placeholder = "0";
                 if (preserveVals && preserveVals[r] && preserveVals[r][c] !== undefined) {
@@ -180,8 +180,8 @@ class DynamicMatrixCalculator {
         for (let r = 0; r < this.rowsB; r++) {
             for (let c = 0; c < this.colsB; c++) {
                 const input = document.createElement("input");
-                input.type = "text";
-                input.inputMode = "decimal";
+                input.type = "number";
+                input.step = "any";
                 input.id = `b_${r}_${c}`;
                 input.placeholder = "0";
                 if (preserveVals && preserveVals[r] && preserveVals[r][c] !== undefined) {
